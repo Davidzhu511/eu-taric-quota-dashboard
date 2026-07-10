@@ -26,6 +26,7 @@ CURRENT_FILE = DATA_DIR / "current.json"
 HISTORY_INDEX_FILE = HISTORY_DIR / "index.json"
 
 SEARCH_URL = "https://ec.europa.eu/taxation_customs/dds2/taric/quota_consultation.jsp"
+LIST_URL = "https://ec.europa.eu/taxation_customs/dds2/taric/quota_list.jsp"
 BERLIN = ZoneInfo("Europe/Berlin")
 
 CODES: list[tuple[str, str, str]] = [
@@ -126,6 +127,17 @@ def parse_ddmmyyyy(value: str) -> date | None:
     return date(int(match.group(3)), int(match.group(2)), int(match.group(1)))
 
 
+def parse_date(value: str) -> date | None:
+    """Parse dates used by TARIC in both display text and detail URLs."""
+    parsed = parse_ddmmyyyy(value)
+    if parsed:
+        return parsed
+    match = re.search(r"(\d{4})-(\d{2})-(\d{2})", value or "")
+    if not match:
+        return None
+    return date(int(match.group(1)), int(match.group(2)), int(match.group(3)))
+
+
 def iso_from_ddmmyyyy(value: str) -> str:
     parsed = parse_ddmmyyyy(value)
     return parsed.isoformat() if parsed else value
@@ -160,8 +172,10 @@ def search_detail_url(session: requests.Session, code: str, today: date) -> tupl
     candidates: list[dict[str, Any]] = []
     official_update = ""
     for year in (today.year, today.year + 1):
+        # The consultation page loads result rows asynchronously from
+        # quota_list.jsp. Querying the form page itself only returns the form.
         response = session.get(
-            SEARCH_URL,
+            LIST_URL,
             params={
                 "Lang": "en",
                 "Origin": "",
@@ -169,7 +183,8 @@ def search_detail_url(session: requests.Session, code: str, today: date) -> tupl
                 "Critical": "",
                 "Status": "",
                 "Year": str(year),
-                "Expand": "true",
+                "Expand": "false",
+                "Offset": "0",
             },
             timeout=35,
         )
@@ -181,7 +196,7 @@ def search_detail_url(session: requests.Session, code: str, today: date) -> tupl
                 continue
             detail_url = urljoin(response.url, href)
             query = parse_qs(urlparse(detail_url).query)
-            start = parse_ddmmyyyy((query.get("StartDate") or [""])[0])
+            start = parse_date((query.get("StartDate") or [""])[0])
             row = link.find_parent("tr")
             dates = [parse_ddmmyyyy(x) for x in re.findall(r"\d{2}-\d{2}-\d{4}", clean_text(row))]
             dates = [x for x in dates if x]
