@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="EU TARIC 钢铁关税配额每日更新看板">
+  <title>EU TARIC 关税配额数据看板</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6fb;
+      --surface: rgba(255, 255, 255, 0.86);
+      --surface-solid: #ffffff;
+      --text: #182033;
+      --muted: #667085;
+      --border: rgba(24, 32, 51, 0.10);
+      --primary: #2563eb;
+      --primary-soft: rgba(37, 99, 235, 0.10);
+      --accent: #7c3aed;
+      --accent-soft: rgba(124, 58, 237, 0.10);
+      --success: #16865f;
+      --success-soft: rgba(22, 134, 95, 0.10);
+      --warning: #c76b00;
+      --warning-soft: rgba(199, 107, 0, 0.10);
+      --danger: #c2413b;
+      --danger-soft: rgba(194, 65, 59, 0.10);
+      --shadow: 0 16px 40px rgba(28, 39, 66, 0.10);
+      --shadow-soft: 0 8px 24px rgba(28, 39, 66, 0.07);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --bg: #11131a;
+        --surface: rgba(29, 33, 45, 0.88);
+        --surface-solid: #1d212d;
+        --text: #f4f6fb;
+        --muted: #aab2c3;
+        --border: rgba(255, 255, 255, 0.10);
+        --primary: #78adff;
+        --primary-soft: rgba(120, 173, 255, 0.14);
+        --accent: #b794ff;
+        --accent-soft: rgba(183, 148, 255, 0.14);
+        --success: #70d5ad;
+        --success-soft: rgba(112, 213, 173, 0.13);
+        --warning: #ffbd6a;
+        --warning-soft: rgba(255, 189, 106, 0.13);
+        --danger: #ff958e;
+        --danger-soft: rgba(255, 149, 142, 0.13);
+        --shadow: 0 16px 44px rgba(0, 0, 0, 0.28);
+        --shadow-soft: 0 8px 26px rgba(0, 0, 0, 0.22);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    html { min-width: 320px; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 7% 0%, var(--primary-soft), transparent 30%),
+        radial-gradient(circle at 94% 4%, var(--accent-soft), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.5;
+    }
+
+    button, input, select { font: inherit; }
+
+    a { color: var(--primary); }
+
+    .page {
+      width: min(1520px, 100%);
+      margin: 0 auto;
+      padding: clamp(14px, 2.5vw, 34px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(18px, 3vw, 30px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero::after {
+      position: absolute;
+      right: -80px;
+      bottom: -100px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      content: "";
+      pointer-events: none;
+    }
+
+    .hero-top {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    .source-link {
+      position: relative;
+      z-index: 1;
+      flex: none;
+      padding: 9px 13px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface-solid);
+      text-decoration: none;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .meta {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .meta-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .meta-item strong { font-weight: 650; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+    }
+
+    .button, .control {
+      min-height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--surface-solid);
+      color: var(--text);
+    }
+
+    .button {
+      padding: 8px 13px;
+      cursor: pointer;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+
+    .button:hover { transform: translateY(-1px); border-color: var(--primary); }
+
+    .button.active {
+      border-color: var(--text);
+      background: var(--text);
+      color: var(--surface-solid);
+    }
+
+    .control { padding: 8px 11px; }
+
+    .search { width: min(240px, 100%); }
+
+    .toolbar-spacer { flex: 1 1 20px; }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      position: relative;
+      overflow: hidden;
+      min-height: 116px;
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stat::before {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--accent);
+      content: "";
+    }
+
+    .stat-label { color: var(--muted); }
+
+    .stat-value {
+      display: block;
+      margin-top: 9px;
+      font-size: 27px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-note { margin-top: 3px; color: var(--muted); font-size: 13px; }
+
+    .notice, .error-box {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .notice { background: var(--primary-soft); color: var(--primary); }
+    .error-box { display: none; background: var(--danger-soft); color: var(--danger); }
+    .error-box.show { display: block; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .quota-card {
+      position: relative;
+      overflow: hidden;
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .quota-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .quota-card.high { border-color: var(--danger); background: linear-gradient(155deg, var(--surface), var(--danger-soft)); }
+    .quota-card.near { border-color: var(--warning); background: linear-gradient(155deg, var(--surface), var(--warning-soft)); }
+    .quota-card.stale { opacity: 0.72; }
+
+    .card-head, .metric, .card-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .code-link {
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: rgba(127, 127, 127, 0.10);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      text-decoration: none;
+    }
+
+    .origin {
+      min-height: 52px;
+      margin-top: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .balance {
+      margin: 12px 0;
+      padding: 12px 13px;
+      border-radius: 14px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .metric { margin-top: 9px; }
+    .metric span:first-child { color: var(--muted); }
+    .metric strong { text-align: right; font-weight: 650; }
+
+    .tariff {
+      margin-top: 13px;
+      padding: 11px 12px;
+      border: 1px solid var(--success);
+      border-radius: 13px;
+      background: var(--success-soft);
+    }
+
+    .tariff span:first-child { color: var(--text); }
+    .tariff strong { color: var(--success); font-size: 18px; }
+
+    .progress {
+      height: 7px;
+      margin-top: 14px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(127, 127, 127, 0.16);
+    }
+
+    .progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+
+    .card-foot { margin-top: 8px; color: var(--muted); font-size: 12px; }
+
+    .empty {
+      grid-column: 1 / -1;
+      padding: 46px 20px;
+      border: 1px dashed var(--border);
+      border-radius: 18px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .loading { margin-top: 30px; color: var(--muted); text-align: center; }
+
+    footer { padding: 30px 4px 10px; color: var(--muted); font-size: 12px; text-align: center; }
+
+    @media (max-width: 900px) {
+      .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .page { padding: 10px; }
+      .hero { border-radius: 18px; }
+      .hero-top { display: block; }
+      .source-link { display: inline-block; margin-top: 16px; }
+      .meta, .summary { grid-template-columns: 1fr; }
+      .toolbar-spacer { display: none; }
+      .toolbar .control, .search { width: 100%; }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .button, .quota-card { transition: none; }
+      .button:hover, .quota-card:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <h1>EU TARIC 关税配额数据看板</h1>
+          <p class="subtitle">钢铁产品 1A、2、4A、4B · 每日自动更新</p>
+        </div>
+        <a class="source-link" href="https://ec.europa.eu/taxation_customs/dds2/taric/quota_consultation.jsp?Lang=en" target="_blank" rel="noopener noreferrer">EU TARIC 官方来源 ↗</a>
+      </div>
+      <div class="meta">
+        <div class="meta-item"><span>官方数据日期</span><strong id="official-date">—</strong></div>
+        <div class="meta-item"><span>当前有效期</span><strong id="validity">—</strong></div>
+        <div class="meta-item"><span>最后检查</span><strong id="checked-at">—</strong></div>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="看板筛选与导出">
+      <button class="button active" type="button" data-category="all">全部</button>
+      <button class="button" type="button" data-category="1A">1A</button>
+      <button class="button" type="button" data-category="2">2</button>
+      <button class="button" type="button" data-category="4A">4A</button>
+      <button class="button" type="button" data-category="4B">4B</button>
+      <input class="control search" id="search" type="search" placeholder="搜索 Code 或原产地" aria-label="搜索 Code 或原产地">
+      <select class="control" id="sort" aria-label="排序">
+        <option value="category">按类别排序</option>
+        <option value="tariff">预估税率从高到低</option>
+        <option value="awaiting">待分配倍数从高到低</option>
+        <option value="remaining">剩余比例从低到高</option>
+      </select>
+      <select class="control" id="snapshot" aria-label="历史数据"><option value="current">实时看板</option></select>
+      <span class="toolbar-spacer"></span>
+      <button class="button" id="export-csv" type="button">CSV 导出</button>
+      <button class="button" id="export-json" type="button">JSON 导出</button>
+    </section>
+
+    <section class="summary" aria-label="数据概览">
+      <article class="stat"><span class="stat-label">成功抓取</span><strong class="stat-value" id="stat-total">—</strong><div class="stat-note">所选范围</div></article>
+      <article class="stat"><span class="stat-label">待分配 ≥ 当前余额</span><strong class="stat-value" id="stat-over">—</strong><div class="stat-note">存在按比例分配风险</div></article>
+      <article class="stat"><span class="stat-label">Critical / 已耗尽</span><strong class="stat-value" id="stat-critical">—</strong><div class="stat-note">官方状态</div></article>
+      <article class="stat"><span class="stat-label">最高预估分摊税率</span><strong class="stat-value" id="stat-tariff">—</strong><div class="stat-note">配额外比例 × 50%</div></article>
+    </section>
+
+    <section class="notice" id="notice">正在读取最新数据……</section>
+    <section class="error-box" id="errors" aria-live="polite"></section>
+    <div class="loading" id="loading">正在加载 TARIC 配额数据……</div>
+    <section class="grid" id="cards" aria-live="polite"></section>
+
+    <footer>待分配量为 indicative。预估分摊税率是按比例分配的期望值，不代表海关最终确定的实际税率。</footer>
+  </main>
+
+  <script>
+    const state = { dataset: null, category: "all", search: "", sort: "category" };
+    const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
+
+    const escapeHtml = (value) => String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+    const formatDateTime = (value) => {
+      if (!value) return "—";
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? value : new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Berlin" }).format(date);
+    };
+
+    const enrich = (item) => {
+      const initial = Number(item.initial_amount_kg ?? item.initial ?? 0);
+      const balance = Number(item.balance_kg ?? item.balance ?? 0);
+      const awaiting = Number(item.awaiting_allocation_kg ?? item.awaiting ?? 0);
+      const remainingPct = initial > 0 ? balance / initial * 100 : 0;
+      const awaitingRatio = initial > 0 ? awaiting / initial : 0;
+      const outsideRatio = awaiting > 0 ? Math.max(awaiting - balance, 0) / awaiting : 0;
+      const estimatedTariff = outsideRatio * 50;
+      return { ...item, initial, balance, awaiting, remainingPct, awaitingRatio, outsideRatio, estimatedTariff };
+    };
+
+    function currentRows() {
+      if (!state.dataset) return [];
+      let rows = (state.dataset.items || []).map(enrich);
+      if (state.category !== "all") rows = rows.filter((row) => row.category === state.category);
+      const query = state.search.trim().toLowerCase();
+      if (query) rows = rows.filter((row) => `${row.code} ${row.origin} ${row.expected_origin || ""}`.toLowerCase().includes(query));
+      const categoryRank = { "1A": 1, "2": 2, "4A": 3, "4B": 4 };
+      rows.sort((a, b) => {
+        if (state.sort === "tariff") return b.estimatedTariff - a.estimatedTariff || a.code.localeCompare(b.code);
+        if (state.sort === "awaiting") return b.awaitingRatio - a.awaitingRatio || a.code.localeCompare(b.code);
+        if (state.sort === "remaining") return a.remainingPct - b.remainingPct || a.code.localeCompare(b.code);
+        return (categoryRank[a.category] || 99) - (categoryRank[b.category] || 99) || a.code.localeCompare(b.code);
+      });
+      return rows;
+    }
+
+    function render() {
+      const meta = state.dataset?.meta || {};
+      const rows = currentRows();
+      document.querySelector("#official-date").textContent = meta.official_update_date || "—";
+      document.querySelector("#validity").textContent = meta.validity_period || "—";
+      document.querySelector("#checked-at").textContent = formatDateTime(meta.checked_at);
+      document.querySelector("#stat-total").textContent = `${rows.filter((r) => !r.stale && !r.error).length} / ${rows.length}`;
+      document.querySelector("#stat-over").textContent = String(rows.filter((r) => r.awaiting > r.balance).length);
+      document.querySelector("#stat-critical").textContent = `${rows.filter((r) => String(r.critical).toLowerCase() === "yes").length} / ${rows.filter((r) => r.balance <= 0).length}`;
+      document.querySelector("#stat-tariff").textContent = rows.length ? `${Math.max(...rows.map((r) => r.estimatedTariff)).toFixed(2)}%` : "—";
+
+      const blocking = meta.blocking_period ? `当前封锁期：${meta.blocking_period}。` : "";
+      document.querySelector("#notice").textContent = `${blocking}预估分摊税率 = max(待分配量 − 当前配额余额, 0) ÷ 待分配量 × 50%。`;
+
+      const failures = state.dataset?.failures || [];
+      const errors = document.querySelector("#errors");
+      errors.classList.toggle("show", failures.length > 0);
+      errors.textContent = failures.length ? `本次有 ${failures.length} 个编号未能更新：${failures.map((x) => `${x.code} (${x.error})`).join("；")}` : "";
+
+      const cards = document.querySelector("#cards");
+      if (!rows.length) {
+        cards.innerHTML = '<div class="empty">没有符合当前筛选条件的数据。</div>';
+        return;
+      }
+
+      cards.innerHTML = rows.map((row) => {
+        const risk = row.awaitingRatio >= 1 ? "high" : row.awaitingRatio >= 0.8 ? "near" : "";
+        const stale = row.stale ? "stale" : "";
+        const width = Math.max(0, Math.min(100, row.remainingPct));
+        const riskLabel = row.awaitingRatio >= 1 ? '<span class="badge">待分配超额</span>' : row.awaitingRatio >= 0.8 ? '<span class="badge">接近配额</span>' : "";
+        return `
+          <article class="quota-card ${risk} ${stale}">
+            <div class="card-head">
+              <span class="badge">${escapeHtml(row.category)}</span>
+              <a class="code-link" href="${escapeHtml(row.detail_url || row.url || "#")}" target="_blank" rel="noopener noreferrer">${escapeHtml(row.code)}</a>
+            </div>
+            <div class="origin"><strong>原产地：</strong>${escapeHtml(row.origin || row.expected_origin || "—")} ${row.stale ? '<span class="badge">沿用上次数据</span>' : ""}</div>
+            <div class="balance">${number.format(row.balance)} kg</div>
+            <div class="metric"><span>初始配额</span><strong>${number.format(row.initial)} kg</strong></div>
+            <div class="metric"><span>待分配量</span><strong>${number.format(row.awaiting)} kg</strong></div>
+            <div class="metric"><span>待分配倍数</span><strong>${row.awaitingRatio.toFixed(2)}× ${riskLabel}</strong></div>
+            <div class="metric tariff"><span>预估分摊税率</span><strong>${row.estimatedTariff.toFixed(2)}%</strong></div>
+            <div class="metric"><span>最近分配比例</span><strong>${Number(row.allocated_percentage ?? 0).toFixed(2)}%</strong></div>
+            <div class="metric"><span>Critical</span><strong>${escapeHtml(row.critical || "—")}</strong></div>
+            <div class="progress" role="progressbar" aria-label="${escapeHtml(row.code)} 剩余比例" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${row.remainingPct.toFixed(0)}"><span style="width:${width}%"></span></div>
+            <div class="card-foot"><span>${row.remainingPct.toFixed(1)}% 剩余</span><span>${escapeHtml(row.blocking_period || "")}</span></div>
+          </article>`;
+      }).join("");
+    }
+
+    async function loadDataset(path = "./data/current.json") {
+      document.querySelector("#loading").hidden = false;
+      try {
+        const response = await fetch(`${path}?v=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        state.dataset = await response.json();
+        render();
+      } catch (error) {
+        document.querySelector("#errors").classList.add("show");
+        document.querySelector("#errors").textContent = `数据加载失败：${error.message}`;
+      } finally {
+        document.querySelector("#loading").hidden = true;
+      }
+    }
+
+    async function loadHistoryIndex() {
+      try {
+        const response = await fetch(`./data/history/index.json?v=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) return;
+        const payload = await response.json();
+        const select = document.querySelector("#snapshot");
+        for (const snapshot of payload.snapshots || []) {
+          const option = document.createElement("option");
+          option.value = snapshot.file;
+          option.textContent = `历史：${snapshot.date}`;
+          select.appendChild(option);
+        }
+      } catch (_) { /* 历史数据不可用时不影响实时看板 */ }
+    }
+
+    function download(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    document.querySelectorAll("[data-category]").forEach((button) => button.addEventListener("click", () => {
+      state.category = button.dataset.category;
+      document.querySelectorAll("[data-category]").forEach((item) => item.classList.toggle("active", item === button));
+      render();
+    }));
+
+    document.querySelector("#search").addEventListener("input", (event) => { state.search = event.target.value; render(); });
+    document.querySelector("#sort").addEventListener("change", (event) => { state.sort = event.target.value; render(); });
+    document.querySelector("#snapshot").addEventListener("change", (event) => loadDataset(event.target.value === "current" ? "./data/current.json" : `./data/history/${event.target.value}`));
+
+    document.querySelector("#export-json").addEventListener("click", () => download("eu-taric-quota.json", JSON.stringify({ meta: state.dataset?.meta || {}, items: currentRows() }, null, 2), "application/json"));
+    document.querySelector("#export-csv").addEventListener("click", () => {
+      const headers = ["category", "code", "origin", "initial_kg", "balance_kg", "awaiting_kg", "awaiting_ratio", "outside_ratio", "estimated_blended_tariff_pct", "remaining_pct", "critical", "blocking_period", "source_url"];
+      const rows = currentRows().map((r) => [r.category, r.code, r.origin, r.initial, r.balance, r.awaiting, r.awaitingRatio.toFixed(4), r.outsideRatio.toFixed(4), r.estimatedTariff.toFixed(2), r.remainingPct.toFixed(2), r.critical, r.blocking_period, r.detail_url || r.url]);
+      const csv = [headers, ...rows].map((row) => row.map((cell) => `"${String(cell ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
+      download("eu-taric-quota.csv", `\ufeff${csv}`, "text/csv;charset=utf-8");
+    });
+
+    loadDataset();
+    loadHistoryIndex();
+  </script>
+</body>
+</html>
