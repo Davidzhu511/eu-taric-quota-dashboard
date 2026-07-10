@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "checked_at": "",
+    "official_update_date": "等待首次自动更新",
+    "validity_period": "",
+    "blocking_period": "",
+    "source_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_consultation.jsp?Lang=en",
+    "successful_count": 0,
+    "failed_count": 0,
+    "total_count": 55
+  },
+  "failures": [],
+  "items": []
+}
+
