@@ -266,7 +266,11 @@ def parse_detail(session: requests.Session, category: str, code: str, expected_o
         "category": category,
         "code": code,
         "expected_origin": expected_origin,
-        "origin": fields.get("Origin") or expected_origin,
+        # Use the regulation/PDF mapping as the dashboard label. TARIC often
+        # prepends "European Union" or uses a generic pool description, which
+        # is less useful than the origin wording in the governing table.
+        "origin": expected_origin,
+        "taric_origin": fields.get("Origin", ""),
         "validity_period": fields.get("Validity period", ""),
         "initial_amount_kg": initial,
         "amount_kg": amount,
