@@ -3,7 +3,7 @@ name: Update TARIC dashboard and deploy Pages
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 7 * * *"
+    - cron: "50 7 * * *"
       timezone: "Europe/Berlin"
   push:
     branches: [main]
