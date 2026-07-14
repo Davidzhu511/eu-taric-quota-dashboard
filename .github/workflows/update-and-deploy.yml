@@ -3,8 +3,10 @@ name: Update TARIC dashboard and deploy Pages
 on:
   workflow_dispatch:
   schedule:
-    - cron: "50 7 * * *"
-      timezone: "Europe/Berlin"
+    # GitHub schedules are evaluated in UTC. Run both DST candidates, then
+    # let schedule-gate select the one that equals 07:50 in Europe/Berlin.
+    - cron: "50 5 * * *"
+    - cron: "50 6 * * *"
   push:
     branches: [main]
     paths:
@@ -23,7 +25,30 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  schedule-gate:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+    steps:
+      - name: Select the 07:50 Europe/Berlin schedule
+        id: check
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          should_run=true
+          if [[ "$EVENT_NAME" == "schedule" ]]; then
+            berlin_offset="$(TZ=Europe/Berlin date +%z)"
+            case "$EVENT_SCHEDULE:$berlin_offset" in
+              "50 5 * * *:+0200"|"50 6 * * *:+0100") should_run=true ;;
+              *) should_run=false ;;
+            esac
+          fi
+          echo "should_run=$should_run" >> "$GITHUB_OUTPUT"
+
   update-and-build:
+    needs: schedule-gate
+    if: needs.schedule-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
