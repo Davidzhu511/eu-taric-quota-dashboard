@@ -76,6 +76,8 @@ jobs:
 
       - name: Check out repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -96,7 +98,15 @@ jobs:
           git add data/current.json data/history
           if ! git diff --cached --quiet; then
             git commit -m "data: update TARIC quota snapshot"
-            git push
+            for attempt in 1 2 3; do
+              git pull --rebase origin main
+              if git push; then
+                break
+              fi
+              if [[ "$attempt" -eq 3 ]]; then
+                exit 1
+              fi
+            done
           fi
 
       - name: Prepare static site
