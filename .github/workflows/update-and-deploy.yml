@@ -1,4 +1,5 @@
 name: Update TARIC dashboard and deploy Pages
+# Manual refresh trigger: 2026-07-15 08:02 Europe/Berlin
 
 on:
   workflow_dispatch:
