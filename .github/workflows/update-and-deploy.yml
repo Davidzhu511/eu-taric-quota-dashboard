@@ -1,13 +1,15 @@
 name: Update TARIC dashboard and deploy Pages
-# Manual refresh trigger: 2026-07-15 08:02 Europe/Berlin
+# Native Europe/Berlin schedule with an early queue slot and daily deduplication.
 
 on:
   workflow_dispatch:
   schedule:
-    # GitHub schedules are evaluated in UTC. Run both DST candidates, then
-    # let schedule-gate select the one that equals 07:50 in Europe/Berlin.
-    - cron: "50 5 * * *"
-    - cron: "50 6 * * *"
+    # The 07:35 event queues early and waits for 07:50 when it starts on time.
+    # The 07:50 event is a fallback; the gate prevents a second daily refresh.
+    - cron: "35 7 * * *"
+      timezone: "Europe/Berlin"
+    - cron: "50 7 * * *"
+      timezone: "Europe/Berlin"
   push:
     branches: [main]
     paths:
@@ -30,28 +32,48 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_run: ${{ steps.check.outputs.should_run }}
+      wait_seconds: ${{ steps.check.outputs.wait_seconds }}
     steps:
-      - name: Select the 07:50 Europe/Berlin schedule
+      - name: Check out repository for daily deduplication
+        uses: actions/checkout@v6
+
+      - name: Select one daily 07:50 Europe/Berlin refresh
         id: check
         env:
           EVENT_NAME: ${{ github.event_name }}
-          EVENT_SCHEDULE: ${{ github.event.schedule }}
         run: |
           should_run=true
+          wait_seconds=0
+
           if [[ "$EVENT_NAME" == "schedule" ]]; then
-            berlin_offset="$(TZ=Europe/Berlin date +%z)"
-            case "$EVENT_SCHEDULE:$berlin_offset" in
-              "50 5 * * *:+0200"|"50 6 * * *:+0100") should_run=true ;;
-              *) should_run=false ;;
-            esac
+            berlin_today="$(TZ=Europe/Berlin date +%F)"
+            last_checked="$(python -c 'import json; print(json.load(open("data/current.json", encoding="utf-8")).get("meta", {}).get("checked_at", "")[:10])' 2>/dev/null || true)"
+
+            if [[ "$last_checked" == "$berlin_today" ]]; then
+              should_run=false
+            else
+              now_epoch="$(date +%s)"
+              target_epoch="$(TZ=Europe/Berlin date -d "$berlin_today 07:50:00" +%s)"
+              if (( now_epoch < target_epoch )); then
+                wait_seconds="$((target_epoch - now_epoch))"
+              fi
+            fi
           fi
+
           echo "should_run=$should_run" >> "$GITHUB_OUTPUT"
+          echo "wait_seconds=$wait_seconds" >> "$GITHUB_OUTPUT"
 
   update-and-build:
     needs: schedule-gate
     if: needs.schedule-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     steps:
+      - name: Wait for the 07:50 Berlin target
+        if: needs.schedule-gate.outputs.wait_seconds != '0'
+        env:
+          WAIT_SECONDS: ${{ needs.schedule-gate.outputs.wait_seconds }}
+        run: sleep "$WAIT_SECONDS"
+
       - name: Check out repository
         uses: actions/checkout@v6
 
