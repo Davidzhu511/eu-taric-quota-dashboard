@@ -5,7 +5,7 @@
 - 当前配额余额与剩余比例
 - Total awaiting allocation（indicative）
 - 待分配倍数
-- 最近分配比例与 Critical 状态
+- 最近分配比例与临界配额状态
 - 预估配额外比例
 - 预估分摊税率
 
@@ -20,7 +20,7 @@
 
 ## 自动更新
 
-GitHub Actions 使用 `Europe/Berlin` 时区，每天 07:17 自动运行，也支持在 Actions 页面手动运行。工作流会：
+GitHub Actions 使用原生 `Europe/Berlin` 时区，以每天 **07:50（德国时间）** 为目标自动运行，也支持在 Actions 页面手动运行。为降低 GitHub 调度队列偶发延迟，工作流在 07:35 设置提前排队触发、07:50 设置兜底触发，并通过当日去重确保只执行一次数据更新。工作流会：
 
 1. 查询欧盟委员会 TARIC 官方页面；
 2. 更新 `data/current.json`；
