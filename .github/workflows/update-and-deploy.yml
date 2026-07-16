@@ -1,5 +1,6 @@
 name: Update TARIC dashboard and deploy Pages
 # Native Europe/Berlin schedule with an early queue slot and daily deduplication.
+# Manual refresh trigger: 2026-07-16 08:42 Europe/Berlin
 
 on:
   workflow_dispatch:
