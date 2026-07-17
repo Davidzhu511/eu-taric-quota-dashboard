@@ -1,16 +1,12 @@
 name: Update TARIC dashboard and deploy Pages
-# Native Europe/Berlin schedule with an early queue slot and daily deduplication.
-# Manual refresh trigger: 2026-07-17 08:50 Europe/Berlin
 
 on:
   workflow_dispatch:
   schedule:
-    # The 07:35 event queues early and waits for 07:50 when it starts on time.
-    # The 07:50 event is a fallback; the gate prevents a second daily refresh.
-    - cron: "35 7 * * *"
-      timezone: "Europe/Berlin"
-    - cron: "50 7 * * *"
-      timezone: "Europe/Berlin"
+    # UTC fallback slots. The gate below converts the actual start time to
+    # Europe/Berlin, so the same workflow works in both CET and CEST.
+    # Primary target: 07:50 Berlin; later slots recover delayed/dropped events.
+    - cron: "45,50 5,6,7 * * *"
   push:
     branches: [main]
     paths:
@@ -25,49 +21,86 @@ permissions:
   id-token: write
 
 concurrency:
-  group: github-pages
+  group: taric-dashboard-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   schedule-gate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     outputs:
       should_run: ${{ steps.check.outputs.should_run }}
       wait_seconds: ${{ steps.check.outputs.wait_seconds }}
+      reason: ${{ steps.check.outputs.reason }}
     steps:
-      - name: Check out repository for daily deduplication
+      - name: Check out latest main for daily deduplication
         uses: actions/checkout@v6
+        with:
+          ref: main
 
-      - name: Select one daily 07:50 Europe/Berlin refresh
+      - name: Select the daily 07:50 Europe/Berlin refresh
         id: check
         env:
           EVENT_NAME: ${{ github.event_name }}
         run: |
           should_run=true
           wait_seconds=0
+          reason="manual or source-code update"
 
           if [[ "$EVENT_NAME" == "schedule" ]]; then
             berlin_today="$(TZ=Europe/Berlin date +%F)"
-            last_checked="$(python -c 'import json; print(json.load(open("data/current.json", encoding="utf-8")).get("meta", {}).get("checked_at", "")[:10])' 2>/dev/null || true)"
+            berlin_hhmm="$(TZ=Europe/Berlin date +%H%M)"
 
-            if [[ "$last_checked" == "$berlin_today" ]]; then
+            current_meta="$(python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("data/current.json")
+          try:
+              meta = json.loads(path.read_text(encoding="utf-8")).get("meta", {})
+          except (OSError, json.JSONDecodeError, TypeError):
+              meta = {}
+          checked_date = str(meta.get("checked_at", ""))[:10]
+          successful = int(meta.get("successful_count", 0) or 0)
+          failed = int(meta.get("failed_count", 0) or 0)
+          total = int(meta.get("total_count", 0) or 0)
+          print(f"{checked_date}|{successful}|{failed}|{total}")
+          PY
+            )"
+            IFS="|" read -r checked_date successful failed total <<< "$current_meta"
+
+            if (( 10#$berlin_hhmm < 745 )); then
               should_run=false
+              reason="pre-DST fallback slot: local time is before 07:45"
+            elif [[ "$checked_date" == "$berlin_today" && "$successful" -eq "$total" && "$total" -gt 0 && "$failed" -eq 0 ]]; then
+              should_run=false
+              reason="today already has a complete $successful/$total refresh"
             else
+              reason="today has no complete refresh; run or retry"
               now_epoch="$(date +%s)"
               target_epoch="$(TZ=Europe/Berlin date -d "$berlin_today 07:50:00" +%s)"
               if (( now_epoch < target_epoch )); then
                 wait_seconds="$((target_epoch - now_epoch))"
+                reason="$reason after waiting for 07:50 Berlin"
               fi
             fi
           fi
 
           echo "should_run=$should_run" >> "$GITHUB_OUTPUT"
           echo "wait_seconds=$wait_seconds" >> "$GITHUB_OUTPUT"
+          echo "reason=$reason" >> "$GITHUB_OUTPUT"
+          {
+            echo "### TARIC schedule gate"
+            echo "- should_run: `$should_run`"
+            echo "- wait_seconds: `$wait_seconds`"
+            echo "- reason: $reason"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   update-and-build:
     needs: schedule-gate
     if: needs.schedule-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Wait for the 07:50 Berlin target
         if: needs.schedule-gate.outputs.wait_seconds != '0'
@@ -78,6 +111,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Set up Python
@@ -91,6 +125,26 @@ jobs:
 
       - name: Fetch current EU TARIC quota data
         run: python scripts/update_dashboard.py
+
+      - name: Validate generated dashboard data
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("data/current.json").read_text(encoding="utf-8"))
+          meta = payload.get("meta", {})
+          items = payload.get("items", [])
+          assert len(items) == 55, f"expected 55 items, got {len(items)}"
+          assert meta.get("total_count") == 55
+          assert meta.get("successful_count", 0) + meta.get("failed_count", 0) == 55
+          assert len({item.get("code") for item in items}) == 55
+          print(
+              f"validated {len(items)} items; "
+              f"fresh={meta.get('successful_count')}; failed={meta.get('failed_count')}; "
+              f"official_date={meta.get('official_update_date') or 'unavailable'}"
+          )
+          PY
 
       - name: Save current data and history
         run: |
@@ -128,11 +182,12 @@ jobs:
           path: _site
 
   deploy:
+    needs: update-and-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: update-and-build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

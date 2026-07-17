@@ -1,35 +1,42 @@
 # EU TARIC 关税配额数据看板
 
-公开查看钢铁产品类别 **1A、2、4A、4B** 的 EU TARIC 配额数据。看板覆盖 55 个 Order Number，并计算：
+[![Update TARIC dashboard](https://github.com/Davidzhu511/eu-taric-quota-dashboard/actions/workflows/update-and-deploy.yml/badge.svg)](https://github.com/Davidzhu511/eu-taric-quota-dashboard/actions/workflows/update-and-deploy.yml)
 
-- 当前配额余额与剩余比例
-- Total awaiting allocation（indicative）
-- 待分配倍数
-- 最近分配比例与临界配额状态
-- 预估配额外比例
-- 预估分摊税率
+公开看板：<https://davidzhu511.github.io/eu-taric-quota-dashboard/>
 
-## 预估分摊税率
+看板展示钢铁产品类别 **1A、2、4A、4B** 的 55 个 EU TARIC Order Number，并提供筛选、搜索、历史快照、CSV 和 JSON 导出。
 
-```text
-配额外比例 = max(待分配量 - 当前配额余额, 0) / 待分配量
-预估分摊税率 = 配额外比例 × 50%
-```
+## 数据和计算
 
-待分配量为 0 时，预估分摊税率取 0%。这是按比例分配的期望值，不代表海关最终确定的实际税率。
+- 原产地使用法规 PDF 的 Order Number 映射；TARIC 原始 Origin 单独保留。
+- 待分配量为官方 `Total awaiting allocation (indicative)`，不会从余额中直接扣除。
+- 预计超量的唯一判断是：`待分配量 > 当前余额`。
+- 配额外比例 = `max(待分配量 - 当前余额, 0) / 待分配量`。
+- 预估分摊税率 = `配额外比例 × 50%`。
 
-## 自动更新
+待分配量为 0 时，预估分摊税率取 0%。该结果是按比例分配的期望值，不代表海关最终确定的实际税率。
 
-GitHub Actions 使用原生 `Europe/Berlin` 时区，以每天 **07:50（德国时间）** 为目标自动运行，也支持在 Actions 页面手动运行。为降低 GitHub 调度队列偶发延迟，工作流在 07:35 设置提前排队触发、07:50 设置兜底触发，并通过当日去重确保只执行一次数据更新。工作流会：
+## 每日自动更新
 
-1. 查询欧盟委员会 TARIC 官方页面；
+目标时间为每天 **07:50（Europe/Berlin，自动兼容 CET/CEST）**。
+
+GitHub Actions 的 `schedule` 可能受平台排队影响，不能保证精确到分钟。为提高可靠性，工作流使用明确的 UTC 候选时刻，并由运行时按 `Europe/Berlin` 本地时间判断：
+
+1. 07:45 候选任务可提前进入队列，并等待至 07:50；
+2. 07:50 是主触发；
+3. 08:45、08:50 以及 09:45、09:50 是恢复触发；
+4. 只有当天已经完成 **55/55 且 0 失败** 时，后续触发才会跳过；部分失败会自动重试。
+
+手动运行和源代码更新不受定时门禁限制。每次有效运行会：
+
+1. 只查询欧盟委员会 TARIC 官方页面；
 2. 更新 `data/current.json`；
-3. 保存 `data/history/YYYY-MM-DD.json`；
-4. 重新部署 GitHub Pages。
+3. 按官方更新日期保存 `data/history/YYYY-MM-DD.json`；
+4. 校验 55 个编号、计算公式和官方链接；
+5. 部署 GitHub Pages。
 
-若部分编号查询失败，看板会沿用上一次成功数据并明确标记；若全部失败，工作流终止，不覆盖上一次已部署结果。
+若部分编号暂时查询失败，看板会沿用上一次成功数据并明确标记；若全部失败，工作流终止且不会覆盖已部署结果。若官方页面未能解析出官方更新日期，脚本不会用当天日期冒充官方日期。
 
-## 数据来源
+## 官方来源
 
-[European Commission - Tariff quota consultation](https://ec.europa.eu/taxation_customs/dds2/taric/quota_consultation.jsp?Lang=en)
-
+[European Commission — Tariff quota consultation](https://ec.europa.eu/taxation_customs/dds2/taric/quota_consultation.jsp?Lang=en)

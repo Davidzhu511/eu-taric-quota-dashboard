@@ -336,6 +336,7 @@
     .metric { margin-top: 9px; }
     .metric span:first-child { color: var(--muted); }
     .metric strong { text-align: right; font-weight: 650; }
+    .metric.period strong { max-width: 62%; font-size: 12px; }
 
     .tariff {
       margin-top: 13px;
@@ -451,7 +452,7 @@
 
     <section class="summary" aria-label="数据概览">
       <article class="stat"><span class="stat-label">成功抓取</span><strong class="stat-value" id="stat-total">—</strong><div class="stat-note">所选范围</div></article>
-      <article class="stat"><span class="stat-label">待分配 ≥ 当前余额</span><strong class="stat-value" id="stat-over">—</strong><div class="stat-note">存在按比例分配风险</div></article>
+      <article class="stat"><span class="stat-label">待分配 &gt; 当前余额</span><strong class="stat-value" id="stat-over">—</strong><div class="stat-note">预计超量，存在按比例分配风险</div></article>
       <article class="stat"><span class="stat-label">临界配额 / 已耗尽</span><strong class="stat-value" id="stat-critical">—</strong><div class="stat-note">欧盟官方状态</div></article>
       <article class="stat"><span class="stat-label">最高预估分摊税率</span><strong class="stat-value" id="stat-tariff">—</strong><div class="stat-note">配额外比例 × 50%</div></article>
     </section>
@@ -499,12 +500,21 @@
       return value || "—";
     };
 
+    const periodContainsToday = (value) => {
+      const matches = [...String(value || "").matchAll(/(\d{2})-(\d{2})-(\d{4})/g)];
+      if (!matches.length) return false;
+      const dates = matches.map((match) => new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]), 12));
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12);
+      return dates[0] <= today && today <= (dates[1] || dates[0]);
+    };
+
     function currentRows() {
       if (!state.dataset) return [];
       let rows = (state.dataset.items || []).map(enrich);
       if (state.category !== "all") rows = rows.filter((row) => row.category === state.category);
       const query = state.search.trim().toLowerCase();
-      if (query) rows = rows.filter((row) => `${row.code} ${row.origin} ${row.expected_origin || ""}`.toLowerCase().includes(query));
+      if (query) rows = rows.filter((row) => `${row.code} ${row.origin} ${row.expected_origin || ""} ${row.taric_origin || ""}`.toLowerCase().includes(query));
       const categoryRank = { "1A": 1, "2": 2, "4A": 3, "4B": 4 };
       rows.sort((a, b) => {
         if (state.sort === "tariff") return b.estimatedTariff - a.estimatedTariff || a.code.localeCompare(b.code);
@@ -526,8 +536,15 @@
       document.querySelector("#stat-critical").textContent = `${rows.filter((r) => String(r.critical).toLowerCase() === "yes").length} / ${rows.filter((r) => r.balance <= 0).length}`;
       document.querySelector("#stat-tariff").textContent = rows.length ? `${Math.max(...rows.map((r) => r.estimatedTariff)).toFixed(2)}%` : "—";
 
-      const blocking = meta.blocking_period ? `当前封锁期：${meta.blocking_period}。` : "";
-      document.querySelector("#notice").textContent = `${blocking}预估分摊税率 = max(待分配量 − 当前配额余额, 0) ÷ 待分配量 × 50%。`;
+      const activeBlocking = rows.filter((row) => periodContainsToday(row.blocking_period));
+      let blocking = "";
+      if (activeBlocking.length) {
+        const periods = [...new Set(activeBlocking.map((row) => row.blocking_period).filter(Boolean))].join("；");
+        blocking = `当前仍处于官方封锁期（${periods}），实际分配尚未完成。`;
+      } else if (meta.blocking_period) {
+        blocking = `官方记录的封锁期：${meta.blocking_period}（当前已结束）。`;
+      }
+      document.querySelector("#notice").textContent = `${blocking} 预估分摊税率 = max(待分配量 − 当前配额余额, 0) ÷ 待分配量 × 50%。`.trim();
 
       const failures = state.dataset?.failures || [];
       const errors = document.querySelector("#errors");
@@ -546,14 +563,16 @@
         const risk = isOver ? "high" : isNear ? "near" : "";
         const stale = row.stale ? "stale" : "";
         const width = Math.max(0, Math.min(100, row.remainingPct));
-        const riskLabel = isOver ? '<span class="badge">超过当前余额</span>' : isNear ? '<span class="badge">接近当前余额</span>' : "";
+        const riskLabel = isOver ? '<span class="badge">预计超量</span>' : isNear ? '<span class="badge">接近当前余额</span>' : "";
+        const futureLabel = row.not_yet_effective ? '<span class="badge">尚未生效</span>' : "";
+        const detailHref = row.detail_url || row.url || "#";
         return `
           <article class="quota-card ${risk} ${stale}">
             <div class="card-head">
-              <span class="badge">${escapeHtml(row.category)}</span>
-              <a class="code-link" href="${escapeHtml(row.detail_url || row.url || "#")}" target="_blank" rel="noopener noreferrer">${escapeHtml(row.code)}</a>
+              <span><span class="badge">${escapeHtml(row.category)}</span> ${futureLabel}</span>
+              <a class="code-link" href="${escapeHtml(detailHref)}" target="_blank" rel="noopener noreferrer">${escapeHtml(row.code)}</a>
             </div>
-            <div class="origin"><strong>原产地：</strong>${escapeHtml(row.expected_origin || row.origin || "—")} ${row.stale ? '<span class="badge">沿用上次数据</span>' : ""}</div>
+            <div class="origin"><strong>原产地：</strong>${escapeHtml(row.origin || row.expected_origin || "—")} ${row.stale ? '<span class="badge">沿用上次数据</span>' : ""}</div>
             <div class="balance">${number.format(row.balance)} kg</div>
             <div class="metric"><span>初始配额</span><strong>${number.format(row.initial)} kg</strong></div>
             <div class="metric"><span>待分配量</span><strong>${number.format(row.awaiting)} kg</strong></div>
@@ -561,8 +580,10 @@
             <div class="metric tariff"><span>预估分摊税率</span><strong>${row.estimatedTariff.toFixed(2)}%</strong></div>
             <div class="metric"><span>最近分配比例</span><strong>${Number(row.allocated_percentage ?? 0).toFixed(2)}%</strong></div>
             <div class="metric"><span>临界配额状态</span><strong>${escapeHtml(criticalCn(row.critical))}</strong></div>
+            <div class="metric period"><span>封锁期</span><strong>${escapeHtml(row.blocking_period || "—")}</strong></div>
+            <div class="metric period"><span>暂停期</span><strong>${escapeHtml(row.suspension_period || "—")}</strong></div>
             <div class="progress" role="progressbar" aria-label="${escapeHtml(row.code)} 剩余比例" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${row.remainingPct.toFixed(0)}"><span style="width:${width}%"></span></div>
-            <div class="card-foot"><span>${row.remainingPct.toFixed(1)}% 剩余</span><span>${escapeHtml(row.blocking_period || "")}</span></div>
+            <div class="card-foot"><span>${row.remainingPct.toFixed(1)}% 剩余</span><span>最近分配：${escapeHtml(row.last_allocation_date || "—")}</span></div>
           </article>`;
       }).join("");
     }
@@ -604,7 +625,7 @@
       link.href = url;
       link.download = filename;
       link.click();
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
 
     document.querySelectorAll("[data-category]").forEach((button) => button.addEventListener("click", () => {
@@ -617,12 +638,22 @@
     document.querySelector("#sort").addEventListener("change", (event) => { state.sort = event.target.value; render(); });
     document.querySelector("#snapshot").addEventListener("change", (event) => loadDataset(event.target.value === "current" ? "./data/current.json" : `./data/history/${event.target.value}`));
 
-    document.querySelector("#export-json").addEventListener("click", () => download("eu-taric-quota.json", JSON.stringify({ meta: state.dataset?.meta || {}, items: currentRows() }, null, 2), "application/json"));
+    const exportDate = () => {
+      const safe = String(state.dataset?.meta?.official_update_date || "").replace(/[^0-9-]/g, "");
+      return safe || "undated";
+    };
+    const exportRows = () => currentRows().map((row) => ({
+      ...row,
+      critical_original: row.critical,
+      critical: criticalCn(row.critical),
+    }));
+
+    document.querySelector("#export-json").addEventListener("click", () => download(`eu-taric-quota-${exportDate()}.json`, JSON.stringify({ meta: state.dataset?.meta || {}, items: exportRows() }, null, 2), "application/json"));
     document.querySelector("#export-csv").addEventListener("click", () => {
-      const headers = ["category", "code", "origin", "initial_kg", "balance_kg", "awaiting_kg", "awaiting_ratio", "outside_ratio", "estimated_blended_tariff_pct", "remaining_pct", "critical", "blocking_period", "source_url"];
-      const rows = currentRows().map((r) => [r.category, r.code, r.expected_origin || r.origin, r.initial, r.balance, r.awaiting, r.awaitingRatio.toFixed(4), r.outsideRatio.toFixed(4), r.estimatedTariff.toFixed(2), r.remainingPct.toFixed(2), criticalCn(r.critical), r.blocking_period, r.detail_url || r.url]);
+      const headers = ["category", "code", "origin", "taric_origin", "initial_kg", "amount_kg", "balance_kg", "awaiting_kg", "awaiting_ratio", "outside_ratio", "estimated_blended_tariff_pct", "remaining_pct", "allocated_percentage", "critical_status", "blocking_period", "suspension_period", "exhaustion_date", "last_import_date", "last_allocation_date", "not_yet_effective", "stale", "error", "source_url"];
+      const rows = currentRows().map((r) => [r.category, r.code, r.origin || r.expected_origin, r.taric_origin, r.initial, r.amount_kg, r.balance, r.awaiting, r.awaitingRatio.toFixed(4), r.outsideRatio.toFixed(4), r.estimatedTariff.toFixed(2), r.remainingPct.toFixed(2), Number(r.allocated_percentage ?? 0).toFixed(2), criticalCn(r.critical), r.blocking_period, r.suspension_period, r.exhaustion_date, r.last_import_date, r.last_allocation_date, Boolean(r.not_yet_effective), Boolean(r.stale), r.error, r.detail_url || r.url]);
       const csv = [headers, ...rows].map((row) => row.map((cell) => `"${String(cell ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
-      download("eu-taric-quota.csv", `\ufeff${csv}`, "text/csv;charset=utf-8");
+      download(`eu-taric-quota-${exportDate()}.csv`, `\ufeff${csv}`, "text/csv;charset=utf-8");
     });
 
     loadDataset();

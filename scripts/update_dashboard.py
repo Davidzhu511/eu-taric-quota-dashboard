@@ -168,7 +168,7 @@ def extract_update_date(text: str) -> str:
     return iso_from_ddmmyyyy(match.group(1)) if match else ""
 
 
-def search_detail_url(session: requests.Session, code: str, today: date) -> tuple[str, str]:
+def search_detail_url(session: requests.Session, code: str, today: date) -> tuple[str, str, bool]:
     candidates: list[dict[str, Any]] = []
     official_update = ""
     for year in (today.year, today.year + 1):
@@ -211,14 +211,18 @@ def search_detail_url(session: requests.Session, code: str, today: date) -> tupl
     active = [c for c in candidates if c["start"] and c["start"] <= today and (not c["end"] or today <= c["end"])]
     if active:
         chosen = max(active, key=lambda c: c["start"])
+        not_yet_effective = False
     else:
         future = [c for c in candidates if c["start"] and c["start"] > today]
-        chosen = min(future, key=lambda c: c["start"]) if future else max(candidates, key=lambda c: c["start"] or date.min)
-    return chosen["url"], official_update
+        if not future:
+            raise RuntimeError("没有覆盖当天或未来的有效期记录")
+        chosen = min(future, key=lambda c: c["start"])
+        not_yet_effective = True
+    return chosen["url"], official_update, not_yet_effective
 
 
 def parse_detail(session: requests.Session, category: str, code: str, expected_origin: str, today: date) -> dict[str, Any]:
-    detail_url, search_update = search_detail_url(session, code, today)
+    detail_url, search_update, not_yet_effective = search_detail_url(session, code, today)
     response = session.get(detail_url, timeout=35)
     soup = soup_from_response(response)
     fields: dict[str, str] = {}
@@ -289,19 +293,21 @@ def parse_detail(session: requests.Session, category: str, code: str, expected_o
         "suspension_period": fields.get("Suspension period", ""),
         "official_update_date": extract_update_date(clean_text(soup)) or search_update,
         "detail_url": response.url,
+        "not_yet_effective": not_yet_effective,
         "stale": False,
         "error": "",
     }
 
 
-def load_previous() -> dict[str, dict[str, Any]]:
+def load_previous() -> tuple[dict[str, dict[str, Any]], dict[str, Any]]:
     if not CURRENT_FILE.exists():
-        return {}
+        return {}, {}
     try:
         payload = json.loads(CURRENT_FILE.read_text(encoding="utf-8"))
-        return {item["code"]: item for item in payload.get("items", []) if item.get("code")}
+        items = {item["code"]: item for item in payload.get("items", []) if item.get("code")}
+        return items, payload.get("meta", {})
     except (OSError, json.JSONDecodeError, TypeError):
-        return {}
+        return {}, {}
 
 
 def atomic_json_write(path: Path, payload: Any) -> None:
@@ -325,11 +331,54 @@ def update_history_index() -> None:
     atomic_json_write(HISTORY_INDEX_FILE, {"snapshots": snapshots})
 
 
+def validate_items(items: list[dict[str, Any]]) -> None:
+    """Reject incomplete or internally inconsistent output before deployment."""
+    expected_codes = [code for _, code, _ in CODES]
+    actual_codes = [str(item.get("code", "")) for item in items]
+    if actual_codes != expected_codes:
+        raise RuntimeError("输出编号缺失、重复或顺序异常")
+
+    expected_origins = {code: origin for _, code, origin in CODES}
+    for item in items:
+        code = str(item.get("code", ""))
+        if item.get("origin") != expected_origins[code]:
+            raise RuntimeError(f"{code}: 主原产地未使用 PDF 映射")
+
+        initial = float(item.get("initial_amount_kg", 0) or 0)
+        amount = float(item.get("amount_kg", 0) or 0)
+        balance = float(item.get("balance_kg", 0) or 0)
+        awaiting = float(item.get("awaiting_allocation_kg", 0) or 0)
+        if min(initial, amount, balance, awaiting) < 0:
+            raise RuntimeError(f"{code}: 配额数值不得为负数")
+        if not item.get("stale") and initial <= 0:
+            raise RuntimeError(f"{code}: 新抓取记录的初始配额无效")
+
+        awaiting_ratio = awaiting / initial if initial else 0.0
+        remaining_pct = balance / initial * 100 if initial else 0.0
+        outside_ratio = max(awaiting - balance, 0) / awaiting if awaiting else 0.0
+        tariff_pct = outside_ratio * 50
+        checks = (
+            ("待分配倍数", float(item.get("awaiting_ratio", 0) or 0), awaiting_ratio, 2e-6),
+            ("剩余比例", float(item.get("remaining_percentage", 0) or 0), remaining_pct, 2e-4),
+            ("配额外比例", float(item.get("outside_ratio", 0) or 0), outside_ratio, 2e-6),
+            ("预估分摊税率", float(item.get("estimated_blended_tariff_pct", 0) or 0), tariff_pct, 2e-4),
+        )
+        for label, actual, expected, tolerance in checks:
+            if abs(actual - expected) > tolerance:
+                raise RuntimeError(f"{code}: {label}计算校验失败")
+
+        detail_url = str(item.get("detail_url", ""))
+        if detail_url:
+            parsed = urlparse(detail_url)
+            if parsed.scheme != "https" or parsed.netloc != "ec.europa.eu" or "quota_tariff_details.jsp" not in parsed.path:
+                raise RuntimeError(f"{code}: 详情链接不是欧盟委员会官方地址")
+
+
 def main() -> int:
     now = datetime.now(BERLIN)
     today = now.date()
     session = build_session()
-    previous = load_previous()
+    previous, previous_meta = load_previous()
     items: list[dict[str, Any]] = []
     failures: list[dict[str, str]] = []
     successful = 0
@@ -345,7 +394,16 @@ def main() -> int:
             failures.append({"category": category, "code": code, "error": message})
             if code in previous:
                 item = dict(previous[code])
-                item.update({"category": category, "expected_origin": expected_origin, "stale": True, "error": message})
+                item.update(
+                    {
+                        "category": category,
+                        "expected_origin": expected_origin,
+                        "origin": expected_origin,
+                        "stale": True,
+                        "error": message,
+                    }
+                )
+                item.setdefault("not_yet_effective", False)
                 items.append(item)
             else:
                 items.append(
@@ -354,14 +412,26 @@ def main() -> int:
                         "code": code,
                         "expected_origin": expected_origin,
                         "origin": expected_origin,
+                        "taric_origin": "",
+                        "validity_period": "",
                         "initial_amount_kg": 0,
                         "amount_kg": 0,
                         "balance_kg": 0,
                         "awaiting_allocation_kg": 0,
+                        "awaiting_ratio": 0,
+                        "remaining_percentage": 0,
+                        "outside_ratio": 0,
+                        "estimated_blended_tariff_pct": 0,
                         "allocated_percentage": 0,
                         "critical": "",
+                        "exhaustion_date": "",
+                        "last_import_date": "",
+                        "last_allocation_date": "",
                         "blocking_period": "",
+                        "suspension_period": "",
+                        "official_update_date": "",
                         "detail_url": "",
+                        "not_yet_effective": False,
                         "stale": True,
                         "error": message,
                     }
@@ -371,8 +441,10 @@ def main() -> int:
     if successful == 0:
         raise RuntimeError("55 个 Order Number 全部抓取失败，保留上一次已部署数据")
 
+    validate_items(items)
+
     official_dates = [item.get("official_update_date", "") for item in items if not item.get("stale")]
-    official_update_date = max((value for value in official_dates if value), default=today.isoformat())
+    official_update_date = most_common_nonempty(official_dates) or str(previous_meta.get("official_update_date", ""))
     validity_period = most_common_nonempty([item.get("validity_period", "") for item in items if not item.get("stale")])
     blocking_period = most_common_nonempty([item.get("blocking_period", "") for item in items if not item.get("stale")])
 
@@ -392,8 +464,10 @@ def main() -> int:
     }
 
     atomic_json_write(CURRENT_FILE, payload)
-    snapshot_date = official_update_date if re.fullmatch(r"\d{4}-\d{2}-\d{2}", official_update_date) else today.isoformat()
-    atomic_json_write(HISTORY_DIR / f"{snapshot_date}.json", payload)
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", official_update_date):
+        atomic_json_write(HISTORY_DIR / f"{official_update_date}.json", payload)
+    else:
+        print("Official update date unavailable; skipped dated history snapshot", flush=True)
     update_history_index()
     print(f"Updated {successful}/{len(CODES)} codes; failures={len(failures)}; official_date={official_update_date}")
     return 0
