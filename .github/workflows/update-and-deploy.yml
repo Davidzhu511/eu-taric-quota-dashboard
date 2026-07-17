@@ -91,8 +91,8 @@ jobs:
           echo "reason=$reason" >> "$GITHUB_OUTPUT"
           {
             echo "### TARIC schedule gate"
-            echo "- should_run: `$should_run`"
-            echo "- wait_seconds: `$wait_seconds`"
+            printf -- '- should_run: `%s`\n' "$should_run"
+            printf -- '- wait_seconds: `%s`\n' "$wait_seconds"
             echo "- reason: $reason"
           } >> "$GITHUB_STEP_SUMMARY"
 
