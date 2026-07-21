@@ -131,15 +131,19 @@ jobs:
           cache: pip
 
       - name: Install dependencies
+        if: github.event_name != 'push'
         run: pip install -r requirements.txt
 
       - name: Fetch current EU TARIC quota data
+        if: github.event_name != 'push'
         run: python scripts/update_dashboard.py
 
       - name: Fetch current UK Category 4 quota data
+        if: github.event_name != 'push'
         run: python scripts/update_uk_dashboard.py
 
       - name: Validate generated dashboard data
+        if: github.event_name != 'push'
         run: |
           python - <<'PY'
           import json
@@ -164,6 +168,7 @@ jobs:
           PY
 
       - name: Save current data and history
+        if: github.event_name != 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
