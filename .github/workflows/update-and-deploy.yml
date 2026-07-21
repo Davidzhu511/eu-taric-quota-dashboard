@@ -1,16 +1,16 @@
-name: Update TARIC dashboard and deploy Pages
+name: Update EU and UK quota dashboards and deploy Pages
 
 on:
   workflow_dispatch:
   schedule:
-    # UTC fallback slots. The gate below converts the actual start time to
-    # Europe/Berlin, so the same workflow works in both CET and CEST.
+    # UTC fallback slots. The gate below converts actual start time to Europe/Berlin.
     # Primary target: 07:50 Berlin; later slots recover delayed/dropped events.
     - cron: "45,50 5,6,7 * * *"
   push:
     branches: [main]
     paths:
       - "index.html"
+      - "uk.html"
       - "scripts/**"
       - "requirements.txt"
       - ".github/workflows/update-and-deploy.yml"
@@ -21,7 +21,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: taric-dashboard-${{ github.ref }}
+  group: quota-dashboard-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -55,28 +55,38 @@ jobs:
           import json
           from pathlib import Path
 
-          path = Path("data/current.json")
-          try:
-              meta = json.loads(path.read_text(encoding="utf-8")).get("meta", {})
-          except (OSError, json.JSONDecodeError, TypeError):
-              meta = {}
-          checked_date = str(meta.get("checked_at", ""))[:10]
-          successful = int(meta.get("successful_count", 0) or 0)
-          failed = int(meta.get("failed_count", 0) or 0)
-          total = int(meta.get("total_count", 0) or 0)
-          print(f"{checked_date}|{successful}|{failed}|{total}")
+          def status(path):
+              try:
+                  meta = json.loads(Path(path).read_text(encoding="utf-8")).get("meta", {})
+              except (OSError, json.JSONDecodeError, TypeError):
+                  meta = {}
+              return (
+                  str(meta.get("checked_at", ""))[:10],
+                  int(meta.get("successful_count", 0) or 0),
+                  int(meta.get("failed_count", 0) or 0),
+                  int(meta.get("total_count", 0) or 0),
+              )
+
+          eu = status("data/current.json")
+          uk = status("data/uk/current.json")
+          print("|".join(map(str, (*eu, *uk))))
           PY
             )"
-            IFS="|" read -r checked_date successful failed total <<< "$current_meta"
+            IFS="|" read -r eu_date eu_success eu_failed eu_total uk_date uk_success uk_failed uk_total <<< "$current_meta"
+
+            complete=false
+            if [[ "$eu_date" == "$berlin_today" && "$uk_date" == "$berlin_today" && "$eu_total" -gt 0 && "$uk_total" -gt 0 && "$eu_success" -eq "$eu_total" && "$uk_success" -eq "$uk_total" && "$eu_failed" -eq 0 && "$uk_failed" -eq 0 ]]; then
+              complete=true
+            fi
 
             if (( 10#$berlin_hhmm < 745 )); then
               should_run=false
               reason="pre-DST fallback slot: local time is before 07:45"
-            elif [[ "$checked_date" == "$berlin_today" && "$successful" -eq "$total" && "$total" -gt 0 && "$failed" -eq 0 ]]; then
+            elif [[ "$complete" == "true" ]]; then
               should_run=false
-              reason="today already has a complete $successful/$total refresh"
+              reason="today already has complete EU and UK refreshes"
             else
-              reason="today has no complete refresh; run or retry"
+              reason="today has no complete EU+UK refresh; run or retry"
               now_epoch="$(date +%s)"
               target_epoch="$(TZ=Europe/Berlin date -d "$berlin_today 07:50:00" +%s)"
               if (( now_epoch < target_epoch )); then
@@ -90,7 +100,7 @@ jobs:
           echo "wait_seconds=$wait_seconds" >> "$GITHUB_OUTPUT"
           echo "reason=$reason" >> "$GITHUB_OUTPUT"
           {
-            echo "### TARIC schedule gate"
+            echo "### EU + UK quota schedule gate"
             printf -- '- should_run: `%s`\n' "$should_run"
             printf -- '- wait_seconds: `%s`\n' "$wait_seconds"
             echo "- reason: $reason"
@@ -100,7 +110,7 @@ jobs:
     needs: schedule-gate
     if: needs.schedule-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - name: Wait for the 07:50 Berlin target
         if: needs.schedule-gate.outputs.wait_seconds != '0'
@@ -126,33 +136,40 @@ jobs:
       - name: Fetch current EU TARIC quota data
         run: python scripts/update_dashboard.py
 
+      - name: Fetch current UK Category 4 quota data
+        run: python scripts/update_uk_dashboard.py
+
       - name: Validate generated dashboard data
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
 
-          payload = json.loads(Path("data/current.json").read_text(encoding="utf-8"))
-          meta = payload.get("meta", {})
-          items = payload.get("items", [])
-          assert len(items) == 55, f"expected 55 items, got {len(items)}"
-          assert meta.get("total_count") == 55
-          assert meta.get("successful_count", 0) + meta.get("failed_count", 0) == 55
-          assert len({item.get("code") for item in items}) == 55
-          print(
-              f"validated {len(items)} items; "
-              f"fresh={meta.get('successful_count')}; failed={meta.get('failed_count')}; "
-              f"official_date={meta.get('official_update_date') or 'unavailable'}"
-          )
+          eu = json.loads(Path("data/current.json").read_text(encoding="utf-8"))
+          eu_meta, eu_items = eu.get("meta", {}), eu.get("items", [])
+          assert len(eu_items) == 55, f"expected 55 EU items, got {len(eu_items)}"
+          assert eu_meta.get("total_count") == 55
+          assert eu_meta.get("successful_count", 0) + eu_meta.get("failed_count", 0) == 55
+          assert len({item.get("code") for item in eu_items}) == 55
+
+          uk = json.loads(Path("data/uk/current.json").read_text(encoding="utf-8"))
+          uk_meta, uk_items = uk.get("meta", {}), uk.get("items", [])
+          expected = ["058604", "058605", "058606", "058607", "058608"]
+          assert [item.get("code") for item in uk_items] == expected
+          assert uk_meta.get("jurisdiction") == "UK"
+          assert uk_meta.get("total_count") == 5
+          assert uk_meta.get("successful_count", 0) + uk_meta.get("failed_count", 0) == 5
+          assert next(item for item in uk_items if item.get("code") == "058608").get("china_uses_this_pool") is True
+          print(f"validated EU {len(eu_items)} and UK {len(uk_items)} quota records")
           PY
 
       - name: Save current data and history
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/current.json data/history
+          git add data/current.json data/history data/uk
           if ! git diff --cached --quiet; then
-            git commit -m "data: update TARIC quota snapshot"
+            git commit -m "data: update EU and UK quota snapshots"
             for attempt in 1 2 3; do
               git pull --rebase origin main
               if git push; then
@@ -168,6 +185,7 @@ jobs:
         run: |
           mkdir -p _site/data
           cp index.html _site/index.html
+          cp uk.html _site/uk.html
           cp -R data/. _site/data/
           touch _site/.nojekyll
 
