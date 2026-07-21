@@ -186,6 +186,7 @@ jobs:
           mkdir -p _site/data
           cp index.html _site/index.html
           cp uk.html _site/uk.html
+          python scripts/inject_uk_nav.py _site/index.html
           cp -R data/. _site/data/
           touch _site/.nojekyll
 
