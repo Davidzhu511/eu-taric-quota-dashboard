@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "jurisdiction": "UK",
+    "title": "英国钢铁Category 4配额看板",
+    "checked_at": "",
+    "official_update_date": "",
+    "dataset_version": "",
+    "validity_period": "2026-07-01 — 2026-09-30",
+    "source_url": "https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas1",
+    "dataset_page_url": "https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas1",
+    "legislation_url": "https://www.gov.uk/government/publications/uks-steel-trade-measure-from-1-july-2026/uks-steel-trade-measure-from-1-july-2026",
+    "implementation_url": "https://www.gov.uk/government/publications/uks-steel-trade-measure-from-1-july-2026/implementation-notifications-on-the-transitional-exemption-quota-administration-and-the-ukraine-exclusion",
+    "mapping_basis": "UK steel trade measure from 1 July 2026 — Table 4",
+    "successful_count": 0,
+    "failed_count": 5,
+    "total_count": 5,
+    "out_of_quota_tariff_pct": 50
+  },
+  "failures": [
+    {"category": "4", "code": "058604", "error": "等待首次英国官方配额数据抓取"},
+    {"category": "4", "code": "058605", "error": "等待首次英国官方配额数据抓取"},
+    {"category": "4", "code": "058606", "error": "等待首次英国官方配额数据抓取"},
+    {"category": "4", "code": "058607", "error": "等待首次英国官方配额数据抓取"},
+    {"category": "4", "code": "058608", "error": "等待首次英国官方配额数据抓取"}
+  ],
+  "items": [
+    {"jurisdiction": "UK", "category": "4", "code": "058604", "origin": "European Union", "origin_zh": "欧盟", "out_of_quota_tariff_pct": 50, "china_uses_this_pool": false, "stale": true, "error": "等待首次英国官方配额数据抓取"},
+    {"jurisdiction": "UK", "category": "4", "code": "058605", "origin": "India", "origin_zh": "印度", "out_of_quota_tariff_pct": 50, "china_uses_this_pool": false, "stale": true, "error": "等待首次英国官方配额数据抓取"},
+    {"jurisdiction": "UK", "category": "4", "code": "058606", "origin": "South Korea", "origin_zh": "韩国", "out_of_quota_tariff_pct": 50, "china_uses_this_pool": false, "stale": true, "error": "等待首次英国官方配额数据抓取"},
+    {"jurisdiction": "UK", "category": "4", "code": "058607", "origin": "Vietnam", "origin_zh": "越南", "out_of_quota_tariff_pct": 50, "china_uses_this_pool": false, "stale": true, "error": "等待首次英国官方配额数据抓取"},
+    {"jurisdiction": "UK", "category": "4", "code": "058608", "origin": "Residual", "origin_zh": "其他国家（Residual；中国使用）", "out_of_quota_tariff_pct": 50, "china_uses_this_pool": true, "stale": true, "error": "等待首次英国官方配额数据抓取"}
+  ]
+}
