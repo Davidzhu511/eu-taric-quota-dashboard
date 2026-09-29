@@ -6,6 +6,10 @@
 
 看板展示钢铁产品类别 **1A、2、4A、4B** 的 55 个 EU TARIC Order Number，并提供筛选、搜索、历史快照、CSV 和 JSON 导出。
 
+同一项目的 [英国 Category 4 看板](https://davidzhu511.github.io/eu-taric-quota-dashboard/uk.html) 跟踪法规 Table 4 的五个编号（058604–058608）。两个看板按选定业务范围展示，并非 EU/UK 官方全部钢铁配额的完整列表。
+
+临近季度交替时，EU 页面另列 TARIC 已公布的下一有效期初始额度；UK 页面列出官方 CSV 中的下一季度五个额度。**未来额度与当前余额分开**。UK `Future` 记录的 `#NA` 余额显示为“尚未公布”；英国季度未用额度可结转，下一季度初始额度不等于开季实际余额。
+
 ## 数据和计算
 
 - 原产地使用法规 PDF 的 Order Number 映射；TARIC 原始 Origin 单独保留。
@@ -33,7 +37,8 @@ GitHub Actions 的 `schedule` 可能受平台排队影响，不能保证精确�
 2. 更新 `data/current.json`；
 3. 按官方更新日期保存 `data/history/YYYY-MM-DD.json`；
 4. 校验 55 个编号、计算公式和官方链接；
-5. 部署 GitHub Pages。
+5. 同时获取英国官方 CSV 并校验五个 Category 4 编号；
+6. 部署 GitHub Pages。
 
 若部分编号暂时查询失败，看板会沿用上一次成功数据并明确标记；若全部失败，工作流终止且不会覆盖已部署结果。若官方页面未能解析出官方更新日期，脚本不会用当天日期冒充官方日期。
 

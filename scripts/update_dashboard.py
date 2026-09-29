@@ -168,7 +168,7 @@ def extract_update_date(text: str) -> str:
     return iso_from_ddmmyyyy(match.group(1)) if match else ""
 
 
-def search_detail_url(session: requests.Session, code: str, today: date) -> tuple[str, str, bool]:
+def search_detail_url(session: requests.Session, code: str, today: date) -> tuple[str, str, bool, str]:
     candidates: list[dict[str, Any]] = []
     official_update = ""
     for year in (today.year, today.year + 1):
@@ -202,7 +202,8 @@ def search_detail_url(session: requests.Session, code: str, today: date) -> tupl
             dates = [x for x in dates if x]
             end = dates[1] if len(dates) > 1 else None
             candidates.append({"url": detail_url, "start": start, "end": end})
-        if any(c["start"] and c["start"] <= today and (not c["end"] or today <= c["end"]) for c in candidates):
+        if (any(c["start"] and c["start"] <= today and (not c["end"] or today <= c["end"]) for c in candidates)
+                and any(c["start"] and c["start"] > today for c in candidates)):
             break
 
     if not candidates:
@@ -218,11 +219,13 @@ def search_detail_url(session: requests.Session, code: str, today: date) -> tupl
             raise RuntimeError("没有覆盖当天或未来的有效期记录")
         chosen = min(future, key=lambda c: c["start"])
         not_yet_effective = True
-    return chosen["url"], official_update, not_yet_effective
+    future = [c for c in candidates if c["start"] and c["start"] > today]
+    next_url = min(future, key=lambda c: c["start"])["url"] if future else ""
+    return chosen["url"], official_update, not_yet_effective, next_url
 
 
 def parse_detail(session: requests.Session, category: str, code: str, expected_origin: str, today: date) -> dict[str, Any]:
-    detail_url, search_update, not_yet_effective = search_detail_url(session, code, today)
+    detail_url, search_update, not_yet_effective, next_url = search_detail_url(session, code, today)
     response = session.get(detail_url, timeout=35)
     soup = soup_from_response(response)
     fields: dict[str, str] = {}
@@ -266,6 +269,26 @@ def parse_detail(session: requests.Session, category: str, code: str, expected_o
     remaining_pct = balance / initial * 100 if initial else 0.0
     outside_ratio = max(awaiting - balance, 0) / awaiting if awaiting else 0.0
 
+    next_period = None
+    if next_url and next_url != detail_url:
+        try:
+            future_response = session.get(next_url, timeout=35)
+            future_soup = soup_from_response(future_response)
+            future_fields = {}
+            for future_row in future_soup.find_all("tr"):
+                cells = future_row.find_all("td", recursive=False)
+                if len(cells) >= 2:
+                    future_fields[clean_text(cells[0]).rstrip(":")] = clean_text(cells[1])
+            if future_fields.get("Order number") == code and future_fields.get("Validity period"):
+                next_period = {
+                    "validity_period": future_fields["Validity period"],
+                    "initial_amount_kg": round(parse_number(future_fields.get("Initial amount", ""))),
+                    "balance_kg": round(parse_number(future_fields["Balance"])) if re.search(r"\d", future_fields.get("Balance", "")) else None,
+                    "detail_url": future_response.url,
+                }
+        except (requests.RequestException, ValueError):
+            pass  # Future preview is optional; current-period data remains authoritative.
+
     return {
         "category": category,
         "code": code,
@@ -294,6 +317,7 @@ def parse_detail(session: requests.Session, category: str, code: str, expected_o
         "official_update_date": extract_update_date(clean_text(soup)) or search_update,
         "detail_url": response.url,
         "not_yet_effective": not_yet_effective,
+        "next_period": next_period,
         "stale": False,
         "error": "",
     }
@@ -453,6 +477,7 @@ def main() -> int:
             "checked_at": now.isoformat(timespec="seconds"),
             "official_update_date": official_update_date,
             "validity_period": validity_period,
+            "next_period": most_common_nonempty([str((item.get("next_period") or {}).get("validity_period", "")) for item in items if not item.get("stale")]),
             "blocking_period": blocking_period,
             "source_url": SEARCH_URL + "?Lang=en",
             "successful_count": successful,

@@ -68,6 +68,13 @@ def number(value: Any) -> float:
         return 0.0
 
 
+def optional_number(value: Any) -> float | None:
+    token = str(value or "").strip()
+    if not token or token.upper() in {"#NA", "NA", "N/A", "NONE"}:
+        return None
+    return number(token)
+
+
 def parse_iso(value: str) -> date | None:
     try:
         return date.fromisoformat(str(value or "")[:10])
@@ -90,13 +97,16 @@ def discover_latest_csv(client: requests.Session) -> tuple[str, str, str]:
         match = re.search(r"v(\d+(?:\.\d+)+)", text + " " + href, re.I)
         version = match.group(1) if match else "0"
         version_key = tuple(int(part) for part in version.split("."))
-        candidates.append((version_key, version, href))
+        resource_row = link.find_parent("tr")
+        cells = resource_row.find_all("td") if resource_row else []
+        updated = cells[-1].get_text(" ", strip=True) if cells else ""
+        candidates.append((version_key, version, href, updated))
     if not candidates:
         raise RuntimeError("英国官方数据页未发现CSV下载链接")
-    _, version, url = max(candidates, key=lambda item: item[0])
-    page_date_match = re.search(r"Last updated:\s*</[^>]+>\s*([^<]+)", response.text, re.I)
-    page_date = page_date_match.group(1).strip() if page_date_match else ""
-    return url, version, page_date
+    _, version, url, updated = max(candidates, key=lambda item: item[0])
+    match = re.fullmatch(r"(\d{1,2})/(\d{1,2})/(\d{4})", updated)
+    dataset_date = date(int(match[3]), int(match[2]), int(match[1])).isoformat() if match else ""
+    return url, version, dataset_date
 
 
 def select_active(rows: list[dict[str, str]], order_number: str, today: date) -> dict[str, str]:
@@ -118,15 +128,28 @@ def select_active(rows: list[dict[str, str]], order_number: str, today: date) ->
             future.append((start, row))
     if future:
         return min(future, key=lambda pair: pair[0])[1]
-    return max(matched, key=lambda row: row.get("quota_definition_validity_end_date", ""))
+    raise RuntimeError("官方CSV没有覆盖当天或未来的有效期记录")
+
+
+def select_next(rows: list[dict[str, str]], order_number: str, today: date) -> dict[str, str] | None:
+    future = []
+    for row in rows:
+        if str(row.get("quota_order_number", "")).zfill(6) != order_number:
+            continue
+        start = parse_iso(row.get("quota_definition_validity_start_date", ""))
+        if start and start > today:
+            future.append((start, row))
+    return min(future, key=lambda pair: pair[0])[1] if future else None
 
 
 def row_to_item(row: dict[str, str], code: str, origin: str, origin_zh: str, china_pool: bool, csv_url: str) -> dict[str, Any]:
     initial = number(row.get("quota_definition_initial_volume"))
-    balance = number(row.get("quota_definition_balance"))
-    used = max(initial - balance, 0)
-    used_pct = used / initial * 100 if initial else 0
-    remaining_pct = balance / initial * 100 if initial else 0
+    balance = optional_number(row.get("quota_definition_balance"))
+    # Quarterly rollover can make the balance exceed the initial allocation.
+    # In that case subtraction is not a meaningful measure of usage.
+    used = max(initial - balance, 0) if balance is not None and balance <= initial else None
+    used_pct = used / initial * 100 if initial and used is not None else None
+    remaining_pct = balance / initial * 100 if initial and balance is not None else None
     status = row.get("quota_definition_status", "")
     start = row.get("quota_definition_validity_start_date", "")
     end = row.get("quota_definition_validity_end_date", "")
@@ -142,11 +165,12 @@ def row_to_item(row: dict[str, str], code: str, origin: str, origin_zh: str, chi
         "validity_period": f"{start} — {end}" if start or end else "",
         "measurement_unit": row.get("quota_measurement_unit", ""),
         "initial_amount": round(initial, 3),
-        "balance": round(balance, 3),
-        "used_amount": round(used, 3),
-        "used_percentage": round(used_pct, 4),
-        "remaining_percentage": round(remaining_pct, 4),
-        "fill_rate": round(number(row.get("quota_definition_fill_rate")) * 100, 4),
+        "balance": round(balance, 3) if balance is not None else None,
+        "used_amount": round(used, 3) if used is not None else None,
+        "used_percentage": round(used_pct, 4) if used_pct is not None else None,
+        "remaining_percentage": round(remaining_pct, 4) if remaining_pct is not None else None,
+        "balance_exceeds_initial": balance is not None and balance > initial,
+        "fill_rate": round(number(row.get("quota_definition_fill_rate")) * 100, 4) if balance is not None else None,
         "status": status,
         "last_allocation_date": row.get("quota_definition_last_allocation_date", ""),
         "blocking_periods": row.get("quota_definition_blocking_periods", ""),
@@ -179,6 +203,7 @@ def main() -> int:
         raise RuntimeError("英国官方CSV为空")
 
     items = []
+    next_items = []
     failures = []
     previous = {}
     if CURRENT_FILE.exists():
@@ -191,12 +216,20 @@ def main() -> int:
         try:
             row = select_active(rows, code, now.date())
             items.append(row_to_item(row, code, origin, origin_zh, china_pool, csv_url))
+            future = select_next(rows, code, now.date())
+            if future:
+                next_items.append(row_to_item(future, code, origin, origin_zh, china_pool, csv_url))
         except Exception as exc:
             message = str(exc).strip()
             failures.append({"category": "4", "code": code, "error": message})
             fallback = dict(previous.get(code, {}))
             fallback.update({"jurisdiction": "UK", "category": "4", "code": code, "origin": origin, "origin_zh": origin_zh, "china_uses_this_pool": china_pool, "out_of_quota_tariff_pct": 50, "stale": True, "error": message})
             items.append(fallback)
+
+    # Future data is a separate preview. Its absence must never affect the current balance.
+    next_period = next_items[0]["validity_period"] if len(next_items) == len(QUOTAS) and len({x["validity_period"] for x in next_items}) == 1 else ""
+    if not next_period:
+        next_items = []
 
     successful = len(items) - len(failures)
     if successful == 0:
@@ -216,6 +249,7 @@ def main() -> int:
             "official_update_date": page_date,
             "dataset_version": version,
             "validity_period": max(set(active_periods), key=active_periods.count) if active_periods else "",
+            "next_period": next_period,
             "source_url": csv_url,
             "dataset_page_url": DATASET_PAGE,
             "legislation_url": LEGISLATION_URL,
@@ -229,6 +263,7 @@ def main() -> int:
         },
         "failures": failures,
         "items": items,
+        "next_items": next_items,
     }
     atomic_write(CURRENT_FILE, payload)
     snapshot_date = now.date().isoformat()

@@ -237,6 +237,13 @@
     }
 
     .notice { background: var(--primary-soft); color: var(--primary); }
+    .preview { margin-top: 18px; padding: 17px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+    .preview h2 { margin: 0 0 7px; font-size: 19px; }
+    .preview p { margin: 0 0 10px; color: var(--muted); }
+    .preview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 8px; }
+    .preview-item { padding: 10px; border: 1px solid var(--border); border-radius: 11px; }
+    .preview-item strong, .preview-item span { display: block; }
+    .preview-item span { color: var(--muted); font-size: 12px; }
     .error-box { display: none; background: var(--danger-soft); color: var(--danger); }
     .error-box.show { display: block; }
 
@@ -420,7 +427,7 @@
       <div class="hero-top">
         <div>
           <h1>EU TARIC 关税配额数据看板</h1>
-          <p class="subtitle">钢铁产品 1A、2、4A、4B · 每日自动更新</p>
+          <p class="subtitle">聚焦钢铁产品 1A、2、4A、4B 的 55 个编号 · 每日自动更新</p>
         </div>
         <a class="source-link" href="https://ec.europa.eu/taxation_customs/dds2/taric/quota_consultation.jsp?Lang=en" target="_blank" rel="noopener noreferrer">EU TARIC 官方来源 ↗</a>
       </div>
@@ -459,6 +466,7 @@
 
     <section class="notice" id="notice">正在读取最新数据……</section>
     <section class="error-box" id="errors" aria-live="polite"></section>
+    <section class="preview" id="preview" hidden></section>
     <div class="loading" id="loading">正在加载 TARIC 配额数据……</div>
     <section class="grid" id="cards" aria-live="polite"></section>
 
@@ -504,8 +512,9 @@
       const matches = [...String(value || "").matchAll(/(\d{2})-(\d{2})-(\d{4})/g)];
       if (!matches.length) return false;
       const dates = matches.map((match) => new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]), 12));
-      const now = new Date();
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12);
+      const berlin = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+      const [year, month, day] = berlin.split("-").map(Number);
+      const today = new Date(year, month - 1, day, 12);
       return dates[0] <= today && today <= (dates[1] || dates[0]);
     };
 
@@ -532,9 +541,15 @@
       document.querySelector("#validity").textContent = meta.validity_period || "—";
       document.querySelector("#checked-at").textContent = formatDateTime(meta.checked_at);
       document.querySelector("#stat-total").textContent = `${rows.filter((r) => !r.stale && !r.error).length} / ${rows.length}`;
-      document.querySelector("#stat-over").textContent = String(rows.filter((r) => r.awaiting > r.balance).length);
-      document.querySelector("#stat-critical").textContent = `${rows.filter((r) => String(r.critical).toLowerCase() === "yes").length} / ${rows.filter((r) => r.balance <= 0).length}`;
-      document.querySelector("#stat-tariff").textContent = rows.length ? `${Math.max(...rows.map((r) => r.estimatedTariff)).toFixed(2)}%` : "—";
+      const valid = rows.filter((r) => !r.stale && !r.not_yet_effective);
+      document.querySelector("#stat-over").textContent = String(valid.filter((r) => r.awaiting > r.balance).length);
+      document.querySelector("#stat-critical").textContent = `${valid.filter((r) => String(r.critical).toLowerCase() === "yes").length} / ${valid.filter((r) => r.balance <= 0).length}`;
+      document.querySelector("#stat-tariff").textContent = valid.length ? `${Math.max(...valid.map((r) => r.estimatedTariff)).toFixed(2)}%` : "—";
+
+      const future = (state.dataset?.items || []).filter((item) => !item.stale && item.next_period);
+      const preview = document.querySelector("#preview");
+      preview.hidden = !future.length;
+      if (future.length) preview.innerHTML = `<details><summary>下一季度 · ${escapeHtml(meta.next_period || "官方预告")} · ${future.length} 个编号（展开查看）</summary><p>下列初始额度来自 TARIC 未来有效期记录。当前余额与待分配量仍属于本季度；未来余额未公布时不作零余额判断。点击编号核对原文。</p><div class="preview-grid">${future.map((item) => `<div class="preview-item"><a href="${escapeHtml(item.next_period.detail_url)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(item.category)} · ${escapeHtml(item.code)} · ${escapeHtml(item.origin)}</strong></a><span>${escapeHtml(item.next_period.validity_period)}</span><span>初始额度：${number.format(item.next_period.initial_amount_kg)} kg</span><span>余额：${item.next_period.balance_kg == null ? "尚未公布" : number.format(item.next_period.balance_kg) + " kg"}</span></div>`).join("")}</div></details>`;
 
       const activeBlocking = rows.filter((row) => periodContainsToday(row.blocking_period));
       let blocking = "";
@@ -558,8 +573,9 @@
       }
 
       cards.innerHTML = rows.map((row) => {
-        const isOver = row.awaiting > row.balance;
-        const isNear = !isOver && row.balance > 0 && row.awaiting >= row.balance * 0.8;
+        const usable = !row.stale && !row.not_yet_effective;
+        const isOver = usable && row.awaiting > row.balance;
+        const isNear = usable && !isOver && row.balance > 0 && row.awaiting >= row.balance * 0.8;
         const risk = isOver ? "high" : isNear ? "near" : "";
         const stale = row.stale ? "stale" : "";
         const width = Math.max(0, Math.min(100, row.remainingPct));
@@ -573,17 +589,17 @@
               <a class="code-link" href="${escapeHtml(detailHref)}" target="_blank" rel="noopener noreferrer">${escapeHtml(row.code)}</a>
             </div>
             <div class="origin"><strong>原产地：</strong>${escapeHtml(row.origin || row.expected_origin || "—")} ${row.stale ? '<span class="badge">沿用上次数据</span>' : ""}</div>
-            <div class="balance">${number.format(row.balance)} kg</div>
+            <div class="balance">${row.not_yet_effective ? "尚未生效 · 余额待确认" : number.format(row.balance) + " kg"}</div>
             <div class="metric"><span>初始配额</span><strong>${number.format(row.initial)} kg</strong></div>
             <div class="metric"><span>待分配量</span><strong>${number.format(row.awaiting)} kg</strong></div>
-            <div class="metric"><span>待分配倍数</span><strong>${row.awaitingRatio.toFixed(2)}× ${riskLabel}</strong></div>
-            <div class="metric tariff"><span>预估分摊税率</span><strong>${row.estimatedTariff.toFixed(2)}%</strong></div>
+            <div class="metric"><span>待分配倍数</span><strong>${usable ? row.awaitingRatio.toFixed(2) + "×" : "—"} ${riskLabel}</strong></div>
+            <div class="metric tariff"><span>预估分摊税率</span><strong>${usable ? row.estimatedTariff.toFixed(2) + "%" : "—"}</strong></div>
             <div class="metric"><span>最近分配比例</span><strong>${Number(row.allocated_percentage ?? 0).toFixed(2)}%</strong></div>
             <div class="metric"><span>临界配额状态</span><strong>${escapeHtml(criticalCn(row.critical))}</strong></div>
             <div class="metric period"><span>封锁期</span><strong>${escapeHtml(row.blocking_period || "—")}</strong></div>
             <div class="metric period"><span>暂停期</span><strong>${escapeHtml(row.suspension_period || "—")}</strong></div>
             <div class="progress" role="progressbar" aria-label="${escapeHtml(row.code)} 剩余比例" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${row.remainingPct.toFixed(0)}"><span style="width:${width}%"></span></div>
-            <div class="card-foot"><span>${row.remainingPct.toFixed(1)}% 剩余</span><span>最近分配：${escapeHtml(row.last_allocation_date || "—")}</span></div>
+            <div class="card-foot"><span>${row.not_yet_effective ? "未来有效期" : row.remainingPct.toFixed(1) + "% 剩余"}</span><span>最近分配：${escapeHtml(row.last_allocation_date || "—")}</span></div>
           </article>`;
       }).join("");
     }
