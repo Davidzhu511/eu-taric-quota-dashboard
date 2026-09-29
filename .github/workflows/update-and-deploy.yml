@@ -131,19 +131,15 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        if: github.event_name != 'push'
         run: pip install -r requirements.txt
 
       - name: Fetch current EU TARIC quota data
-        if: github.event_name != 'push'
         run: python scripts/update_dashboard.py
 
       - name: Fetch current UK Category 4 quota data
-        if: github.event_name != 'push'
         run: python scripts/update_uk_dashboard.py
 
       - name: Validate generated dashboard data
-        if: github.event_name != 'push'
         run: |
           python - <<'PY'
           import json
@@ -155,6 +151,7 @@ jobs:
           assert eu_meta.get("total_count") == 55
           assert eu_meta.get("successful_count", 0) + eu_meta.get("failed_count", 0) == 55
           assert len({item.get("code") for item in eu_items}) == 55
+          assert all(item.get("next_period") is None or item["next_period"].get("validity_period") for item in eu_items)
 
           uk = json.loads(Path("data/uk/current.json").read_text(encoding="utf-8"))
           uk_meta, uk_items = uk.get("meta", {}), uk.get("items", [])
@@ -164,11 +161,12 @@ jobs:
           assert uk_meta.get("total_count") == 5
           assert uk_meta.get("successful_count", 0) + uk_meta.get("failed_count", 0) == 5
           assert next(item for item in uk_items if item.get("code") == "058608").get("china_uses_this_pool") is True
+          assert len(uk.get("next_items", [])) in (0, 5)
+          assert all(item.get("balance") is None for item in uk.get("next_items", []) if item.get("status") == "Future")
           print(f"validated EU {len(eu_items)} and UK {len(uk_items)} quota records")
           PY
 
       - name: Save current data and history
-        if: github.event_name != 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
