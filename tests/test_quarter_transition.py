@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from update_dashboard import search_detail_url
+from update_dashboard import calculate_quota_metrics, search_detail_url
 from update_uk_dashboard import normalise_header, row_to_item, select_active, select_next
 
 
@@ -37,6 +37,17 @@ class QuarterTransitionTests(unittest.TestCase):
         self.assertIn("StartDate=01-10-2026", next_url)
         self.assertEqual(updated, "2026-09-28")
         self.assertFalse(future_flag)
+
+    def test_eu_awaiting_pressure_compares_pending_requests_with_balance(self):
+        metrics = calculate_quota_metrics(initial=1000, balance=100, awaiting=80)
+        self.assertAlmostEqual(metrics["awaiting_ratio"], 0.08)
+        self.assertAlmostEqual(metrics["awaiting_to_balance_ratio"], 0.8)
+        self.assertEqual(metrics["effective_buffer_kg"], 20)
+
+        oversubscribed = calculate_quota_metrics(initial=1000, balance=100, awaiting=150)
+        self.assertAlmostEqual(oversubscribed["awaiting_to_balance_ratio"], 1.5)
+        self.assertEqual(oversubscribed["effective_buffer_kg"], 0)
+        self.assertAlmostEqual(oversubscribed["outside_ratio"], 1 / 3)
 
     def test_uk_future_balance_is_unknown_and_past_period_is_rejected(self):
         rows = [dict(quota_order_number="058608", quota_definition_validity_start_date=start,

@@ -163,6 +163,23 @@ def parse_number(value: str) -> float:
         return 0.0
 
 
+def calculate_quota_metrics(initial: float, balance: float, awaiting: float) -> dict[str, float | None]:
+    """Calculate quota metrics without confusing pending demand with the initial quota."""
+    awaiting_ratio = awaiting / initial if initial else 0.0
+    awaiting_to_balance_ratio = awaiting / balance if balance > 0 else None
+    remaining_pct = balance / initial * 100 if initial else 0.0
+    effective_buffer = max(balance - awaiting, 0.0)
+    outside_ratio = max(awaiting - balance, 0.0) / awaiting if awaiting else 0.0
+    return {
+        "awaiting_ratio": awaiting_ratio,
+        "awaiting_to_balance_ratio": awaiting_to_balance_ratio,
+        "remaining_percentage": remaining_pct,
+        "effective_buffer_kg": effective_buffer,
+        "outside_ratio": outside_ratio,
+        "estimated_blended_tariff_pct": outside_ratio * 50,
+    }
+
+
 def extract_update_date(text: str) -> str:
     match = re.search(r"Last (?:tariff QUOTA|TARIC) update:\s*(\d{2}-\d{2}-\d{4})", text, re.I)
     return iso_from_ddmmyyyy(match.group(1)) if match else ""
@@ -265,9 +282,7 @@ def parse_detail(session: requests.Session, category: str, code: str, expected_o
     if initial <= 0:
         raise RuntimeError("初始配额为空或无法解析")
 
-    awaiting_ratio = awaiting / initial if initial else 0.0
-    remaining_pct = balance / initial * 100 if initial else 0.0
-    outside_ratio = max(awaiting - balance, 0) / awaiting if awaiting else 0.0
+    metrics = calculate_quota_metrics(initial, balance, awaiting)
 
     next_period = None
     if next_url and next_url != detail_url:
@@ -303,10 +318,12 @@ def parse_detail(session: requests.Session, category: str, code: str, expected_o
         "amount_kg": amount,
         "balance_kg": balance,
         "awaiting_allocation_kg": awaiting,
-        "awaiting_ratio": round(awaiting_ratio, 6),
-        "remaining_percentage": round(remaining_pct, 4),
-        "outside_ratio": round(outside_ratio, 6),
-        "estimated_blended_tariff_pct": round(outside_ratio * 50, 4),
+        "awaiting_ratio": round(float(metrics["awaiting_ratio"] or 0), 6),
+        "awaiting_to_balance_ratio": round(float(metrics["awaiting_to_balance_ratio"]), 6) if metrics["awaiting_to_balance_ratio"] is not None else None,
+        "remaining_percentage": round(float(metrics["remaining_percentage"] or 0), 4),
+        "effective_buffer_kg": round(float(metrics["effective_buffer_kg"] or 0)),
+        "outside_ratio": round(float(metrics["outside_ratio"] or 0), 6),
+        "estimated_blended_tariff_pct": round(float(metrics["estimated_blended_tariff_pct"] or 0), 4),
         "allocated_percentage": allocated,
         "critical": fields.get("Critical", ""),
         "exhaustion_date": fields.get("Exhaustion date", ""),
@@ -377,15 +394,20 @@ def validate_items(items: list[dict[str, Any]]) -> None:
         if not item.get("stale") and initial <= 0:
             raise RuntimeError(f"{code}: 新抓取记录的初始配额无效")
 
-        awaiting_ratio = awaiting / initial if initial else 0.0
-        remaining_pct = balance / initial * 100 if initial else 0.0
-        outside_ratio = max(awaiting - balance, 0) / awaiting if awaiting else 0.0
-        tariff_pct = outside_ratio * 50
+        metrics = calculate_quota_metrics(initial, balance, awaiting)
+        pressure = item.get("awaiting_to_balance_ratio")
+        expected_pressure = metrics["awaiting_to_balance_ratio"]
+        if expected_pressure is None:
+            if pressure is not None:
+                raise RuntimeError(f"{code}: 待分配压力应为空")
+        elif pressure is None or abs(float(pressure) - float(expected_pressure)) > 2e-6:
+            raise RuntimeError(f"{code}: 待分配压力计算校验失败")
         checks = (
-            ("待分配倍数", float(item.get("awaiting_ratio", 0) or 0), awaiting_ratio, 2e-6),
-            ("剩余比例", float(item.get("remaining_percentage", 0) or 0), remaining_pct, 2e-4),
-            ("配额外比例", float(item.get("outside_ratio", 0) or 0), outside_ratio, 2e-6),
-            ("预估分摊税率", float(item.get("estimated_blended_tariff_pct", 0) or 0), tariff_pct, 2e-4),
+            ("待分配占初始配额", float(item.get("awaiting_ratio", 0) or 0), float(metrics["awaiting_ratio"] or 0), 2e-6),
+            ("剩余比例", float(item.get("remaining_percentage", 0) or 0), float(metrics["remaining_percentage"] or 0), 2e-4),
+            ("已知申请后理论余额", float(item.get("effective_buffer_kg", 0) or 0), float(metrics["effective_buffer_kg"] or 0), 0.5),
+            ("配额外比例", float(item.get("outside_ratio", 0) or 0), float(metrics["outside_ratio"] or 0), 2e-6),
+            ("预估分摊税率", float(item.get("estimated_blended_tariff_pct", 0) or 0), float(metrics["estimated_blended_tariff_pct"] or 0), 2e-4),
         )
         for label, actual, expected, tolerance in checks:
             if abs(actual - expected) > tolerance:
@@ -443,7 +465,9 @@ def main() -> int:
                         "balance_kg": 0,
                         "awaiting_allocation_kg": 0,
                         "awaiting_ratio": 0,
+                        "awaiting_to_balance_ratio": None,
                         "remaining_percentage": 0,
+                        "effective_buffer_kg": 0,
                         "outside_ratio": 0,
                         "estimated_blended_tariff_pct": 0,
                         "allocated_percentage": 0,

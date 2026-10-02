@@ -293,6 +293,7 @@
     .quota-card.high .tariff { border-color: var(--danger); background: var(--danger-soft); }
     .quota-card.high .tariff strong { color: var(--danger); }
     .quota-card.near { border-color: var(--warning); background: linear-gradient(155deg, var(--surface), var(--warning-soft)); }
+    .quota-card.watch { border-color: rgba(211, 177, 95, 0.48); background: linear-gradient(155deg, var(--surface), rgba(211, 177, 95, 0.07)); }
     .quota-card.stale { opacity: 0.72; }
 
     .card-head, .metric, .card-foot {
@@ -392,7 +393,7 @@
       background: linear-gradient(145deg, rgba(42, 43, 39, 0.93), rgba(27, 28, 25, 0.94));
     }
     .toolbar { border-color: rgba(211, 177, 95, 0.18); }
-    .quota-card:not(.high):not(.near)::after {
+    .quota-card:not(.high):not(.near):not(.watch)::after {
       position: absolute;
       inset: 0 18% auto;
       height: 1px;
@@ -448,7 +449,7 @@
       <select class="control" id="sort" aria-label="排序">
         <option value="category">按类别排序</option>
         <option value="tariff">预估税率从高到低</option>
-        <option value="awaiting">待分配倍数从高到低</option>
+        <option value="awaiting">待分配压力从高到低</option>
         <option value="remaining">剩余比例从低到高</option>
       </select>
       <select class="control" id="snapshot" aria-label="历史数据"><option value="current">实时看板</option></select>
@@ -459,7 +460,7 @@
 
     <section class="summary" aria-label="数据概览">
       <article class="stat"><span class="stat-label">成功抓取</span><strong class="stat-value" id="stat-total">—</strong><div class="stat-note">所选范围</div></article>
-      <article class="stat"><span class="stat-label">待分配 &gt; 当前余额</span><strong class="stat-value" id="stat-over">—</strong><div class="stat-note">预计超量，存在按比例分配风险</div></article>
+      <article class="stat"><span class="stat-label">待分配压力 ≥ 70%</span><strong class="stat-value" id="stat-over">—</strong><div class="stat-note">Awaiting ÷ Balance；≥100% 为极高风险</div></article>
       <article class="stat"><span class="stat-label">临界配额 / 已耗尽</span><strong class="stat-value" id="stat-critical">—</strong><div class="stat-note">欧盟官方状态</div></article>
       <article class="stat"><span class="stat-label">最高预估分摊税率</span><strong class="stat-value" id="stat-tariff">—</strong><div class="stat-note">配额外比例 × 50%</div></article>
     </section>
@@ -470,7 +471,7 @@
     <div class="loading" id="loading">正在加载 TARIC 配额数据……</div>
     <section class="grid" id="cards" aria-live="polite"></section>
 
-    <footer>待分配量为 indicative。预估分摊税率是按比例分配的期望值，不代表海关最终确定的实际税率。</footer>
+    <footer>Total awaiting allocation 仅包含欧委会已收到但尚未分配的 drawing requests；FCFS 存在处理时差，实际在途申请可能更多。预估分摊税率仅为情景估算，不代表海关最终税率。</footer>
   </main>
 
   <script>
@@ -495,10 +496,13 @@
       const balance = Number(item.balance_kg ?? item.balance ?? 0);
       const awaiting = Number(item.awaiting_allocation_kg ?? item.awaiting ?? 0);
       const remainingPct = initial > 0 ? balance / initial * 100 : 0;
-      const awaitingRatio = initial > 0 ? awaiting / initial : 0;
+      const awaitingShareOfInitial = initial > 0 ? awaiting / initial : 0;
+      const awaitingToBalance = balance > 0 ? awaiting / balance : null;
+      const pressureSort = awaitingToBalance == null ? (awaiting > 0 ? Number.MAX_SAFE_INTEGER : 0) : awaitingToBalance;
+      const effectiveBuffer = Math.max(balance - awaiting, 0);
       const outsideRatio = awaiting > 0 ? Math.max(awaiting - balance, 0) / awaiting : 0;
       const estimatedTariff = outsideRatio * 50;
-      return { ...item, initial, balance, awaiting, remainingPct, awaitingRatio, outsideRatio, estimatedTariff };
+      return { ...item, initial, balance, awaiting, remainingPct, awaitingShareOfInitial, awaitingToBalance, pressureSort, effectiveBuffer, outsideRatio, estimatedTariff };
     };
 
     const criticalCn = (value) => {
@@ -527,7 +531,7 @@
       const categoryRank = { "1A": 1, "2": 2, "4A": 3, "4B": 4 };
       rows.sort((a, b) => {
         if (state.sort === "tariff") return b.estimatedTariff - a.estimatedTariff || a.code.localeCompare(b.code);
-        if (state.sort === "awaiting") return b.awaitingRatio - a.awaitingRatio || a.code.localeCompare(b.code);
+        if (state.sort === "awaiting") return b.pressureSort - a.pressureSort || a.code.localeCompare(b.code);
         if (state.sort === "remaining") return a.remainingPct - b.remainingPct || a.code.localeCompare(b.code);
         return (categoryRank[a.category] || 99) - (categoryRank[b.category] || 99) || a.code.localeCompare(b.code);
       });
@@ -542,7 +546,7 @@
       document.querySelector("#checked-at").textContent = formatDateTime(meta.checked_at);
       document.querySelector("#stat-total").textContent = `${rows.filter((r) => !r.stale && !r.error).length} / ${rows.length}`;
       const valid = rows.filter((r) => !r.stale && !r.not_yet_effective);
-      document.querySelector("#stat-over").textContent = String(valid.filter((r) => r.awaiting > r.balance).length);
+      document.querySelector("#stat-over").textContent = String(valid.filter((r) => r.balance > 0 && (r.awaitingToBalance ?? 0) >= 0.7).length);
       document.querySelector("#stat-critical").textContent = `${valid.filter((r) => String(r.critical).toLowerCase() === "yes").length} / ${valid.filter((r) => r.balance <= 0).length}`;
       document.querySelector("#stat-tariff").textContent = valid.length ? `${Math.max(...valid.map((r) => r.estimatedTariff)).toFixed(2)}%` : "—";
 
@@ -559,7 +563,7 @@
       } else if (meta.blocking_period) {
         blocking = `官方记录的封锁期：${meta.blocking_period}（当前已结束）。`;
       }
-      document.querySelector("#notice").textContent = `${blocking} 预估分摊税率 = max(待分配量 − 当前配额余额, 0) ÷ 待分配量 × 50%。`.trim();
+      document.querySelector("#notice").textContent = `${blocking} 待分配压力 = Total awaiting allocation ÷ Balance：30%–<70% 需关注，70%–<100% 高风险，≥100% 极高风险。FCFS drawing requests 最早在报关接受后的第二个工作日处理，因此页面可能低估实际在途申请。预估分摊税率 = max(待分配量 − 当前配额余额, 0) ÷ 待分配量 × 50%。`.trim();
 
       const failures = state.dataset?.failures || [];
       const errors = document.querySelector("#errors");
@@ -574,12 +578,14 @@
 
       cards.innerHTML = rows.map((row) => {
         const usable = !row.stale && !row.not_yet_effective;
-        const isOver = usable && row.awaiting > row.balance;
-        const isNear = usable && !isOver && row.balance > 0 && row.awaiting >= row.balance * 0.8;
-        const risk = isOver ? "high" : isNear ? "near" : "";
+        const isOver = usable && row.awaiting > 0 && (row.balance <= 0 || (row.awaitingToBalance ?? 0) >= 1);
+        const isNear = usable && !isOver && row.balance > 0 && (row.awaitingToBalance ?? 0) >= 0.7;
+        const isWatch = usable && !isOver && !isNear && row.balance > 0 && (row.awaitingToBalance ?? 0) >= 0.3;
+        const risk = isOver ? "high" : isNear ? "near" : isWatch ? "watch" : "";
         const stale = row.stale ? "stale" : "";
         const width = Math.max(0, Math.min(100, row.remainingPct));
-        const riskLabel = isOver ? '<span class="badge">预计超量</span>' : isNear ? '<span class="badge">接近当前余额</span>' : "";
+        const pressureText = !usable ? "—" : row.balance > 0 ? ((row.awaitingToBalance ?? 0) * 100).toFixed(1) + "%" : row.awaiting > 0 ? "∞" : "0.0%";
+        const riskLabel = isOver ? '<span class="badge">极高风险</span>' : isNear ? '<span class="badge">高风险</span>' : isWatch ? '<span class="badge">需关注</span>' : "";
         const futureLabel = row.not_yet_effective ? '<span class="badge">尚未生效</span>' : "";
         const detailHref = row.detail_url || row.url || "#";
         return `
@@ -592,7 +598,8 @@
             <div class="balance">${row.not_yet_effective ? "尚未生效 · 余额待确认" : number.format(row.balance) + " kg"}</div>
             <div class="metric"><span>初始配额</span><strong>${number.format(row.initial)} kg</strong></div>
             <div class="metric"><span>待分配量</span><strong>${number.format(row.awaiting)} kg</strong></div>
-            <div class="metric"><span>待分配倍数</span><strong>${usable ? row.awaitingRatio.toFixed(2) + "×" : "—"} ${riskLabel}</strong></div>
+            <div class="metric"><span>待分配压力（Awaiting ÷ Balance）</span><strong>${pressureText} ${riskLabel}</strong></div>
+            <div class="metric"><span>已知申请后理论余额</span><strong>${usable ? number.format(row.effectiveBuffer) + " kg" : "—"}</strong></div>
             <div class="metric tariff"><span>预估分摊税率</span><strong>${usable ? row.estimatedTariff.toFixed(2) + "%" : "—"}</strong></div>
             <div class="metric"><span>最近分配比例</span><strong>${Number(row.allocated_percentage ?? 0).toFixed(2)}%</strong></div>
             <div class="metric"><span>临界配额状态</span><strong>${escapeHtml(criticalCn(row.critical))}</strong></div>
@@ -666,8 +673,8 @@
 
     document.querySelector("#export-json").addEventListener("click", () => download(`eu-taric-quota-${exportDate()}.json`, JSON.stringify({ meta: state.dataset?.meta || {}, items: exportRows() }, null, 2), "application/json"));
     document.querySelector("#export-csv").addEventListener("click", () => {
-      const headers = ["category", "code", "origin", "taric_origin", "initial_kg", "amount_kg", "balance_kg", "awaiting_kg", "awaiting_ratio", "outside_ratio", "estimated_blended_tariff_pct", "remaining_pct", "allocated_percentage", "critical_status", "blocking_period", "suspension_period", "exhaustion_date", "last_import_date", "last_allocation_date", "not_yet_effective", "stale", "error", "source_url"];
-      const rows = currentRows().map((r) => [r.category, r.code, r.origin || r.expected_origin, r.taric_origin, r.initial, r.amount_kg, r.balance, r.awaiting, r.awaitingRatio.toFixed(4), r.outsideRatio.toFixed(4), r.estimatedTariff.toFixed(2), r.remainingPct.toFixed(2), Number(r.allocated_percentage ?? 0).toFixed(2), criticalCn(r.critical), r.blocking_period, r.suspension_period, r.exhaustion_date, r.last_import_date, r.last_allocation_date, Boolean(r.not_yet_effective), Boolean(r.stale), r.error, r.detail_url || r.url]);
+      const headers = ["category", "code", "origin", "taric_origin", "initial_kg", "amount_kg", "balance_kg", "awaiting_kg", "awaiting_share_of_initial", "awaiting_to_balance_ratio", "effective_buffer_kg", "outside_ratio", "estimated_blended_tariff_pct", "remaining_pct", "allocated_percentage", "critical_status", "blocking_period", "suspension_period", "exhaustion_date", "last_import_date", "last_allocation_date", "not_yet_effective", "stale", "error", "source_url"];
+      const rows = currentRows().map((r) => [r.category, r.code, r.origin || r.expected_origin, r.taric_origin, r.initial, r.amount_kg, r.balance, r.awaiting, r.awaitingShareOfInitial.toFixed(4), r.awaitingToBalance == null ? "" : r.awaitingToBalance.toFixed(4), r.effectiveBuffer, r.outsideRatio.toFixed(4), r.estimatedTariff.toFixed(2), r.remainingPct.toFixed(2), Number(r.allocated_percentage ?? 0).toFixed(2), criticalCn(r.critical), r.blocking_period, r.suspension_period, r.exhaustion_date, r.last_import_date, r.last_allocation_date, Boolean(r.not_yet_effective), Boolean(r.stale), r.error, r.detail_url || r.url]);
       const csv = [headers, ...rows].map((row) => row.map((cell) => `"${String(cell ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
       download(`eu-taric-quota-${exportDate()}.csv`, `\ufeff${csv}`, "text/csv;charset=utf-8");
     });
