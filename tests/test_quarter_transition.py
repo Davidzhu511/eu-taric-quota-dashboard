@@ -2,12 +2,13 @@
 
 import sys
 import unittest
+from unittest.mock import patch
 from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from update_dashboard import calculate_quota_metrics, search_detail_url
+from update_dashboard import calculate_quota_metrics, parse_detail, search_detail_url
 from update_uk_dashboard import normalise_header, row_to_item, select_active, select_next
 
 
@@ -63,6 +64,23 @@ class QuarterTransitionTests(unittest.TestCase):
         self.assertEqual(select_active(rows, "058608", date(2026, 10, 1)), rows[1])
         with self.assertRaises(RuntimeError):
             select_active(rows, "058608", date(2027, 1, 1))
+
+    def test_uk_invalid_numbers_cannot_become_zero_balance(self):
+        row = dict(quota_definition_initial_volume="1000", quota_definition_balance="#NA")
+        self.assertIsNone(row_to_item(row, "058608", "Residual", "其他国家", True, "")['balance'])
+        for balance in ("not-a-number", "NaN", "inf", "-1"):
+            with self.subTest(balance=balance), self.assertRaises(ValueError):
+                row_to_item(dict(row, quota_definition_balance=balance), "058608", "Residual", "其他国家", True, "")
+        item = row_to_item(dict(row, quota_definition_balance="1200"), "058608", "Residual", "其他国家", True, "")
+        self.assertIsNone(item["used_amount"])
+        self.assertEqual(item["remaining_percentage"], 120)
+
+    def test_eu_unknown_balance_is_rejected_instead_of_exhausted(self):
+        response = FakeResponse("https://example.org/detail", '<table><tr><td>Order number</td><td>099605</td></tr><tr><td>Initial amount</td><td>1000</td></tr><tr><td>Balance</td><td>#NA</td></tr></table>')
+        with patch("update_dashboard.search_detail_url", return_value=(response.url, "2026-10-02", False, "")):
+            with patch.object(FakeSession, "get", return_value=response):
+                with self.assertRaisesRegex(RuntimeError, "不能按零余额"):
+                    parse_detail(FakeSession(), "4A", "099605", "Other countries", date(2026, 10, 5))
 
 
 if __name__ == "__main__":

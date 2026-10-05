@@ -133,6 +133,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Check quota parsing and quarter transitions
+        run: python -m unittest discover -s tests -v
+
       - name: Fetch current EU TARIC quota data
         run: python scripts/update_dashboard.py
 

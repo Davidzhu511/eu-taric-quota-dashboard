@@ -10,6 +10,10 @@
 
 临近季度交替时，EU 页面另列 TARIC 已公布的下一有效期初始额度；UK 页面列出官方 CSV 中的下一季度五个额度。**未来额度与当前余额分开**。UK `Future` 记录的 `#NA` 余额显示为“尚未公布”；英国季度未用额度可结转，下一季度初始额度不等于开季实际余额。
 
+UK Category 4 结转在季度结束后的第 20 个工作日生效，仅限同一配额年度；前一季度申请窗口截至随后月份第 19 个工作日。旧合同过渡豁免仅覆盖 2026-07-01 至 2026-09-30 的进口。HMRC 通知季度额度已分配 90% 时指定为 Critical，须提供全额税款担保。50% 为本钢铁措施的配额外税率，适用的反倾销/反补贴税另计。依据：[GOV.UK 实施说明](https://www.gov.uk/government/publications/uks-steel-trade-measure-from-1-july-2026/implementation-notifications-on-the-transitional-exemption-quota-administration-and-the-ukraine-exclusion)。
+
+UK 页面区分官方 `Fill rate`、`余额 / 初始额度` 和 `初始额度与余额差`。兼容保留 JSON 的 `used_amount`、`used_percentage` 字段，但它们只是 `initial - balance` 的派生值，**结转后不能代表累计使用量**；余额大于初始额度时差值为空。未知、未来、过期和沿用旧记录不进入当前余额概览及排序指标。UK CSV 导出使用明确的差值字段名，并保留官方状态、封锁/暂停期和产品编码。
+
 ## 数据和计算
 
 - 原产地使用法规 PDF 的 Order Number 映射；TARIC 原始 Origin 单独保留。

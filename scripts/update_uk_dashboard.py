@@ -6,6 +6,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import math
 import re
 from datetime import date, datetime
 from pathlib import Path
@@ -69,10 +70,13 @@ def number(value: Any) -> float:
 
 
 def optional_number(value: Any) -> float | None:
-    token = str(value or "").strip()
+    token = "" if value is None else str(value).strip()
     if not token or token.upper() in {"#NA", "NA", "N/A", "NONE"}:
         return None
-    return number(token)
+    parsed = float(token.replace(",", ""))
+    if not math.isfinite(parsed) or parsed < 0:
+        raise ValueError("官方配额数值无效")
+    return parsed
 
 
 def parse_iso(value: str) -> date | None:
@@ -143,14 +147,17 @@ def select_next(rows: list[dict[str, str]], order_number: str, today: date) -> d
 
 
 def row_to_item(row: dict[str, str], code: str, origin: str, origin_zh: str, china_pool: bool, csv_url: str) -> dict[str, Any]:
-    initial = number(row.get("quota_definition_initial_volume"))
+    initial = optional_number(row.get("quota_definition_initial_volume"))
+    if initial is None or initial <= 0:
+        raise ValueError("官方初始配额为空或无效")
     balance = optional_number(row.get("quota_definition_balance"))
     # Quarterly rollover can make the balance exceed the initial allocation.
-    # In that case subtraction is not a meaningful measure of usage.
+    # This difference is not cumulative usage, including when balance <= initial.
     used = max(initial - balance, 0) if balance is not None and balance <= initial else None
     used_pct = used / initial * 100 if initial and used is not None else None
     remaining_pct = balance / initial * 100 if initial and balance is not None else None
     status = row.get("quota_definition_status", "")
+    fill = optional_number(row.get("quota_definition_fill_rate"))
     start = row.get("quota_definition_validity_start_date", "")
     end = row.get("quota_definition_validity_end_date", "")
     return {
@@ -170,7 +177,7 @@ def row_to_item(row: dict[str, str], code: str, origin: str, origin_zh: str, chi
         "used_percentage": round(used_pct, 4) if used_pct is not None else None,
         "remaining_percentage": round(remaining_pct, 4) if remaining_pct is not None else None,
         "balance_exceeds_initial": balance is not None and balance > initial,
-        "fill_rate": round(number(row.get("quota_definition_fill_rate")) * 100, 4) if balance is not None else None,
+        "fill_rate": round(fill * 100, 4) if fill is not None and balance is not None else None,
         "status": status,
         "last_allocation_date": row.get("quota_definition_last_allocation_date", ""),
         "blocking_periods": row.get("quota_definition_blocking_periods", ""),

@@ -276,6 +276,8 @@ def parse_detail(session: requests.Session, category: str, code: str, expected_o
 
     initial = round(parse_number(fields.get("Initial amount", "")))
     amount = round(parse_number(fields.get("Amount", "")))
+    if not re.search(r"\d", fields.get("Balance", "")):
+        raise RuntimeError("官方余额尚未公布或无法解析，不能按零余额处理")
     balance = round(parse_number(fields.get("Balance", "")))
     awaiting = round(parse_number(fields.get("Total awaiting allocation", "")))
     allocated = parse_number(fields.get("Allocated percentage at the last allocation", ""))
