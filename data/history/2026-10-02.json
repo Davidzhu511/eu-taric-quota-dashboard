@@ -1,6 +1,6 @@
 {
   "meta": {
-    "checked_at": "2026-10-05T15:44:20+02:00",
+    "checked_at": "2026-10-05T15:53:55+02:00",
     "official_update_date": "2026-10-02",
     "validity_period": "01-10-2026 - 31-12-2026",
     "next_period": "01-01-2027 - 31-03-2027",
@@ -1153,13 +1153,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099710",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099710",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 745650,
         "balance_kg": 745650,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099710"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099710"
       },
       "stale": false,
       "error": ""
@@ -1189,13 +1189,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099708",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099708",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 3533820,
         "balance_kg": 3533820,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099708"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099708"
       },
       "stale": false,
       "error": ""
@@ -1225,13 +1225,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099832",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099832",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 117496920,
         "balance_kg": 117496920,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099832"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099832"
       },
       "stale": false,
       "error": ""
@@ -1261,13 +1261,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099833",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099833",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 33783390,
         "balance_kg": 33783390,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099833"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099833"
       },
       "stale": false,
       "error": ""
@@ -1297,13 +1297,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099834",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099834",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 63925330,
         "balance_kg": 63925330,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099834"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099834"
       },
       "stale": false,
       "error": ""
@@ -1333,13 +1333,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099835",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099835",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 58295850,
         "balance_kg": 58295850,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099835"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099835"
       },
       "stale": false,
       "error": ""
@@ -1441,13 +1441,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099605",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099605",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 33338760,
         "balance_kg": 33338760,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099605"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099605"
       },
       "stale": false,
       "error": ""
@@ -1477,13 +1477,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099714",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099714",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 12761320,
         "balance_kg": 12761320,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099714"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099714"
       },
       "stale": false,
       "error": ""
@@ -1513,13 +1513,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099718",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099718",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 11600080,
         "balance_kg": 11600080,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099718"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099718"
       },
       "stale": false,
       "error": ""
@@ -1549,13 +1549,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099716",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099716",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 2874210,
         "balance_kg": 2874210,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099716"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099716"
       },
       "stale": false,
       "error": ""
@@ -1585,13 +1585,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099715",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099715",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 2943830,
         "balance_kg": 2943830,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099715"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099715"
       },
       "stale": false,
       "error": ""
@@ -1621,13 +1621,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-02",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099717",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099717",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 3150340,
         "balance_kg": 3150340,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099717"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099717"
       },
       "stale": false,
       "error": ""
