@@ -477,7 +477,7 @@
     <div class="loading" id="loading">正在加载 TARIC 配额数据……</div>
     <section class="grid" id="cards" aria-live="polite"></section>
 
-    <footer>Total awaiting allocation 仅包含欧委会已收到但尚未分配的 drawing requests；FCFS 存在处理时差，实际在途申请可能更多。预估分摊税率仅为情景估算，不代表海关最终税率。</footer>
+    <footer>Total awaiting allocation 仅包含欧委会已收到但尚未分配的 drawing requests；FCFS 存在处理时差，实际在途申请可能更多。预估分摊税率仅为把已知待分配申请合并计算的情景估算，不是整个季度的税率。不同申报接受日期按先后分配，同日超额申请按比例分配；最终以海关实际获配结果为准。无待分配申请不表示新增进口免税，余额为零时新增申请应按配额外 50% 评估。</footer>
   </main>
 
   <script>
@@ -509,7 +509,7 @@
       const pressureSort = awaitingToBalance == null ? (awaiting > 0 ? Number.MAX_SAFE_INTEGER : 0) : awaitingToBalance;
       const effectiveBuffer = Math.max(balance - awaiting, 0);
       const outsideRatio = awaiting > 0 ? Math.max(awaiting - balance, 0) / awaiting : 0;
-      const estimatedTariff = outsideRatio * 50;
+      const estimatedTariff = awaiting > 0 ? outsideRatio * 50 : null;
       return { ...item, initial, balance, awaiting, unavailable, remainingPct, awaitingShareOfInitial, awaitingToBalance, pressureSort, effectiveBuffer, outsideRatio, estimatedTariff };
     };
 
@@ -539,7 +539,7 @@
       const categoryRank = { "1A": 1, "2": 2, "4A": 3, "4B": 4 };
       rows.sort((a, b) => {
         if (state.sort !== "default" && Boolean(a.unavailable) !== Boolean(b.unavailable)) return a.unavailable ? 1 : -1;
-        if (state.sort === "tariff") return b.estimatedTariff - a.estimatedTariff || a.code.localeCompare(b.code);
+        if (state.sort === "tariff") return (b.estimatedTariff ?? -1) - (a.estimatedTariff ?? -1) || a.code.localeCompare(b.code);
         if (state.sort === "awaiting") return b.pressureSort - a.pressureSort || a.code.localeCompare(b.code);
         if (state.sort === "remaining") return a.remainingPct - b.remainingPct || a.code.localeCompare(b.code);
         return (categoryRank[a.category] || 99) - (categoryRank[b.category] || 99) || a.code.localeCompare(b.code);
@@ -557,7 +557,8 @@
       const valid = rows.filter((r) => !r.unavailable);
       document.querySelector("#stat-over").textContent = String(valid.filter((r) => r.balance > 0 && (r.awaitingToBalance ?? 0) >= 0.7).length);
       document.querySelector("#stat-critical").textContent = `${valid.filter((r) => String(r.critical).toLowerCase() === "yes").length} / ${valid.filter((r) => r.balance <= 0).length}`;
-      document.querySelector("#stat-tariff").textContent = valid.length ? `${Math.max(...valid.map((r) => r.estimatedTariff)).toFixed(2)}%` : "—";
+      const pendingEstimates = valid.filter((r) => r.estimatedTariff != null);
+      document.querySelector("#stat-tariff").textContent = pendingEstimates.length ? `${Math.max(...pendingEstimates.map((r) => r.estimatedTariff)).toFixed(2)}%` : "无待分配申请";
 
       const future = (state.dataset?.items || []).filter((item) => !item.stale && item.next_period);
       const preview = document.querySelector("#preview");
@@ -587,14 +588,15 @@
 
       cards.innerHTML = rows.map((row) => {
         const usable = !row.unavailable;
-        const isOver = usable && row.awaiting > 0 && (row.balance <= 0 || (row.awaitingToBalance ?? 0) >= 1);
+        const exhausted = usable && row.balance === 0;
+        const isOver = exhausted || (usable && row.awaiting > 0 && (row.awaitingToBalance ?? 0) >= 1);
         const isNear = usable && !isOver && row.balance > 0 && (row.awaitingToBalance ?? 0) >= 0.7;
         const isWatch = usable && !isOver && !isNear && row.balance > 0 && (row.awaitingToBalance ?? 0) >= 0.3;
         const risk = isOver ? "high" : isNear ? "near" : isWatch ? "watch" : "";
         const stale = row.stale ? "stale" : "";
         const width = usable ? Math.max(0, Math.min(100, row.remainingPct)) : 0;
         const pressureText = !usable ? "—" : row.balance > 0 ? ((row.awaitingToBalance ?? 0) * 100).toFixed(1) + "%" : row.awaiting > 0 ? "∞" : "0.0%";
-        const riskLabel = isOver ? '<span class="badge">极高风险</span>' : isNear ? '<span class="badge">高风险</span>' : isWatch ? '<span class="badge">需关注</span>' : "";
+        const riskLabel = exhausted ? '<span class="badge">已耗尽</span>' : isOver ? '<span class="badge">极高风险</span>' : isNear ? '<span class="badge">高风险</span>' : isWatch ? '<span class="badge">需关注</span>' : "";
         const futureLabel = row.not_yet_effective ? '<span class="badge">尚未生效</span>' : "";
         const detailHref = row.detail_url || row.url || "#";
         return `
@@ -609,8 +611,9 @@
             <div class="metric"><span>待分配量</span><strong>${row.awaiting == null || row.unavailable ? "—" : number.format(row.awaiting) + " kg"}</strong></div>
             <div class="metric"><span>待分配压力（Awaiting ÷ Balance）</span><strong>${pressureText} ${riskLabel}</strong></div>
             <div class="metric"><span>已知申请后理论余额</span><strong>${usable ? number.format(row.effectiveBuffer) + " kg" : "—"}</strong></div>
-            <div class="metric tariff"><span>预估分摊税率</span><strong>${usable ? row.estimatedTariff.toFixed(2) + "%" : "—"}</strong></div>
-            <div class="metric"><span>最近分配比例</span><strong>${row.allocated_percentage == null || row.unavailable ? "—" : Number(row.allocated_percentage).toFixed(2) + "%"}</strong></div>
+            <div class="metric tariff"><span>预估分摊税率</span><strong>${!usable ? "—" : row.estimatedTariff == null ? "无待分配申请" : row.estimatedTariff.toFixed(2) + "%"}</strong></div>
+            ${usable && row.balance === 0 ? '<div class="metric"><span>余额为零时新增申请</span><strong>配额外 50%</strong></div>' : ""}
+            <div class="metric"><span title="官方最近一次分配的获配比例；只适用于该批有效申请，不是季度使用率或你这票货的最终税率">最近分配比例</span><strong>${row.allocated_percentage == null || row.unavailable ? "—" : Number(row.allocated_percentage).toFixed(2) + "%"}</strong></div>
             <div class="metric"><span>临界配额状态</span><strong>${escapeHtml(criticalCn(row.critical))}</strong></div>
             <div class="metric period"><span>封锁期</span><strong>${escapeHtml(row.blocking_period || "—")}</strong></div>
             <div class="metric period"><span>暂停期</span><strong>${escapeHtml(row.suspension_period || "—")}</strong></div>
@@ -684,6 +687,7 @@
       effectiveBuffer: row.unavailable ? null : row.effectiveBuffer,
       outsideRatio: row.unavailable ? null : row.outsideRatio,
       estimatedTariff: row.unavailable ? null : row.estimatedTariff,
+      estimated_blended_tariff_pct: row.unavailable ? null : row.estimatedTariff,
       critical_original: row.critical,
       critical: criticalCn(row.critical),
     }));
@@ -691,7 +695,7 @@
     document.querySelector("#export-json").addEventListener("click", () => download(`eu-taric-quota-${exportDate()}.json`, JSON.stringify({ meta: state.dataset?.meta || {}, items: exportRows() }, null, 2), "application/json"));
     document.querySelector("#export-csv").addEventListener("click", () => {
       const headers = ["category", "code", "origin", "taric_origin", "initial_kg", "amount_kg", "balance_kg", "awaiting_kg", "awaiting_share_of_initial", "awaiting_to_balance_ratio", "effective_buffer_kg", "outside_ratio", "estimated_blended_tariff_pct", "remaining_pct", "allocated_percentage", "critical_status", "blocking_period", "suspension_period", "exhaustion_date", "last_import_date", "last_allocation_date", "not_yet_effective", "stale", "error", "source_url", "current_balance_available"];
-      const rows = currentRows().map((r) => [r.category, r.code, r.origin || r.expected_origin, r.taric_origin, r.initial, r.amount_kg, r.balance, r.awaiting, r.unavailable ? "" : r.awaitingShareOfInitial.toFixed(4), r.unavailable || r.awaitingToBalance == null ? "" : r.awaitingToBalance.toFixed(4), r.unavailable ? "" : r.effectiveBuffer, r.unavailable ? "" : r.outsideRatio.toFixed(4), r.unavailable ? "" : r.estimatedTariff.toFixed(2), r.unavailable ? "" : r.remainingPct.toFixed(2), Number(r.allocated_percentage ?? 0).toFixed(2), criticalCn(r.critical), r.blocking_period, r.suspension_period, r.exhaustion_date, r.last_import_date, r.last_allocation_date, Boolean(r.not_yet_effective), Boolean(r.stale), r.error, r.detail_url || r.url, !r.unavailable]);
+      const rows = currentRows().map((r) => [r.category, r.code, r.origin || r.expected_origin, r.taric_origin, r.initial, r.amount_kg, r.balance, r.awaiting, r.unavailable ? "" : r.awaitingShareOfInitial.toFixed(4), r.unavailable || r.awaitingToBalance == null ? "" : r.awaitingToBalance.toFixed(4), r.unavailable ? "" : r.effectiveBuffer, r.unavailable ? "" : r.outsideRatio.toFixed(4), r.unavailable || r.estimatedTariff == null ? "" : r.estimatedTariff.toFixed(2), r.unavailable ? "" : r.remainingPct.toFixed(2), r.allocated_percentage == null || r.unavailable ? "" : Number(r.allocated_percentage).toFixed(2), criticalCn(r.critical), r.blocking_period, r.suspension_period, r.exhaustion_date, r.last_import_date, r.last_allocation_date, Boolean(r.not_yet_effective), Boolean(r.stale), r.error, r.detail_url || r.url, !r.unavailable]);
       const csv = [headers, ...rows].map((row) => row.map((cell) => `"${String(cell ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
       download(`eu-taric-quota-${exportDate()}.csv`, `\ufeff${csv}`, "text/csv;charset=utf-8");
     });
