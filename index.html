@@ -614,6 +614,7 @@
             <div class="metric tariff"><span>预估分摊税率</span><strong>${!usable ? "—" : row.estimatedTariff == null ? "无待分配申请" : row.estimatedTariff.toFixed(2) + "%"}</strong></div>
             ${usable && row.balance === 0 ? '<div class="metric"><span>余额为零时新增申请</span><strong>配额外 50%</strong></div>' : ""}
             <div class="metric"><span title="官方最近一次分配的获配比例；只适用于该批有效申请，不是季度使用率或你这票货的最终税率">最近分配比例</span><strong>${row.allocated_percentage == null || row.unavailable ? "—" : Number(row.allocated_percentage).toFixed(2) + "%"}</strong></div>
+            <div class="metric"><span title="最后获得配额的申报被海关接受的日期，不是欧委会处理分配的日期；—表示官方未提供">官方耗尽日期</span><strong>${row.unavailable ? "—" : escapeHtml(row.exhaustion_date || "—")}</strong></div>
             <div class="metric"><span>临界配额状态</span><strong>${escapeHtml(criticalCn(row.critical))}</strong></div>
             <div class="metric period"><span>封锁期</span><strong>${escapeHtml(row.blocking_period || "—")}</strong></div>
             <div class="metric period"><span>暂停期</span><strong>${escapeHtml(row.suspension_period || "—")}</strong></div>
