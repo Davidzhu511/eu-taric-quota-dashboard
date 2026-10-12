@@ -20,7 +20,7 @@ HEAD_ASSETS = '''  <script>
   <link rel="stylesheet" href="./shared-ui.css">
 '''
 
-BODY_ASSET = '  <script src="./shared-ui.js"></script>\n'
+BODY_ASSET = '  <script src="./shared-ui.js?v=bilingual-20261012"></script>\n'
 
 SHARED_CSS = r''':root {
   --ui-bg: #0b0c0b;
@@ -351,7 +351,7 @@ def inject_assets(path: Path) -> None:
         if "</head>" not in html:
             raise RuntimeError(f"{path}: missing </head>")
         html = html.replace("</head>", HEAD_ASSETS + "</head>", 1)
-    if 'src="./shared-ui.js"' not in html:
+    if 'src="./shared-ui.js?v=bilingual-20261012"' not in html:
         if "</body>" not in html:
             raise RuntimeError(f"{path}: missing </body>")
         html = html.replace("</body>", BODY_ASSET + "</body>", 1)
