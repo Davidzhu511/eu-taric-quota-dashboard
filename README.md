@@ -2,6 +2,12 @@
 
 [![Update TARIC dashboard](https://github.com/Davidzhu511/eu-taric-quota-dashboard/actions/workflows/update-and-deploy.yml/badge.svg)](https://github.com/Davidzhu511/eu-taric-quota-dashboard/actions/workflows/update-and-deploy.yml)
 
+英文版：[EU English](https://davidzhu511.github.io/eu-taric-quota-dashboard/en.html) · [UK English](https://davidzhu511.github.io/eu-taric-quota-dashboard/uk-en.html)。页面顶部可切换语言和地区，两种语言共用数据、计算和历史证据。
+
+顶部“本季度中国适用配额”表由 `scripts/build_quarterly_summary.py` 从当前季度历史快照重建，保存到 `data/quarterly-summary.json`。仅在开季申报接受日、耗尽日及有效期一致，且记录有效、历史获配比例无冲突时展示 `(100%-获配比例)×50%`。这只是对应有效分配批次在相同单位完税价格下的加权配额关税，不是全季度统一税率，不含其他税费；最终以每票海关分配及税单为准。后续最近比例为0不会覆盖开季正比例。缺失、冲突或季度切换后无证据时显示无法计算。UK CSV没有同日获配比例，不能从Fill rate或余额推算，表内明确显示未提供。
+
+英文页面由 `scripts/build_english_pages.py` 从同一UI源码生成；未翻译中文UI会让构建失败，避免中英文漂移。共享主题、地区及语言导航由 `scripts/inject_uk_nav.py` 生成。
+
 公开看板：<https://davidzhu511.github.io/eu-taric-quota-dashboard/>
 
 看板展示钢铁产品类别 **1A、2、4A、4B** 的 55 个 EU TARIC Order Number，并提供筛选、搜索、历史快照、CSV 和 JSON 导出。
