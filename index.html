@@ -421,6 +421,7 @@
       .button:hover, .quota-card:hover { transform: none; }
     }
   </style>
+  <link rel="stylesheet" href="./quarterly-summary.css">
 </head>
 <body>
   <main class="page">
@@ -439,6 +440,7 @@
       </div>
     </section>
 
+    <section class="quota-quarterly" id="quarterly-summary" aria-live="polite">正在读取季度加权关税……</section>
     <section class="toolbar" aria-label="看板筛选与导出">
       <button class="button active" type="button" data-category="all">全部</button>
       <button class="button" type="button" data-category="1A">1A</button>
@@ -704,5 +706,6 @@
     loadDataset();
     loadHistoryIndex();
   </script>
+<script src="./quarterly-summary.js"></script>
 </body>
 </html>

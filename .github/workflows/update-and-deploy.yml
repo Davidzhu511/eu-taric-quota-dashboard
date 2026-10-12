@@ -12,6 +12,8 @@ on:
       - "index.html"
       - "uk.html"
       - "scripts/**"
+      - "quarterly-summary.*"
+      - "tests/**"
       - "requirements.txt"
       - ".github/workflows/update-and-deploy.yml"
 
@@ -169,11 +171,14 @@ jobs:
           print(f"validated EU {len(eu_items)} and UK {len(uk_items)} quota records")
           PY
 
+      - name: Preserve quarterly allocation evidence
+        run: python scripts/build_quarterly_summary.py
+
       - name: Save current data and history
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/current.json data/history data/uk
+          git add data/current.json data/history data/uk data/quarterly-summary.json
           if ! git diff --cached --quiet; then
             git commit -m "data: update EU and UK quota snapshots"
             for attempt in 1 2 3; do
@@ -193,6 +198,8 @@ jobs:
           cp index.html _site/index.html
           cp uk.html _site/uk.html
           python scripts/inject_uk_nav.py _site/index.html
+          cp quarterly-summary.js quarterly-summary.css _site/
+          python scripts/build_english_pages.py _site
           cp -R data/. _site/data/
           touch _site/.nojekyll
 

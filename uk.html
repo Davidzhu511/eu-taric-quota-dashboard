@@ -13,11 +13,13 @@
     summary{cursor:pointer;color:var(--gold);font-weight:600}.preview details p{margin-top:12px;line-height:1.6}.official-fields{margin-top:14px;color:var(--muted);font-size:12px}.official-fields p{overflow-wrap:anywhere;line-height:1.6}
     @media(max-width:850px){.meta,.summary{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.hero-top{display:block}.nav{margin-top:16px}.meta,.summary{grid-template-columns:1fr}.toolbar .control,.toolbar .button{width:100%}}
   </style>
+  <link rel="stylesheet" href="./quarterly-summary.css">
 </head>
 <body><main class="page">
   <section class="hero"><div class="hero-top"><div><h1 class="title">英国钢铁Category 4配额看板</h1><p class="subtitle">Metallic coated sheets · 英国与欧盟数据完全分开</p></div><nav class="nav"><a class="pill" href="./">欧盟看板</a><a class="pill active" href="./uk.html">英国看板</a><a class="pill" id="law-link" target="_blank" rel="noopener">英国立法文件 ↗</a></nav></div>
   <div class="meta"><div><span>官方数据日期</span><strong id="official-date">—</strong></div><div><span>数据版本</span><strong id="version">—</strong></div><div><span>当前有效期</span><strong id="period">—</strong></div><div><span>最后检查</span><strong id="checked">—</strong></div></div></section>
-  <section class="toolbar"><input class="control" id="search" type="search" placeholder="搜索配额号或原产地"><select class="control" id="sort"><option value="code">按配额号</option><option value="remaining">剩余比例从低到高</option><option value="used">官方 Fill rate 从高到低</option></select><span class="spacer"></span><button class="button" id="csv">CSV导出</button><button class="button" id="json">JSON导出</button></section>
+  <section class="quota-quarterly" id="quarterly-summary" aria-live="polite">正在读取季度加权关税……</section>
+    <section class="toolbar"><input class="control" id="search" type="search" placeholder="搜索配额号或原产地"><select class="control" id="sort"><option value="code">按配额号</option><option value="remaining">剩余比例从低到高</option><option value="used">官方 Fill rate 从高到低</option></select><span class="spacer"></span><button class="button" id="csv">CSV导出</button><button class="button" id="json">JSON导出</button></section>
   <section class="summary"><article class="stat"><span class="label">Category 4配额池</span><strong class="value" id="count">—</strong></article><article class="stat"><span class="label">058608剩余</span><strong class="value" id="china-balance">—</strong></article><article class="stat"><span class="label">058608余额 / 初始额度</span><strong class="value" id="china-remaining">—</strong></article><article class="stat"><span class="label">配额外税率</span><strong class="value">50%</strong></article></section>
   <section class="notice" id="notice">正在读取英国官方数据……</section><section class="error" id="errors"></section><section class="preview" id="preview" hidden></section><section class="preview" aria-label="英国季度规则"><details><summary>季度结转、临界状态与税率说明（展开查看）</summary>
   <p>Category 4 未用额度在季度结束后的第 20 个工作日结转，仅限同一配额年度；年度结束的未用量不再结转。前一季度申请窗口截至随后月份第 19 个工作日。</p>
@@ -106,4 +108,5 @@ document.querySelector("#csv").addEventListener("click",()=>{
   const csv=[h,...body].map(row=>row.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(",")).join("\n");
   download("uk-category4-quota.csv",`\ufeff${csv}`,"text/csv;charset=utf-8");
 });load();
-</script></body></html>
+</script><script src="./quarterly-summary.js"></script>
+</body></html>

@@ -1,0 +1,30 @@
+name: Check bilingual dashboards
+on:
+  pull_request:
+    paths:
+      - "**.html"
+      - "scripts/**"
+      - "tests/**"
+      - "quarterly-summary.*"
+      - ".github/workflows/**"
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python scripts/build_quarterly_summary.py
+      - name: Build both languages and validate scripts
+        run: |
+          mkdir -p _site
+          cp index.html uk.html _site/
+          python scripts/inject_uk_nav.py _site/index.html
+          python scripts/build_english_pages.py _site
+          node --check quarterly-summary.js
+          node --check _site/shared-ui.js

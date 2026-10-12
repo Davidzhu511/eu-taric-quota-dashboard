@@ -285,36 +285,39 @@ html[data-theme="ivory"] .dashboard-switch {
 SHARED_JS = r'''(() => {
   const THEME_KEY = "quota-dashboard-theme";
   const THEMES = new Set(["black-gold", "elephant-grey", "steel-blue", "ivory"]);
-  const isUk = /(?:^|\/)uk\.html$/.test(window.location.pathname);
+  const isUk = /(?:^|\/)uk(?:-en)?\.html$/.test(window.location.pathname);
+  const en = document.documentElement.lang === "en";
+  const t = (zh, english) => en ? english : zh;
   const heroTop = document.querySelector(".hero-top");
   if (!heroTop) return;
 
   const existingRight = heroTop.querySelector(".dashboard-actions") || heroTop.lastElementChild;
   const actions = document.createElement("div");
   actions.className = "dashboard-actions";
-  actions.setAttribute("aria-label", "看板切换、官方来源与配色");
+  actions.setAttribute("aria-label", t("看板切换、官方来源与配色", "Dashboard, source and theme controls"));
 
   const euActive = isUk ? "" : " active";
   const ukActive = isUk ? " active" : "";
   const sourceHref = isUk
     ? "https://www.gov.uk/government/publications/uks-steel-trade-measure-from-1-july-2026/uks-steel-trade-measure-from-1-july-2026"
     : "https://ec.europa.eu/taxation_customs/dds2/taric/quota_consultation.jsp?Lang=en";
-  const sourceText = isUk ? "英国立法文件 ↗" : "EU TARIC官方来源 ↗";
+  const sourceText = isUk ? t("英国立法文件 ↗", "UK legislation ↗") : t("EU TARIC官方来源 ↗", "EU TARIC official source ↗");
   const sourceId = isUk ? ' id="law-link"' : "";
 
   actions.innerHTML = `
-    <nav class="dashboard-switch" aria-label="地区看板切换">
-      <a class="dashboard-tab${euActive}" href="./">欧盟看板</a>
-      <a class="dashboard-tab${ukActive}" href="./uk.html">英国看板</a>
+    <nav class="dashboard-switch" aria-label="${t('地区看板切换', 'Switch jurisdiction')}">
+      <a class="dashboard-tab${euActive}" href="${en ? './en.html' : './'}">${t('欧盟看板', 'EU dashboard')}</a>
+      <a class="dashboard-tab${ukActive}" href="${en ? './uk-en.html' : './uk.html'}">${t('英国看板', 'UK dashboard')}</a>
     </nav>
     <a class="dashboard-source"${sourceId} href="${sourceHref}" target="_blank" rel="noopener noreferrer">${sourceText}</a>
+    <a class="dashboard-source" href="${isUk ? (en ? './uk.html' : './uk-en.html') : (en ? './' : './en.html')}" lang="${en ? 'zh-CN' : 'en'}">${en ? '中文' : 'English'}</a>
     <label class="theme-control">
-      <span>配色</span>
-      <select id="dashboard-theme" aria-label="选择看板配色">
-        <option value="black-gold">黑金</option>
-        <option value="elephant-grey">大象灰</option>
-        <option value="steel-blue">钢铁蓝</option>
-        <option value="ivory">象牙白</option>
+      <span>${t('配色', 'Theme')}</span>
+      <select id="dashboard-theme" aria-label="${t('选择看板配色', 'Select theme')}">
+        <option value="black-gold">${t('黑金', 'Black and gold')}</option>
+        <option value="elephant-grey">${t('大象灰', 'Elephant grey')}</option>
+        <option value="steel-blue">${t('钢铁蓝', 'Steel blue')}</option>
+        <option value="ivory">${t('象牙白', 'Ivory')}</option>
       </select>
     </label>`;
 
