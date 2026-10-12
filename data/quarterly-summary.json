@@ -1,0 +1,118 @@
+{
+  "eu": [
+    {
+      "category": "1A",
+      "code": "099600",
+      "origin": "Other countries",
+      "declaration_date": "2026-10-01",
+      "validity_period": "01-10-2026 - 31-12-2026",
+      "allocation_pct": 18.624,
+      "weighted_duty_pct": 40.688,
+      "status": "historical_allocation",
+      "evidence": [
+        {
+          "file": "2026-10-05.json",
+          "official_update_date": "2026-10-05",
+          "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099600"
+        },
+        {
+          "file": "2026-10-06.json",
+          "official_update_date": "2026-10-06",
+          "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099600"
+        }
+      ],
+      "allocation_date": "05-10-2026",
+      "official_update_date": "2026-10-05",
+      "checked_at": null
+    },
+    {
+      "category": "2",
+      "code": "099602",
+      "origin": "Other countries",
+      "declaration_date": "2026-10-01",
+      "validity_period": "01-10-2026 - 31-12-2026",
+      "allocation_pct": 35.292,
+      "weighted_duty_pct": 32.354,
+      "status": "historical_allocation",
+      "evidence": [
+        {
+          "file": "2026-10-05.json",
+          "official_update_date": "2026-10-05",
+          "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099602"
+        },
+        {
+          "file": "2026-10-06.json",
+          "official_update_date": "2026-10-06",
+          "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099602"
+        }
+      ],
+      "allocation_date": "05-10-2026",
+      "official_update_date": "2026-10-05",
+      "checked_at": null
+    },
+    {
+      "category": "4A",
+      "code": "099605",
+      "origin": "Other countries",
+      "declaration_date": "2026-10-01",
+      "validity_period": "01-10-2026 - 31-12-2026",
+      "allocation_pct": 36.556,
+      "weighted_duty_pct": 31.722,
+      "status": "historical_allocation",
+      "evidence": [
+        {
+          "file": "2026-10-05.json",
+          "official_update_date": "2026-10-05",
+          "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099605"
+        },
+        {
+          "file": "2026-10-06.json",
+          "official_update_date": "2026-10-06",
+          "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099605"
+        }
+      ],
+      "allocation_date": "05-10-2026",
+      "official_update_date": "2026-10-05",
+      "checked_at": null
+    },
+    {
+      "category": "4B",
+      "code": "099838",
+      "origin": "China",
+      "declaration_date": "2026-10-01",
+      "validity_period": "01-10-2026 - 31-12-2026",
+      "allocation_pct": 38.323,
+      "weighted_duty_pct": 30.8385,
+      "status": "historical_allocation",
+      "evidence": [
+        {
+          "file": "2026-10-05.json",
+          "official_update_date": "2026-10-05",
+          "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099838"
+        },
+        {
+          "file": "2026-10-06.json",
+          "official_update_date": "2026-10-06",
+          "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099838"
+        }
+      ],
+      "allocation_date": "05-10-2026",
+      "official_update_date": "2026-10-05",
+      "checked_at": null
+    }
+  ],
+  "uk": [
+    {
+      "category": "4",
+      "code": "058608",
+      "origin": "Other countries",
+      "validity_period": "2026-10-01 — 2026-12-31",
+      "declaration_date": "2026-10-01",
+      "allocation_pct": null,
+      "weighted_duty_pct": null,
+      "status": "allocation_not_published",
+      "evidence": []
+    }
+  ],
+  "out_of_quota_duty_pct": 50
+}
