@@ -14,5 +14,19 @@ class EnglishBuildTests(unittest.TestCase):
                 self.assertEqual(re.findall(r'\bid="([^"]+)"',zh),re.findall(r'\bid="([^"]+)"',en))
                 self.assertEqual(re.findall(r'\./data/[^`"\s]+',zh),re.findall(r'\./data/[^`"\s]+',en))
                 self.assertFalse(re.search('[\u4e00-\u9fff]',en))
+    def test_uk_english_control_labels(self):
+        en = translate((ROOT/'uk.html').read_text())
+        for label in [
+            'Export CSV',
+            'Export JSON',
+            '058608 remaining',
+            '058608 balance / initial volume',
+            'Quarterly carryover, critical status and duty guidance',
+        ]:
+            with self.subTest(label=label):
+                self.assertIn(label, en)
+        for broken in ['CSVExport', 'JSONExport', '058608remaining', '058608Balance', 'carryover、']:
+            self.assertNotIn(broken, en)
+
     def test_new_untranslated_label_fails_build(self):
         with self.assertRaises(ValueError):translate('<span>新增漏译词汇</span>')
