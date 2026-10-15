@@ -209,7 +209,14 @@ PHRASES = '''
 '''
 MAPPING = dict(line.split('\t',1) for line in PHRASES.strip().splitlines() if '\t' in line)
 
-MAPPING.update({'第': '', '日': '', '的': ''})
+MAPPING.update({
+    '第': '', '日': '', '的': '',
+    'CSV导出': 'Export CSV',
+    'JSON导出': 'Export JSON',
+    '058608剩余': '058608 remaining',
+    '058608余额 / 初始额度': '058608 balance / initial volume',
+    '季度结转、临界状态与税率说明': 'Quarterly carryover, critical status and duty guidance',
+})
 
 # Translate complete rule paragraphs to preserve natural English and legal meaning.
 PARAGRAPHS = {
