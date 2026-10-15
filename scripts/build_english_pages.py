@@ -240,7 +240,7 @@ def translate(text):
     text=text.replace('x.origin_zh||x.origin','x.origin').replace('esc(x.origin_zh)','esc(x.origin)')
     # Chinese data is not translated with string substitution; use official English fields.
     text=text.replace('${m.warning||""}', 'Published balances may lag actual HMRC allocations by several days; they cannot secure quota availability.')
-    text=text.replace('。','. ').replace('；','; ').replace('：',': ').replace('（','(').replace('）',')').replace('，',', ').replace('「','“').replace('」','”')
+    text=text.replace('。','. ').replace('；','; ').replace('：',': ').replace('、',', ').replace('（','(').replace('）',')').replace('，',', ').replace('「','“').replace('」','”')
     missing=set(re.findall(r'[\u4e00-\u9fff]+',text))
     if missing:
         raise ValueError('Untranslated English UI: '+', '.join(sorted(missing)))

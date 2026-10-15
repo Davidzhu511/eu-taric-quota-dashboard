@@ -14,6 +14,7 @@ class EnglishBuildTests(unittest.TestCase):
                 self.assertEqual(re.findall(r'\bid="([^"]+)"',zh),re.findall(r'\bid="([^"]+)"',en))
                 self.assertEqual(re.findall(r'\./data/[^`"\s]+',zh),re.findall(r'\./data/[^`"\s]+',en))
                 self.assertFalse(re.search('[\u4e00-\u9fff]',en))
+                self.assertNotIn('、', en)
     def test_uk_english_control_labels(self):
         en = translate((ROOT/'uk.html').read_text())
         for label in [
