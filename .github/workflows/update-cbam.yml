@@ -18,15 +18,19 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
-  group: cbam-dashboard-data
+  # Share the deployment lock with the quota dashboard workflow so two Pages
+  # deployments never race each other.
+  group: quota-dashboard-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  update:
+  update-and-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -78,3 +82,40 @@ jobs:
               if [[ "$attempt" -eq 3 ]]; then exit 1; fi
             done
           fi
+
+      - name: Prepare complete static site
+        run: |
+          mkdir -p _site/data _site/cbam
+          cp index.html _site/index.html
+          cp uk.html _site/uk.html
+          python scripts/inject_uk_nav.py _site/index.html
+          cp quarterly-summary.js quarterly-summary.css _site/
+          python scripts/build_english_pages.py _site
+          cp -R data/. _site/data/
+          cp -R cbam/. _site/cbam/
+          touch _site/.nojekyll
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          name: github-pages-cbam-${{ github.run_attempt }}
+          path: _site
+
+  deploy:
+    needs: update-and-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy complete site including CBAM dashboard
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-cbam-${{ github.run_attempt }}
