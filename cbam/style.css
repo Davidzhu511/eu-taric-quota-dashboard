@@ -51,7 +51,7 @@ main{max-width:1280px;margin:auto;padding:0 28px 52px}
 .score-gauge{width:90px;height:90px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) 0deg,var(--track) 0deg);position:relative}
 .score-gauge:after{content:"";position:absolute;inset:9px;background:var(--panel);border-radius:50%}
 .score-gauge span{z-index:1;font-size:25px;font-weight:850;color:#39342c}
-.score-wrap small{display:block;color:var(--muted);font-size:10px;margin-top:5px;max-width:110px}
+.score-wrap small{display:block;color:var(--muted);font-size:10px;margin-top:5px;max-width:160px}
 .badge{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800;border:1px solid var(--line);background:#fbf7ee}
 .badge.neutral{color:var(--warn);border-color:#d9be91}
 .badge.buy,.badge.live{color:var(--good);border-color:#b6c9b7;background:#f1f6ef}
@@ -66,6 +66,7 @@ main{max-width:1280px;margin:auto;padding:0 28px 52px}
 .score-label{display:flex;justify-content:space-between;gap:12px;font-size:12px;margin-bottom:6px}
 .score-label span{color:#514a40}
 .score-label strong{white-space:nowrap}
+.score-note{font-size:10.5px;color:var(--muted);line-height:1.45;margin-top:5px}
 .bar{height:8px;background:var(--track);border-radius:99px;overflow:hidden}
 .bar span{display:block;height:100%;background:linear-gradient(90deg,#a89970,var(--accent));border-radius:99px}
 .model-card{margin-bottom:16px;background:linear-gradient(135deg,#fffdf7,#f8f1e3)}
@@ -113,6 +114,7 @@ th{color:var(--muted);font-weight:650}
 .warning{padding:8px 10px;border-radius:8px;background:#fbefd6;color:#8b6226;font-size:12px;margin:6px 0;border:1px solid #ead4a8}
 .research-body{color:#5b5348;font-size:13px;line-height:1.65}
 .research-body ul{padding-left:18px}
+.research-score{padding:8px 10px;background:#edf0e1;border:1px solid #c7cfad;border-radius:9px;color:#4d5b3d}
 footer{border-top:1px solid var(--line);color:var(--muted);font-size:11px;text-align:center;padding:20px 28px 36px;background:rgba(244,239,227,.55)}
 @media(max-width:1000px){.model-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.topbar{align-items:flex-start;flex-direction:column}.kpis{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}.status-strip{grid-template-columns:repeat(2,1fr)}.sources{grid-template-columns:1fr}.explain-grid{grid-template-columns:1fr}}
