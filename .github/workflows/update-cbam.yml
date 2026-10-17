@@ -9,6 +9,7 @@ on:
     branches: [main]
     paths:
       - "scripts/update_cbam_dashboard.py"
+      - "scripts/update_cbam_dashboard_runner.py"
       - "cbam/index.html"
       - "cbam/app.js"
       - "cbam/style.css"
@@ -43,7 +44,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Fetch EEX and Commission CBAM data
-        run: python scripts/update_cbam_dashboard.py
+        run: python scripts/update_cbam_dashboard_runner.py
 
       - name: Validate generated JSON
         run: |
