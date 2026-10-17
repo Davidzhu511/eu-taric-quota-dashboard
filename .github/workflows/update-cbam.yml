@@ -5,6 +5,15 @@ on:
   schedule:
     # Runs after the day's main EU ETS1 auctions. 17:30 UTC = 18:30 CET / 19:30 CEST.
     - cron: "30 17 * * *"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/update_cbam_dashboard.py"
+      - "cbam/index.html"
+      - "cbam/app.js"
+      - "cbam/style.css"
+      - "requirements.txt"
+      - ".github/workflows/update-cbam.yml"
 
 permissions:
   contents: write
