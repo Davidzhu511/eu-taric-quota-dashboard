@@ -1,14 +1,22 @@
 {
   "meta": {
-    "updated_at": "2026-10-17T08:30:00+00:00",
-    "status": "bootstrap"
+    "updated_at": "2026-10-17T18:34:00+00:00",
+    "status": "partial_data",
+    "confidence": "低：缺少经交叉验证的远期曲线及持仓资金流数据；仅核实公共层更新正常"
   },
   "overlay_score": null,
-  "headline": "研究层将由ChatGPT监控任务持续补充",
-  "summary": "公共Dashboard先以EEX/欧委会官方数据自动运行；远期曲线、MSR/政策、TTF能源基本面及市场持仓属于研究层，不使用缺失数据硬凑分数。",
+  "headline": "EUA/CBAM研究层：数据不足，暂不形成加速采购信号",
+  "summary": "已核实公共自动层为V2.0.0，保留其70分评分结果，不重复打分。远期曲线、能源基本面和市场持仓缺少足够可靠且同步的可比数据，研究层30分暂不量化，不能计算完整总分或给出完整采购覆盖比例。",
   "bullets": [
-    "2026进口义务继续按进口季度固定价格管理，不做价格择时。",
-    "2027当年义务才使用周度价格和采购评分进行择时。",
-    "出现明确加速采购窗口时，ChatGPT监控任务会单独提醒。"
+    "研究层权重：远期曲线与期限结构12分；ETS/CBAM政策、MSR及拍卖制度8分；天然气、煤电切换、电力及工业排放6分；技术面、持仓、资金流与拥挤度4分。缺失数据不加分。",
+    "2026年进口义务按相应进口季度固定价格管理，不做择时；重点核对数量、现金流、交证及回购注销安排。",
+    "2027年及以后当年进口义务适用周度CBAM价格；只有可靠研究层评分有效时才计算完整100分及采购覆盖建议。",
+    "Article 22(2)季度最低底仓必须独立核算，不得简单用最终年度交证量乘50%替代。",
+    "Common Central Platform单笔购买限制、费用、付款锁价、回购及注销细则以最终有效法规为准，不把草案视为生效规则。",
+    "当前未确认达到加速采购窗口；缺少企业义务及持仓数据，不能判断季度底仓是否充足。"
+  ],
+  "sources": [
+    "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
   ]
 }
