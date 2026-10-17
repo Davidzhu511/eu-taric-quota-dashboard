@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "checked_at": "2026-10-17T08:30:00+00:00",
+    "data_date": "2026-10-16",
+    "status": "seed",
+    "errors": ["Initial seed data: the GitHub Action will replace this file with live EEX auction data on its first successful run."],
+    "methodology_version": "1.0.0"
+  },
+  "sources": {
+    "eex_auction_report": "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
+    "eex_auction_page": "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
+    "eex_cbam_reference": "https://www.eex.com/en/markets/environmentals/environmental-indices",
+    "ec_cbam_price": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
+  },
+  "official_cbam_prices": [
+    {"year": 2026, "quarter": 1, "price": 75.36, "publication_date": "7 April 2026"},
+    {"year": 2026, "quarter": 2, "price": 75.28, "publication_date": "6 July 2026"},
+    {"year": 2026, "quarter": 3, "price": 82.32, "publication_date": "5 October 2026"},
+    {"year": 2026, "quarter": 4, "price": null, "publication_date": "4 January 2027"}
+  ],
+  "auction_supply": {
+    "2026": {"cap_common": 387582000, "germany": 55608000, "poland": 40609500, "northern_ireland": 584000, "total": 484383500},
+    "2027": {"cap_common": 364476500, "germany": 77631500, "poland": 49770500, "northern_ireland": 896500, "total": 492775000}
+  },
+  "auctions": [],
+  "auction_analytics": {
+    "latest": null,
+    "weekly": [],
+    "quarterly": [],
+    "stats": {}
+  },
+  "public_score": {"score": null, "max_score": 70, "confidence": "low", "components": []},
+  "analysis": {
+    "headline": "等待GitHub Actions首次抓取EEX官方拍卖报告",
+    "stance": "wait",
+    "bullets": ["页面已上线后，自动任务会以EEX一级拍卖报告替换这份种子数据。"]
+  }
+}
