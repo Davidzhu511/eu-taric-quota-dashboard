@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>EUA / CBAM 采购决策看板</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">EU CARBON PROCUREMENT</div>
+      <h1>EUA / CBAM 采购决策看板</h1>
+      <p>官方拍卖数据 → CBAM价格估算 → 合规底仓 → 采购窗口</p>
+    </div>
+    <div class="header-actions">
+      <a href="../" class="button ghost">返回配额看板</a>
+      <button id="refreshBtn" class="button">刷新数据</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="status-strip">
+      <div><span>数据日期</span><strong id="dataDate">—</strong></div>
+      <div><span>最近更新</span><strong id="checkedAt">—</strong></div>
+      <div><span>状态</span><strong id="dataStatus">—</strong></div>
+      <div><span>模型版本</span><strong id="modelVersion">—</strong></div>
+    </section>
+
+    <section class="grid kpis">
+      <article class="card accent">
+        <div class="label">最新EUA拍卖价</div>
+        <div class="value" id="latestAuction">—</div>
+        <div class="sub" id="latestAuctionDate">EEX Primary Auction</div>
+      </article>
+      <article class="card">
+        <div class="label">本周拍卖加权均价</div>
+        <div class="value" id="weeklyVwap">—</div>
+        <div class="sub" id="weeklyAuctions">—</div>
+      </article>
+      <article class="card">
+        <div class="label">本季度拍卖加权均价</div>
+        <div class="value" id="quarterVwap">—</div>
+        <div class="sub">官方价公布前的透明估算</div>
+      </article>
+      <article class="card">
+        <div class="label">52周拍卖区间位置</div>
+        <div class="value" id="rangePosition">—</div>
+        <div class="sub" id="rangeText">—</div>
+      </article>
+    </section>
+
+    <section class="grid two-col">
+      <article class="card decision-card">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">PROCUREMENT SIGNAL</div>
+            <h2>采购信号</h2>
+          </div>
+          <div class="score-wrap">
+            <div id="scoreGauge" class="score-gauge"><span id="totalScore">—</span></div>
+            <small id="scoreScale">公共数据分 / 70</small>
+          </div>
+        </div>
+        <h3 id="analysisHeadline">正在读取数据…</h3>
+        <div id="stanceBadge" class="badge neutral">监控</div>
+        <ul id="analysisBullets" class="analysis-list"></ul>
+        <div class="coverage-box">
+          <div><span>建议覆盖率</span><strong id="coverageTarget">—</strong></div>
+          <div><span>适用对象</span><strong>2027当年义务</strong></div>
+        </div>
+        <p class="fineprint">本页公共数据评分最多70分。完整100分模型中的EUA远期曲线、政策/MSR、能源基本面与持仓/技术面由“研究层”补充；2026进口义务不参与择时。</p>
+      </article>
+
+      <article class="card">
+        <div class="section-head"><h2>评分拆解</h2><span class="muted">自动计算</span></div>
+        <div id="scoreComponents" class="score-components"></div>
+      </article>
+    </section>
+
+    <section class="card chart-card">
+      <div class="section-head">
+        <div>
+          <h2>每周CBAM参考价格走势</h2>
+          <p class="muted">按EEX EUA一级拍卖清算价 × 拍卖量加权计算；2027起与官方周度方法同源。</p>
+        </div>
+        <div class="legend"><span class="dot"></span> Weekly auction VWAP</div>
+      </div>
+      <div id="weeklyChart" class="chart" aria-label="weekly CBAM reference price chart"></div>
+    </section>
+
+    <section class="grid two-col">
+      <article class="card">
+        <div class="section-head"><h2>2026固定价义务</h2><span class="badge fixed">不择时</span></div>
+        <table>
+          <thead><tr><th>进口季度</th><th>官方价格</th><th>状态</th></tr></thead>
+          <tbody id="officialPrices"></tbody>
+        </table>
+        <p class="fineprint">2027年付款购买2026义务证书时，仍按2026进口所在季度的价格结算。采购时点只影响现金流，不改变单价。</p>
+      </article>
+
+      <article class="card">
+        <div class="section-head"><h2>2027采购纪律</h2><span class="badge live">周度择时</span></div>
+        <div class="rules">
+          <div><strong>合规底仓</strong><p>季度末至少持有Article 22(2)口径YTD义务的50%，单独于最终年度交证量计算。</p></div>
+          <div><strong>战术采购</strong><p>低分维持底仓；公共数据与研究层共同支持时逐步提高到60% / 70% / 85% / 100%。</p></div>
+          <div><strong>禁止投机囤证</strong><p>100%是内部风险政策上限，不是法律账户上限；回购与无偿注销规则限制超买价值。</p></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid two-col">
+      <article class="card">
+        <div class="section-head"><h2>拍卖供给</h2><span class="muted">EEX公开页</span></div>
+        <div id="supplyCards" class="mini-grid"></div>
+      </article>
+      <article class="card">
+        <div class="section-head"><h2>研究层</h2><span id="researchStatus" class="muted">—</span></div>
+        <h3 id="researchHeadline">等待研究更新</h3>
+        <div id="researchBody" class="research-body"></div>
+      </article>
+    </section>
+
+    <section class="card">
+      <div class="section-head"><h2>数据质量与官方来源</h2><span class="muted">可审计</span></div>
+      <div id="errors" class="warnings"></div>
+      <div id="sources" class="sources"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>用于企业CBAM采购与风险管理，不构成金融投资建议。CBAM法律结算以欧盟委员会、CBAM Registry及主管机关最终规则为准。</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
