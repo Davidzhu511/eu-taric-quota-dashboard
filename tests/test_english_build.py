@@ -29,5 +29,12 @@ class EnglishBuildTests(unittest.TestCase):
         for broken in ['CSVExport', 'JSONExport', '058608remaining', '058608Balance', 'carryover、']:
             self.assertNotIn(broken, en)
 
+    def test_exhausted_card_badge_is_not_estimated_excess(self):
+        zh = (ROOT/'index.html').read_text()
+        en = translate(zh)
+        self.assertIn('.quota-card.high.exhausted::before { content: "已耗尽"; }', zh)
+        self.assertIn('${exhausted ? "exhausted" : ""}', zh)
+        self.assertIn('.quota-card.high.exhausted::before { content: "Exhausted"; }', en)
+
     def test_new_untranslated_label_fails_build(self):
         with self.assertRaises(ValueError):translate('<span>新增漏译词汇</span>')
