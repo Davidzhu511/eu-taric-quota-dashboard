@@ -1,0 +1,70 @@
+name: Update CBAM procurement dashboard data
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Runs after the day's main EU ETS1 auctions. 17:30 UTC = 18:30 CET / 19:30 CEST.
+    - cron: "30 17 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cbam-dashboard-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch EEX and Commission CBAM data
+        run: python scripts/update_cbam_dashboard.py
+
+      - name: Validate generated JSON
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('cbam/data/current.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          assert d['meta']['status'] in ('ok', 'degraded')
+          assert d['meta'].get('checked_at')
+          assert 'official_cbam_prices' in d
+          assert 'auction_analytics' in d
+          assert 'public_score' in d
+          if d['meta']['status'] == 'ok':
+              assert d['auction_analytics']['stats'].get('latest_price') is not None
+          print('CBAM JSON validation OK')
+          PY
+
+      - name: Commit refreshed CBAM data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cbam/data/current.json cbam/data/history
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh CBAM procurement dashboard"
+            for attempt in 1 2 3; do
+              git pull --rebase origin main
+              if git push; then
+                break
+              fi
+              if [[ "$attempt" -eq 3 ]]; then exit 1; fi
+            done
+          fi

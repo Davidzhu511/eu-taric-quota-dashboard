@@ -11,11 +11,13 @@ on:
     paths:
       - "index.html"
       - "uk.html"
+      - "cbam/**"
       - "scripts/**"
       - "quarterly-summary.*"
       - "tests/**"
       - "requirements.txt"
       - ".github/workflows/update-and-deploy.yml"
+      - ".github/workflows/update-cbam.yml"
 
 permissions:
   contents: write
@@ -194,13 +196,14 @@ jobs:
 
       - name: Prepare static site
         run: |
-          mkdir -p _site/data
+          mkdir -p _site/data _site/cbam
           cp index.html _site/index.html
           cp uk.html _site/uk.html
           python scripts/inject_uk_nav.py _site/index.html
           cp quarterly-summary.js quarterly-summary.css _site/
           python scripts/build_english_pages.py _site
           cp -R data/. _site/data/
+          cp -R cbam/. _site/cbam/
           touch _site/.nojekyll
 
       - name: Configure GitHub Pages
