@@ -3,19 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="light dark" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#f4efe3" />
   <title>EUA / CBAM 采购决策看板</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="topbar">
     <div>
-      <div class="eyebrow">EU CARBON PROCUREMENT</div>
+      <div class="eyebrow">欧盟碳成本采购管理</div>
       <h1>EUA / CBAM 采购决策看板</h1>
-      <p>官方拍卖数据 → CBAM价格估算 → 合规底仓 → 采购窗口</p>
+      <p>自动跟踪EUA一级拍卖、CBAM价格形成与供给变化，结合每日研究层判断采购窗口。</p>
     </div>
     <div class="header-actions">
-      <a href="../" class="button ghost">返回配额看板</a>
+      <a href="../" class="button ghost">返回钢铁配额看板</a>
       <button id="refreshBtn" class="button">刷新数据</button>
     </div>
   </header>
@@ -24,15 +25,15 @@
     <section class="status-strip">
       <div><span>数据日期</span><strong id="dataDate">—</strong></div>
       <div><span>最近更新</span><strong id="checkedAt">—</strong></div>
-      <div><span>状态</span><strong id="dataStatus">—</strong></div>
+      <div><span>数据状态</span><strong id="dataStatus">—</strong></div>
       <div><span>模型版本</span><strong id="modelVersion">—</strong></div>
     </section>
 
     <section class="grid kpis">
       <article class="card accent">
-        <div class="label">最新EUA拍卖价</div>
+        <div class="label">最新EUA一级拍卖价</div>
         <div class="value" id="latestAuction">—</div>
-        <div class="sub" id="latestAuctionDate">EEX Primary Auction</div>
+        <div class="sub" id="latestAuctionDate">EEX一级拍卖</div>
       </article>
       <article class="card">
         <div class="label">本周拍卖加权均价</div>
@@ -42,10 +43,10 @@
       <article class="card">
         <div class="label">本季度拍卖加权均价</div>
         <div class="value" id="quarterVwap">—</div>
-        <div class="sub">官方价公布前的透明估算</div>
+        <div class="sub">官方价格公布前的透明跟踪值</div>
       </article>
       <article class="card">
-        <div class="label">52周拍卖区间位置</div>
+        <div class="label">52周价格区间位置</div>
         <div class="value" id="rangePosition">—</div>
         <div class="sub" id="rangeText">—</div>
       </article>
@@ -55,12 +56,12 @@
       <article class="card decision-card">
         <div class="section-head">
           <div>
-            <div class="eyebrow">PROCUREMENT SIGNAL</div>
-            <h2>采购信号</h2>
+            <div class="eyebrow">采购判断</div>
+            <h2>当前采购信号</h2>
           </div>
           <div class="score-wrap">
             <div id="scoreGauge" class="score-gauge"><span id="totalScore">—</span></div>
-            <small id="scoreScale">公共数据分 / 70</small>
+            <small id="scoreScale">公共自动层 / 70</small>
           </div>
         </div>
         <h3 id="analysisHeadline">正在读取数据…</h3>
@@ -68,69 +69,135 @@
         <ul id="analysisBullets" class="analysis-list"></ul>
         <div class="coverage-box">
           <div><span>建议覆盖率</span><strong id="coverageTarget">—</strong></div>
-          <div><span>适用对象</span><strong>2027当年义务</strong></div>
+          <div><span>适用范围</span><strong>2027及以后当年义务</strong></div>
         </div>
-        <p class="fineprint">本页公共数据评分最多70分。完整100分模型中的EUA远期曲线、政策/MSR、能源基本面与持仓/技术面由“研究层”补充；2026进口义务不参与择时。</p>
+        <p class="fineprint">只有“公共自动层70分 + 每日研究层30分”均有效时，才输出完整100分采购覆盖建议。研究层缺失时，本页只提供公共数据观察信号，避免把不完整信息误当成最终采购指令。</p>
       </article>
 
       <article class="card">
-        <div class="section-head"><h2>评分拆解</h2><span class="muted">自动计算</span></div>
+        <div class="section-head"><h2>公共自动层评分</h2><span class="muted">V2 · 最高70分</span></div>
         <div id="scoreComponents" class="score-components"></div>
       </article>
+    </section>
+
+    <section class="card model-card">
+      <div class="section-head">
+        <div>
+          <h2>模型V2：不是“越跌越买”，而是“便宜 + 止跌确认”</h2>
+          <p class="muted">减少价格因子的重复计权，并避免持续下跌阶段出现虚假的高采购分。</p>
+        </div>
+      </div>
+      <div class="model-grid">
+        <div><span>20分</span><strong>52周价格位置</strong><p>判断当前EUA拍卖价在过去一年处于高位还是低位。</p></div>
+        <div><span>15分</span><strong>相对13周均价折价</strong><p>衡量当前周度加权价相对中期基准是否真正便宜。</p></div>
+        <div><span>15分</span><strong>止跌 / 反转确认</strong><p>持续下跌不再自动加分；横盘、企稳或反转后才提高采购分。</p></div>
+        <div><span>10分</span><strong>已完成周拍卖供给</strong><p>仅比较完整周，避免周中数据不完整造成“供给突然收缩”的假信号。</p></div>
+        <div><span>10分</span><strong>下一年度拍卖供给</strong><p>观察下一年度EUA一级拍卖总供应增减，反映结构性供给压力。</p></div>
+        <div class="research-tile"><span>30分</span><strong>每日研究层</strong><p>EUA远期曲线、MSR/政策、能源与电力基本面、技术面与市场持仓。</p></div>
+      </div>
     </section>
 
     <section class="card chart-card">
       <div class="section-head">
         <div>
           <h2>每周CBAM参考价格走势</h2>
-          <p class="muted">按EEX EUA一级拍卖清算价 × 拍卖量加权计算；2027起与官方周度方法同源。</p>
+          <p class="muted">按EEX EUA一级拍卖清算价 × 拍卖量加权。2027年起，欧委会CBAM周度价格采用同类底层拍卖数据。</p>
         </div>
-        <div class="legend"><span class="dot"></span> Weekly auction VWAP</div>
+        <div class="legend"><span class="dot"></span> 周度拍卖加权均价</div>
       </div>
-      <div id="weeklyChart" class="chart" aria-label="weekly CBAM reference price chart"></div>
+      <div id="weeklyChart" class="chart" aria-label="CBAM周度参考价格走势图"></div>
+    </section>
+
+    <section class="card relationship-card">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">价格传导机制</div>
+          <h2>CBAM 与 EU ETS 到底是什么关系？</h2>
+          <p class="muted">CBAM证书不是EUA，但CBAM的价格锚直接来自EU ETS一级拍卖。</p>
+        </div>
+      </div>
+
+      <div class="flow">
+        <div class="flow-box"><strong>EU ETS基本面</strong><span>总量上限（Cap）· MSR · 拍卖供应 · 能源价格 · 电力与工业排放 · 天气与可再生能源 · 政策预期</span></div>
+        <div class="arrow">↓</div>
+        <div class="flow-row">
+          <div class="flow-box"><strong>EUA二级市场</strong><span>现货、期货、套保与金融持仓承担主要价格发现功能</span></div>
+          <div class="double-arrow">⇄</div>
+          <div class="flow-box"><strong>EEX EUA一级拍卖</strong><span>形成Auction Clearing Price；套利和做市使其难以长期脱离二级市场</span></div>
+        </div>
+        <div class="arrow">↓ 成交量加权</div>
+        <div class="flow-box highlight"><strong>CBAM Certificate 法定价格</strong><span>2026：按进口季度的EUA拍卖加权均价锁定 · 2027起：按周度EUA拍卖加权均价定价</span></div>
+      </div>
+
+      <div class="explain-grid">
+        <div>
+          <h3>1. CBAM证书没有独立的自由二级市场</h3>
+          <p>EUA是EU ETS的可交易排放配额，可以在一级拍卖和二级现货/衍生品市场交易；CBAM certificate主要是进口商的行政履约凭证，不能像EUA一样自由转手交易。因此不存在一个独立的“CBAM市场情绪”直接形成碳证价格。</p>
+        </div>
+        <div>
+          <h3>2. CBAM价格直接锚定EUA一级拍卖</h3>
+          <p>CBAM定价公式读取EU ETS拍卖清算价，并按拍卖成交量加权。也就是说，法律上的直接链条是“EUA一级拍卖价 → CBAM证书价”。2026年采用季度均价；从2027年起改为周度均价，因此采购时点开始真正影响2027当年义务的购证成本。</p>
+        </div>
+        <div>
+          <h3>3. EUA二级市场虽然不直接进入公式，但会间接影响CBAM</h3>
+          <p>期货和现货市场承担价格发现、套保和套利功能。若二级市场价格明显高于或低于一级拍卖，参与者会调整投标和交易，因此两者很难长期脱节。EUA期货曲线、现货价格、金融持仓最终会通过拍卖价格间接传导至CBAM。</p>
+        </div>
+        <div>
+          <h3>4. 大量购买CBAM证书不会机械推高下一场EUA拍卖</h3>
+          <p>购买1张CBAM证书并不意味着欧盟必须同步在市场买入或注销1张EUA，因此不存在“CBAM抢购 → 自动产生等量EUA买盘”的一对一机制。但如果进口商或金融机构为了未来CBAM负债使用EUA期货等工具套保，可能先影响二级市场，再间接传导至一级拍卖和未来CBAM价格。</p>
+        </div>
+        <div>
+          <h3>5. EEX周度CBAM参考价的用途</h3>
+          <p>EEX周度CBAM Reference Price与欧委会官方价格使用同源的EUA拍卖数据，因此非常适合跟踪“本周价格正在往哪里形成”；但它本质上是参考指标，最终法律结算仍以欧委会正式公布的CBAM certificate price为准。</p>
+        </div>
+        <div>
+          <h3>6. 对公司采购最重要的结论</h3>
+          <p>2026进口义务的单价已经按季度锁定，2027付款早晚主要影响现金流；2027及以后当年进口义务才需要重点判断周度价格、远期曲线和供给趋势，以决定维持50%合规底仓还是提高到60% / 70% / 85% / 100%的高置信度覆盖水平。</p>
+        </div>
+      </div>
     </section>
 
     <section class="grid two-col">
       <article class="card">
-        <div class="section-head"><h2>2026固定价义务</h2><span class="badge fixed">不择时</span></div>
+        <div class="section-head"><h2>2026固定价义务</h2><span class="badge fixed">价格不择时</span></div>
         <table>
           <thead><tr><th>进口季度</th><th>官方价格</th><th>状态</th></tr></thead>
           <tbody id="officialPrices"></tbody>
         </table>
-        <p class="fineprint">2027年付款购买2026义务证书时，仍按2026进口所在季度的价格结算。采购时点只影响现金流，不改变单价。</p>
+        <p class="fineprint">2027年实际付款购买2026义务证书时，仍按货物在2026年的进口季度价格结算。采购时点只影响现金流，不改变该季度单价。</p>
       </article>
 
       <article class="card">
-        <div class="section-head"><h2>2027采购纪律</h2><span class="badge live">周度择时</span></div>
+        <div class="section-head"><h2>2027及以后采购纪律</h2><span class="badge live">周度择时</span></div>
         <div class="rules">
-          <div><strong>合规底仓</strong><p>季度末至少持有Article 22(2)口径YTD义务的50%，单独于最终年度交证量计算。</p></div>
-          <div><strong>战术采购</strong><p>低分维持底仓；公共数据与研究层共同支持时逐步提高到60% / 70% / 85% / 100%。</p></div>
-          <div><strong>禁止投机囤证</strong><p>100%是内部风险政策上限，不是法律账户上限；回购与无偿注销规则限制超买价值。</p></div>
+          <div><strong>合规底仓优先</strong><p>季度末至少持有Article 22(2)口径YTD义务的50%，该口径应与最终年度交证量分开计算。</p></div>
+          <div><strong>模型只决定底仓以上的采购幅度</strong><p>完整100分模型从低到高对应仅维持底仓、60%、70%、85%及接近100%的高置信度预计义务。</p></div>
+          <div><strong>避免投机性超买</strong><p>100%是内部风险政策上限，不是法律账户上限；回购限制、无偿注销和资金占用都会降低超买价值。</p></div>
         </div>
       </article>
     </section>
 
     <section class="grid two-col">
       <article class="card">
-        <div class="section-head"><h2>拍卖供给</h2><span class="muted">EEX公开页</span></div>
+        <div class="section-head"><h2>EUA一级拍卖供给</h2><span class="muted">EEX公开数据</span></div>
         <div id="supplyCards" class="mini-grid"></div>
       </article>
       <article class="card">
-        <div class="section-head"><h2>研究层</h2><span id="researchStatus" class="muted">—</span></div>
+        <div class="section-head"><h2>每日研究层</h2><span id="researchStatus" class="muted">—</span></div>
         <h3 id="researchHeadline">等待研究更新</h3>
         <div id="researchBody" class="research-body"></div>
       </article>
     </section>
 
     <section class="card">
-      <div class="section-head"><h2>数据质量与官方来源</h2><span class="muted">可审计</span></div>
+      <div class="section-head"><h2>数据质量与官方来源</h2><span class="muted">可追溯 · 可审计</span></div>
       <div id="errors" class="warnings"></div>
       <div id="sources" class="sources"></div>
     </section>
   </main>
 
   <footer>
-    <p>用于企业CBAM采购与风险管理，不构成金融投资建议。CBAM法律结算以欧盟委员会、CBAM Registry及主管机关最终规则为准。</p>
+    <p>本看板用于企业CBAM采购、成本预测与风险管理，不构成金融投资建议。CBAM最终法律结算以欧盟委员会、CBAM Registry及主管机关正式规则为准。</p>
   </footer>
   <script src="app.js"></script>
 </body>
