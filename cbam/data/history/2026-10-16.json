@@ -1,6 +1,6 @@
 {
   "meta": {
-    "checked_at": "2026-10-17T09:03:11.873948+00:00",
+    "checked_at": "2026-10-17T09:03:52.528887+00:00",
     "data_date": "2026-10-16",
     "status": "ok",
     "errors": [],
@@ -47,11 +47,11 @@
       "total": 484383500
     },
     "2027": {
-      "cap_common": 1,
-      "germany": 364476500,
-      "poland": 77631500,
-      "northern_ireland": 49770500,
-      "total": 491878501
+      "cap_common": 364476500,
+      "germany": 77631500,
+      "poland": 49770500,
+      "northern_ireland": 896500,
+      "total": 492775000
     }
   },
   "auctions": [
