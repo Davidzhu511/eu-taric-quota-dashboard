@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
-"""Compatibility runner for the EEX auction workbook layout.
-
-EEX's public annual workbook can place its tabular header below the first 30 rows.
-Keep the core updater stable while widening header discovery for the live workbook.
-"""
+"""Compatibility runner for the live EEX annual auction workbook."""
 from __future__ import annotations
 
+from io import BytesIO
+from openpyxl import load_workbook
 import update_cbam_dashboard as base
 
 
 def wide_find_header_row(ws):
     for row_idx, row in enumerate(
-        ws.iter_rows(min_row=1, max_row=min(ws.max_row, 250), values_only=True), start=1
+        ws.iter_rows(min_row=1, max_row=min(ws.max_row, 500), values_only=True), start=1
     ):
         labels = [base.norm(v) for v in row]
         date_i = next((i for i, x in enumerate(labels) if "auction date" in x), None)
@@ -34,4 +32,28 @@ def wide_find_header_row(ws):
 
 
 base.find_header_row = wide_find_header_row
+_original_parse = base.parse_auction_xlsx
+
+
+def debug_parse(content: bytes):
+    rows = _original_parse(content)
+    if rows:
+        return rows
+    wb = load_workbook(BytesIO(content), read_only=True, data_only=False)
+    print("EEX workbook diagnostics:")
+    for ws in wb.worksheets:
+        print(f"SHEET {ws.title!r} rows={ws.max_row} cols={ws.max_column}")
+        shown = 0
+        for ridx, row in enumerate(ws.iter_rows(values_only=True), start=1):
+            vals = [(i + 1, v) for i, v in enumerate(row) if v not in (None, "")]
+            if vals:
+                clipped = [(i, str(v)[:120]) for i, v in vals[:12]]
+                print(f"ROW {ridx}: {clipped}")
+                shown += 1
+                if shown >= 35:
+                    break
+    return rows
+
+
+base.parse_auction_xlsx = debug_parse
 raise SystemExit(base.main())
