@@ -1,59 +1,61 @@
 #!/usr/bin/env python3
-"""Compatibility runner for the live EEX annual auction workbook."""
+"""Compatibility runner for the live EEX annual auction workbook.
+
+The live 2026 workbook uses shorter headings than the DataSource interface
+specification (for example: Date / Auction Price €/tCO2 / Auction Volume tCO2).
+This runner accepts both layouts and delegates all analytics to the core updater.
+"""
 from __future__ import annotations
 
-from io import BytesIO
-from openpyxl import load_workbook
 import update_cbam_dashboard as base
 
 
-def wide_find_header_row(ws):
+def live_find_header_row(ws):
     for row_idx, row in enumerate(
-        ws.iter_rows(min_row=1, max_row=min(ws.max_row, 500), values_only=True), start=1
+        ws.iter_rows(min_row=1, max_row=min(ws.max_row, 100), values_only=True), start=1
     ):
         labels = [base.norm(v) for v in row]
-        date_i = next((i for i, x in enumerate(labels) if "auction date" in x), None)
-        price_i = next((i for i, x in enumerate(labels) if "auction clearing price" in x), None)
-        vol_i = next((i for i, x in enumerate(labels) if "auction volume" in x), None)
+
+        date_i = next(
+            (i for i, x in enumerate(labels) if x == "date" or "auction date" in x),
+            None,
+        )
+        price_i = next(
+            (
+                i
+                for i, x in enumerate(labels)
+                if "auction clearing price" in x
+                or x.startswith("auction price")
+                or "auction price €" in x
+            ),
+            None,
+        )
+        vol_i = next(
+            (i for i, x in enumerate(labels) if "auction volume" in x),
+            None,
+        )
         if date_i is None or price_i is None or vol_i is None:
             continue
+
         mapping = {"date": date_i, "price": price_i, "volume": vol_i}
-        status_i = next((i for i, x in enumerate(labels) if x == "status" or x.endswith(" status")), None)
+        status_i = next(
+            (i for i, x in enumerate(labels) if x == "status" or x.endswith(" status")),
+            None,
+        )
         if status_i is not None:
             mapping["status"] = status_i
         contract_i = next((i for i, x in enumerate(labels) if x == "contract"), None)
         if contract_i is not None:
             mapping["contract"] = contract_i
-        auction_i = next((i for i, x in enumerate(labels) if x == "auction name"), None)
+        auction_i = next(
+            (i for i, x in enumerate(labels) if x in ("auction name", "auction")),
+            None,
+        )
         if auction_i is not None:
             mapping["auction_name"] = auction_i
         return row_idx, mapping
     return None
 
 
-base.find_header_row = wide_find_header_row
-_original_parse = base.parse_auction_xlsx
-
-
-def debug_parse(content: bytes):
-    rows = _original_parse(content)
-    if rows:
-        return rows
-    wb = load_workbook(BytesIO(content), read_only=True, data_only=False)
-    print("EEX workbook diagnostics:")
-    for ws in wb.worksheets:
-        print(f"SHEET {ws.title!r} rows={ws.max_row} cols={ws.max_column}")
-        shown = 0
-        for ridx, row in enumerate(ws.iter_rows(values_only=True), start=1):
-            vals = [(i + 1, v) for i, v in enumerate(row) if v not in (None, "")]
-            if vals:
-                clipped = [(i, str(v)[:120]) for i, v in vals[:12]]
-                print(f"ROW {ridx}: {clipped}")
-                shown += 1
-                if shown >= 35:
-                    break
-    return rows
-
-
-base.parse_auction_xlsx = debug_parse
+base.find_header_row = live_find_header_row
 raise SystemExit(base.main())
