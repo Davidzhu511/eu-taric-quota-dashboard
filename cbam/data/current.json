@@ -1,10 +1,10 @@
 {
   "meta": {
-    "checked_at": "2026-10-17T09:07:10.625792+00:00",
+    "checked_at": "2026-10-17T09:38:00.850783+00:00",
     "data_date": "2026-10-16",
     "status": "ok",
     "errors": [],
-    "methodology_version": "1.0.0"
+    "methodology_version": "2.0.0"
   },
   "sources": {
     "eex_auction_report": "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
@@ -1824,50 +1824,63 @@
     }
   },
   "public_score": {
-    "score": 19.2,
+    "score": 23.7,
     "max_score": 70,
-    "confidence": "medium",
+    "confidence": "high",
     "components": [
       {
-        "name": "52-week price attractiveness",
-        "score": 5.0,
-        "max": 25
+        "name": "52周价格位置",
+        "score": 4.0,
+        "max": 20,
+        "value": 0.7997,
+        "note": "价格越靠近52周低位，估值分越高"
       },
       {
-        "name": "discount vs 13-week auction average",
+        "name": "相对13周均价折价",
         "score": 4.1,
         "max": 15,
-        "value": -0.0359
+        "value": -0.0359,
+        "note": "衡量当前周度拍卖均价相对中期基准是否便宜"
       },
       {
-        "name": "short-term auction price trend",
+        "name": "止跌 / 反转确认",
+        "score": 10.5,
+        "max": 15,
+        "value": 0.011,
+        "note": "持续下跌不再自动加分；横盘或反转后才提高采购分"
+      },
+      {
+        "name": "已完成周拍卖供给动量",
+        "score": 0.8,
+        "max": 10,
+        "value": 0.1661,
+        "note": "排除本周未完成数据，避免假性供给收缩"
+      },
+      {
+        "name": "下一年度拍卖供给方向",
         "score": 4.1,
         "max": 10,
-        "value": 0.011
-      },
-      {
-        "name": "auction supply momentum",
-        "score": 2.8,
-        "max": 10,
-        "value": 0.0873
-      },
-      {
-        "name": "quarter-on-quarter auction price",
-        "score": 3.2,
-        "max": 10,
-        "value": 0.0364
+        "value": 0.0173,
+        "note": "下一年度拍卖供应减少会提高提前采购分"
       }
     ]
   },
   "analysis": {
-    "headline": "Public auction data do not justify accelerating purchases beyond compliance needs",
+    "headline": "公共数据暂不支持在合规需要之外加速采购",
     "stance": "minimum",
     "bullets": [
-      "Latest EEX auction clearing price: €85.50/tCO₂ on 2026-10-16.",
-      "Trailing 52-week auction range: €62.19–€91.34; current position 80% from the low.",
-      "Current-week auction VWAP estimate: €86.37/tCO₂ across 5 auctions.",
-      "Current-quarter auction VWAP estimate: €85.32/tCO₂; this is an estimate until the Commission publishes the official price where applicable.",
-      "The automated public-data score is capped at 70/100. Forward-curve, policy/MSR, energy and positioning overlays require separate research and should not be inferred from this number alone."
+      "最新EEX EUA一级拍卖清算价：€85.50/tCO₂（2026-10-16）。",
+      "过去52周拍卖区间：€62.19–€91.34；当前位于自低点向上的约80%位置。",
+      "V2模型不再把单纯下跌视为买点；只有价格具有相对吸引力且出现止跌/反转确认，采购分才会明显上升。",
+      "本周截至最新拍卖的成交量加权均价：€86.37/tCO₂，共5场拍卖。",
+      "本季度截至目前拍卖加权均价：€85.32/tCO₂；在官方价格发布前仅作为透明跟踪值。",
+      "公共自动层最高70分；EUA远期曲线、政策/MSR、能源基本面和持仓/技术面由每日研究层补充至100分。"
     ]
+  },
+  "model": {
+    "version": "2.0.0",
+    "public_layer_max": 70,
+    "research_layer_max": 30,
+    "principle": "价格吸引力 + 止跌确认 + 拍卖供给；避免重复计权和 falling-knife 信号"
   }
 }
