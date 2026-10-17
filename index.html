@@ -289,6 +289,7 @@
       font-weight: 800;
       letter-spacing: 0.04em;
     }
+    .quota-card.high.exhausted::before { content: "已耗尽"; }
     .quota-card.high .card-head { padding-top: 18px; }
     .quota-card.high .tariff { border-color: var(--danger); background: var(--danger-soft); }
     .quota-card.high .tariff strong { color: var(--danger); }
@@ -602,7 +603,7 @@
         const futureLabel = row.not_yet_effective ? '<span class="badge">尚未生效</span>' : "";
         const detailHref = row.detail_url || row.url || "#";
         return `
-          <article class="quota-card ${risk} ${stale}">
+          <article class="quota-card ${risk} ${exhausted ? "exhausted" : ""} ${stale}">
             <div class="card-head">
               <span><span class="badge">${escapeHtml(row.category)}</span> ${futureLabel}</span>
               <a class="code-link" href="${escapeHtml(detailHref)}" target="_blank" rel="noopener noreferrer">${escapeHtml(row.code)}</a>
