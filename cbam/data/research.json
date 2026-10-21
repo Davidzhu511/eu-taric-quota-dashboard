@@ -2,7 +2,12 @@
   "meta": {
     "updated_at": "2026-10-17T18:34:00+00:00",
     "status": "partial_data",
-    "confidence": "低：缺少经交叉验证的远期曲线及持仓资金流数据；仅核实公共层更新正常"
+    "confidence": "低：缺少经交叉验证的远期曲线及持仓资金流数据；仅核实公共层更新正常",
+    "write_diagnostic": {
+      "checked_on": "2026-10-21",
+      "result": "connector-write-test-only",
+      "note": "仅用于确认GitHub连接器是否可写；不代表研究更新，不改变原研究日期、置信度或评分"
+    }
   },
   "overlay_score": null,
   "headline": "EUA/CBAM研究层：数据不足，暂不形成加速采购信号",
