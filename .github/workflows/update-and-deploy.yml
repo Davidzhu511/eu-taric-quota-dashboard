@@ -11,13 +11,18 @@ on:
     paths:
       - "index.html"
       - "uk.html"
-      - "cbam/**"
-      - "scripts/**"
+      - "cbam/data/research.json"
+      - "scripts/build_english_pages.py"
+      - "scripts/build_quarterly_summary.py"
+      - "scripts/inject_uk_nav.py"
+      - "scripts/update_dashboard.py"
+      - "scripts/update_uk_dashboard.py"
       - "quarterly-summary.*"
-      - "tests/**"
+      - "tests/test_english_build.py"
+      - "tests/test_quarter_transition.py"
+      - "tests/test_quarterly_summary.py"
       - "requirements.txt"
       - ".github/workflows/update-and-deploy.yml"
-      - ".github/workflows/update-cbam.yml"
 
 permissions:
   contents: write
