@@ -10,6 +10,8 @@ on:
     paths:
       - "scripts/update_cbam_dashboard.py"
       - "scripts/update_cbam_dashboard_runner.py"
+      - "scripts/ensure_cbam_research.py"
+      - "tests/test_cbam_research_fallback.py"
       - "cbam/index.html"
       - "cbam/app.js"
       - "cbam/style.css"
@@ -67,11 +69,38 @@ jobs:
           print('CBAM JSON validation OK')
           PY
 
+      - name: Test CBAM fallback and research freshness guardrails
+        run: python -m unittest discover -s tests -p "test_cbam_research_fallback.py" -v
+
+      - name: Ensure independently updated research JSON every day
+        run: python scripts/ensure_cbam_research.py
+
+      - name: Validate public research status and no fabricated overlay
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          current = json.loads(Path("cbam/data/current.json").read_text(encoding="utf-8"))
+          research = json.loads(Path("cbam/data/research.json").read_text(encoding="utf-8"))
+          meta = research["meta"]
+          for key in ("updated_at", "status", "confidence", "public_data_date"):
+              assert meta.get(key), f"missing research metadata: {key}"
+          assert meta["public_data_date"] == current["meta"]["data_date"]
+          score = research.get("overlay_score")
+          if score is None:
+              print("Research overlay unscored: safe public-data-only mode")
+          else:
+              assert type(score) in (int, float) and 0 <= score <= 30
+              assert meta["status"] in ("scored", "validated")
+              assert meta["confidence"] in ("medium", "high")
+          print("CBAM research JSON validation OK")
+          PY
+
       - name: Commit refreshed CBAM data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cbam/data/current.json cbam/data/history
+          git add cbam/data/current.json cbam/data/history cbam/data/research.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh CBAM procurement dashboard"
             for attempt in 1 2 3; do
