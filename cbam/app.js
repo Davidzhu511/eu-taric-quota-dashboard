@@ -94,17 +94,28 @@ function renderSupply(supply){
   if(!wrap.children.length) wrap.innerHTML='<div class="muted">拍卖供给摘要暂不可用</div>';
 }
 
-function validOverlay(r){
-  return r && typeof r.overlay_score === 'number' && Number.isFinite(Number(r.overlay_score));
+function validOverlay(r, data){
+  if(!r || !data || typeof r.overlay_score !== 'number') return false;
+  if(!Number.isFinite(r.overlay_score) || r.overlay_score < 0 || r.overlay_score > 30) return false;
+  const meta=r.meta||{}, publicMeta=data.meta||{};
+  if(!['scored','validated'].includes(meta.status)) return false;
+  if(!['medium','high'].includes(meta.confidence)) return false;
+  if(!publicMeta.data_date || meta.public_data_date !== publicMeta.data_date) return false;
+  const researchMs=Date.parse(meta.updated_at||'');
+  const publicMs=Date.parse(publicMeta.checked_at||'');
+  if(!Number.isFinite(researchMs) || !Number.isFinite(publicMs)) return false;
+  if(researchMs < publicMs || researchMs > Date.now()+5*60*1000) return false;
+  return Date.now()-researchMs <= 48*60*60*1000;
 }
 
-function renderResearch(r){
+function renderResearch(r, data){
   if(!r){ $('researchStatus').textContent='暂未接入'; return; }
-  $('researchStatus').textContent=r.meta?.updated_at ? `更新于 ${r.meta.updated_at.slice(0,16).replace('T',' ')}` : (r.meta?.status||'—');
+  const fallback=r.meta?.status==='public_only_fallback';
+  $('researchStatus').textContent=r.meta?.updated_at ? `${fallback?'公共数据自动兜底':'研究更新'} · ${r.meta.updated_at.slice(0,16).replace('T',' ')} UTC` : (r.meta?.status||'—');
   $('researchHeadline').textContent=r.headline||'研究层暂无结论';
   const body=$('researchBody');
   const items=(r.bullets||[]).map(x=>`<li>${x}</li>`).join('');
-  const scoreText=validOverlay(r)?`<p class="research-score"><strong>研究层评分：${Number(r.overlay_score).toFixed(1)} / 30</strong></p>`:'<p class="muted">研究层尚未形成有效量化分，本次不输出完整100分采购建议。</p>';
+  const scoreText=validOverlay(r,data)?`<p class="research-score"><strong>研究层评分：${Number(r.overlay_score).toFixed(1)} / 30</strong></p>`:'<p class="muted">研究层尚未形成有效量化分，本次不输出完整100分采购建议。</p>';
   body.innerHTML=`${r.summary?`<p>${r.summary}</p>`:''}${items?`<ul>${items}</ul>`:''}${scoreText}`;
 }
 
@@ -142,7 +153,7 @@ async function load(){
 
     const model=data.public_score||{};
     const publicScore=typeof model.score==='number'?Number(model.score):null;
-    const overlayOK=validOverlay(research);
+    const overlayOK=validOverlay(research,data);
     const overlay=overlayOK?Number(research.overlay_score):null;
     const combined=(publicScore!=null && overlayOK)?Math.max(0,Math.min(100,publicScore+overlay)):null;
 
@@ -159,7 +170,7 @@ async function load(){
     renderScores(model);
     $('analysisHeadline').textContent=data.analysis?.headline||'—';
     $('analysisBullets').innerHTML=(data.analysis?.bullets||[]).map(x=>`<li>${x}</li>`).join('');
-    renderChart(a.weekly||[]); renderOfficial(data.official_cbam_prices||[]); renderSupply(data.auction_supply||{}); renderResearch(research); renderSources(data);
+    renderChart(a.weekly||[]); renderOfficial(data.official_cbam_prices||[]); renderSupply(data.auction_supply||{}); renderResearch(research,data); renderSources(data);
   }catch(e){
     $('dataStatus').textContent='加载失败'; $('analysisHeadline').textContent='无法读取Dashboard数据';
     $('analysisBullets').innerHTML=`<li>${e.message}</li>`;
