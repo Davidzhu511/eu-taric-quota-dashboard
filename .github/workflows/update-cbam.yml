@@ -112,6 +112,25 @@ jobs:
             done
           fi
 
+      - name: Verify pushed research file on remote main
+        run: |
+          git fetch origin main
+          git show origin/main:cbam/data/research.json > /tmp/research-remote.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          local = json.loads(Path("cbam/data/research.json").read_text(encoding="utf-8"))
+          remote = json.loads(Path("/tmp/research-remote.json").read_text(encoding="utf-8"))
+          assert local == remote, "research.json differs between local build and remote main"
+          assert "meta" in remote and "overlay_score" in remote
+          print("Remote main research.json verified")
+          PY
+
+      - name: Refresh checkout from remote main before Pages packaging
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
       - name: Prepare complete static site
         run: |
           mkdir -p _site/data _site/cbam
