@@ -52,6 +52,43 @@
       </article>
     </section>
 
+    <section class="card price-bucket-guide" id="pricing-rules" aria-labelledby="pricingRulesTitle">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">购证价格规则 · 2027年实际购买时</div>
+          <h2 id="pricingRulesTitle">2027年买CBAM证书，到底按哪一年的价格？</h2>
+          <p class="muted">关键不只是购买日期，而是<strong>证书对应哪一年度的进口排放义务</strong>。2026进口和2027进口必须分开管理。</p>
+        </div>
+      </div>
+      <div class="bucket-grid">
+        <article class="bucket-tile fixed-bucket">
+          <div class="bucket-top"><span class="bucket-year">用于2026年进口义务</span><span class="badge fixed">按进口季度固定价</span></div>
+          <div class="bucket-equation"><span>2027年购买</span><span aria-hidden="true">→</span><strong>适用2026年进口季度价格</strong></div>
+          <p>2026年共有四个季度官方价格。2027年2月起购买用于结算2026年进口货物排放的证书，按货物<strong>在2026年进口的季度</strong>确定价格，不能通过选择2027年不同购买周重新定价。</p>
+          <a class="bucket-link" href="#official-2026-prices">查看2026年四个季度的官方价格 ↓</a>
+        </article>
+        <article class="bucket-tile weekly-bucket">
+          <div class="bucket-top"><span class="bucket-year">用于2027年及以后当年进口义务</span><span class="badge live">按购买时适用周价</span></div>
+          <div class="bucket-equation"><span>2027年购买</span><span aria-hidden="true">→</span><strong>适用该购买期间的官方周度价格</strong></div>
+          <p>欧盟委员会从2027年起按周计算并公布CBAM证书价格。用于2027年当年进口义务的正常购证，选择不同周购买可能产生不同成本，才需要结合市场行情进行择时。</p>
+          <p class="bucket-small">举例：同样购买1,000张，假设某周单价为€80，成本为€80,000；另一周单价为€95，成本为€95,000。<strong>以上是假设价格，不是实时报价。</strong></p>
+        </article>
+      </div>
+      <div class="bucket-example">
+        <div>
+          <div class="eyebrow">固定价计算示例</div>
+          <strong>2026年第一季度进口，核定需购买1,000张证书</strong>
+          <p>2027年不论在哪一周购买，均按2026年第一季度官方单价计算（不考虑其他交易费用）。</p>
+        </div>
+        <div class="bucket-example-result">
+          <span id="example2026Price">正在读取第一季度官方价格…</span>
+          <strong id="example2026Cost">—</strong>
+          <small>假设已核定需要1,000张证书；不是指进口1,000吨钢材</small>
+        </div>
+      </div>
+      <p class="fineprint bucket-guide-footnote">首次开始销售CBAM证书的安排为2027年2月；2026年度的首次申报与交证截止日为2027年9月30日。价格示例仅解释计价方法，实际应购证数量须按CBAM排放和法定调整规则核算。依据：<a href="https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en" target="_blank" rel="noopener noreferrer">欧委会官方价格表</a>、<a href="https://eur-lex.europa.eu/eli/reg_impl/2025/2548/oj/eng" target="_blank" rel="noopener noreferrer">实施条例(EU) 2025/2548</a>。</p>
+    </section>
+
     <section class="grid two-col">
       <article class="card decision-card">
         <div class="section-head">
@@ -158,7 +195,7 @@
     </section>
 
     <section class="grid two-col">
-      <article class="card">
+      <article class="card" id="official-2026-prices">
         <div class="section-head"><h2>2026固定价义务</h2><span class="badge fixed">价格不择时</span></div>
         <table>
           <thead><tr><th>进口季度</th><th>官方价格</th><th>状态</th></tr></thead>
