@@ -1,16 +1,16 @@
 {
   "meta": {
-    "updated_at": "2026-10-21T20:45:01+00:00",
+    "updated_at": "2026-10-22T19:30:11+00:00",
     "status": "public_only_fallback",
     "confidence": "仅核实V2公共层；EUA远期曲线、能源基本面及持仓资金流未得到足够交叉验证，研究层不可评分",
     "producer": "github_actions",
-    "public_data_date": "2026-10-20",
-    "public_checked_at": "2026-10-21T20:44:57.177465+00:00",
+    "public_data_date": "2026-10-22",
+    "public_checked_at": "2026-10-22T19:30:07.878410+00:00",
     "research_completed": false
   },
   "overlay_score": null,
   "headline": "公共数据已同步；30分研究层尚未完成可靠量化",
-  "summary": "公共层V2数据日期为2026-10-20，评分27.9/70，最近一级拍卖价€85.10/tCO₂。GitHub Actions已维护本次数据状态，但这不是ChatGPT完整研究报告。在远期曲线、政策、能源及仓位数据充分核实前，不给出100分总分、采购覆盖率或加速采购指令。",
+  "summary": "公共层V2数据日期为2026-10-22，评分28.5/70，最近一级拍卖价€84.88/tCO₂。GitHub Actions已维护本次数据状态，但这不是ChatGPT完整研究报告。在远期曲线、政策、能源及仓位数据充分核实前，不给出100分总分、采购覆盖率或加速采购指令。",
   "bullets": [
     "公共层70分保留V2原始得分，不重复计算或用价格下跌直接加分。",
     "研究层30分依次为：EUA期限结构12分、ETS/CBAM/MSR/CCP政策8分、能源与工业排放6分、技术面和市场持仓4分；缺失可靠数据时不评分。",
