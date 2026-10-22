@@ -46,6 +46,30 @@ main{max-width:1280px;margin:auto;padding:0 28px 52px}
 .section-head p{margin:4px 0 0}
 .muted,.fineprint{color:var(--muted)}
 .fineprint{font-size:12px;line-height:1.65}
+.price-bucket-guide{margin-bottom:16px;background:linear-gradient(135deg,#fffdf7,#f7f1e5)}
+.price-bucket-guide .section-head{margin-bottom:18px}
+.price-bucket-guide .section-head p{max-width:950px;line-height:1.7;font-size:13px}
+.bucket-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.bucket-tile{border:1px solid var(--line);border-radius:13px;padding:17px 18px;background:#faf7f0;min-width:0}
+.fixed-bucket{border-color:#c7d3d5;background:#f5f8f7}
+.weekly-bucket{border-color:#bdc8ae;background:#f6f8f0}
+.bucket-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:space-between}
+.bucket-year{font-size:15px;font-weight:800;color:#39342c}
+.bucket-equation{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:17px 0 12px;font-size:13px}
+.bucket-equation span:first-child{padding:6px 9px;border-radius:8px;background:rgba(255,255,255,.8);border:1px solid var(--line);font-weight:650}
+.bucket-equation strong{font-size:14px;color:var(--accent-dark)}
+.bucket-tile p{margin:0;color:#5f574d;font-size:13px;line-height:1.75}
+.bucket-tile .bucket-small{margin-top:12px;padding-top:11px;border-top:1px solid var(--line);font-size:12px}
+.bucket-link{display:inline-block;margin-top:12px;color:#465c48;font-size:12px;font-weight:750;text-underline-offset:3px}
+.bucket-example{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:center;gap:20px;padding:17px 18px;margin-top:14px;border:1px solid #d8c5a6;border-radius:12px;background:#fcf7ec}
+.bucket-example>div>strong{display:block;margin:6px 0 3px;font-size:15px}
+.bucket-example p{font-size:12px;margin:6px 0 0;color:var(--muted);line-height:1.6}
+.bucket-example-result{text-align:right}
+.bucket-example-result span{display:block;font-size:12px;color:var(--muted)}
+.bucket-example-result strong{display:block;font-size:29px;letter-spacing:-.03em;color:#3d503d;margin:4px 0}
+.bucket-example-result small{display:block;color:var(--muted);font-size:11px;line-height:1.5}
+.bucket-guide-footnote{margin:13px 0 0}
+#official-2026-prices{scroll-margin-top:18px}
 .decision-card h3{font-size:22px;line-height:1.32;margin:10px 0}
 .score-wrap{text-align:center}
 .score-gauge{width:90px;height:90px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) 0deg,var(--track) 0deg);position:relative}
@@ -117,6 +141,6 @@ th{color:var(--muted);font-weight:650}
 .research-score{padding:8px 10px;background:#edf0e1;border:1px solid #c7cfad;border-radius:9px;color:#4d5b3d}
 footer{border-top:1px solid var(--line);color:var(--muted);font-size:11px;text-align:center;padding:20px 28px 36px;background:rgba(244,239,227,.55)}
 @media(max-width:1000px){.model-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:900px){.topbar{align-items:flex-start;flex-direction:column}.kpis{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}.status-strip{grid-template-columns:repeat(2,1fr)}.sources{grid-template-columns:1fr}.explain-grid{grid-template-columns:1fr}}
+@media(max-width:900px){.bucket-grid{grid-template-columns:1fr}.bucket-example{grid-template-columns:1fr}.bucket-example-result{text-align:left}.topbar{align-items:flex-start;flex-direction:column}.kpis{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}.status-strip{grid-template-columns:repeat(2,1fr)}.sources{grid-template-columns:1fr}.explain-grid{grid-template-columns:1fr}}
 @media(max-width:650px){.flow-row{grid-template-columns:1fr}.double-arrow{transform:rotate(90deg);height:35px}.model-grid{grid-template-columns:1fr}}
-@media(max-width:560px){main,.topbar{padding-left:14px;padding-right:14px}.kpis{grid-template-columns:1fr}.topbar h1{font-size:28px}.status-strip{grid-template-columns:1fr 1fr}.chart{height:220px}.mini-grid{grid-template-columns:1fr}.coverage-box{grid-template-columns:1fr}.coverage-box div+div{border-left:0;border-top:1px solid var(--line)}}
+@media(max-width:560px){.bucket-tile{padding:14px}.bucket-top{align-items:flex-start}.bucket-example{padding:14px}.bucket-example-result strong{font-size:26px}main,.topbar{padding-left:14px;padding-right:14px}.kpis{grid-template-columns:1fr}.topbar h1{font-size:28px}.status-strip{grid-template-columns:1fr 1fr}.chart{height:220px}.mini-grid{grid-template-columns:1fr}.coverage-box{grid-template-columns:1fr}.coverage-box div+div{border-left:0;border-top:1px solid var(--line)}}
