@@ -49,6 +49,22 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Validate CBAM interactive price guide
+        run: |
+          node --check cbam/app.js
+          python - <<'PY'
+          from pathlib import Path
+          html = Path('cbam/index.html').read_text(encoding='utf-8')
+          js = Path('cbam/app.js').read_text(encoding='utf-8')
+          css = Path('cbam/style.css').read_text(encoding='utf-8')
+          for key in ('pricing-rules', 'official-2026-prices', 'example2026Price', 'example2026Cost'):
+              assert key in html, f'pricing guide missing: {key}'
+          assert 'const byQ=new Map((rows||[]).filter(x=>x.year===2026)' in js
+          assert "'example2026Cost'" in js and "'example2026Price'" in js
+          assert '.price-bucket-guide' in css and '.bucket-grid' in css
+          print('CBAM pricing guide markup, dynamic bindings and JavaScript syntax validated')
+          PY
+
       - name: Fetch EEX and Commission CBAM data
         run: python scripts/update_cbam_dashboard_runner.py
 
