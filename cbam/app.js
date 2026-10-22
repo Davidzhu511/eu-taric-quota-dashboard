@@ -75,13 +75,19 @@ function renderScores(model){
 
 function renderOfficial(rows){
   const tbody=$('officialPrices'); tbody.innerHTML='';
-  const byQ=new Map((rows||[]).map(x=>[x.quarter,x]));
+  // Import-year pricing is independent of the calendar year in which certificates are purchased.
+  const byQ=new Map((rows||[]).filter(x=>x.year===2026).map(x=>[x.quarter,x]));
   for(let q=1;q<=4;q++){
     const x=byQ.get(q)||{};
+    const price=(typeof x.price==='number' && Number.isFinite(x.price) && x.price>0)?x.price:null;
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td>2026年第${q}季度</td><td>${x.price==null?'待公布':euro(x.price)}</td><td>${x.price==null?'等待官方发布':'已锁定'}</td>`;
+    tr.innerHTML=`<td>2026年第${q}季度</td><td>${price==null?'待公布':euro(price)}</td><td>${price==null?'等待官方公布':'官方已公布 · 固定价'}</td>`;
     tbody.appendChild(tr);
   }
+  const q1=byQ.get(1);
+  const price=(typeof q1?.price==='number' && Number.isFinite(q1.price) && q1.price>0)?q1.price:null;
+  $('example2026Price').textContent=price==null?'2026年第一季度价格尚未取得':`1,000张 × ${euro(price)} / 张`;
+  $('example2026Cost').textContent=price==null?'—':new Intl.NumberFormat('en-US',{style:'currency',currency:'EUR',minimumFractionDigits:2,maximumFractionDigits:2}).format(price*1000);
 }
 
 function renderSupply(supply){
