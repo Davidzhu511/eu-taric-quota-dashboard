@@ -1,26 +1,40 @@
 {
   "meta": {
-    "updated_at": "2026-10-22T20:39:54+00:00",
-    "status": "public_only_fallback",
-    "confidence": "仅核实V2公共层；EUA远期曲线、能源基本面及持仓资金流未得到足够交叉验证，研究层不可评分",
-    "producer": "github_actions",
+    "updated_at": "2026-10-23T19:13:35.615Z",
+    "status": "partial_data",
+    "confidence": "不足以量化研究层：截至本次检索，缺少同一交易日可交叉核验的EUA现货/近月/Dec26与Dec27完整期限曲线、TTF及煤电切换、电力和工业排放的连续数据，以及可靠的交易所持仓/资金流；CCP出售、费用、限额、付款锁价、回购及注销的最终实施细则亦未完整核验。",
+    "producer": "chatgpt_research",
     "public_data_date": "2026-10-22",
     "public_checked_at": "2026-10-22T20:39:51.210383+00:00",
-    "research_completed": false
+    "research_completed": false,
+    "research_scope": "2026-10-23 Berlin evening; public market baseline as of 2026-10-22",
+    "methodology": "Public V2 70 points unchanged; no unverified research points or procurement coverage"
   },
   "overlay_score": null,
-  "headline": "公共数据已同步；30分研究层尚未完成可靠量化",
-  "summary": "公共层V2数据日期为2026-10-22，评分28.5/70，最近一级拍卖价€84.88/tCO₂。GitHub Actions已维护本次数据状态，但这不是ChatGPT完整研究报告。在远期曲线、政策、能源及仓位数据充分核实前，不给出100分总分、采购覆盖率或加速采购指令。",
+  "headline": "研究数据不足，不触发加速采购；公共V2层维持28.5/70",
+  "summary": "已复核GitHub main分支公共层V2：数据日期2026-10-22、得分28.5/70、最新EEX一级拍卖价€84.88/tCO₂（2026-10-22）；2026Q4拍卖加权均价€85.25/tCO₂仅为未结算的跟踪值。2026年进口义务按照2026年对应进口季度官方固定价格管理；2027年及以后当年义务才考虑周度择时。已找到2026-10-22 Dec26期货第三方历史价€86.47，但没有取得可交叉核验的同日完整期限结构及足够的能源、持仓证据，故不计算30分研究层、不发布100分总分或采购覆盖建议。没有企业私有持仓及法定口径负债，无法认定Article 22(2)底仓缺口。",
   "bullets": [
-    "公共层70分保留V2原始得分，不重复计算或用价格下跌直接加分。",
-    "研究层30分依次为：EUA期限结构12分、ETS/CBAM/MSR/CCP政策8分、能源与工业排放6分、技术面和市场持仓4分；缺失可靠数据时不评分。",
-    "2026进口义务按进口季度固定价格管理，不进行周度择时；2027及以后当年义务才按周度价格择时。",
-    "Article 22(2)季度底仓需按独立法定口径和企业实际数据核算；公开网页无法验证企业义务及实际持仓。",
-    "CCP购买限制、交易费用、付款锁价、回购与注销规则必须以正式生效文件为准，不把草案参数当作确定规则。",
-    "如果ChatGPT研究任务写入被阻止，本自动兜底仍能更新公开状态；研究层结论缺失不代表出现采购机会。"
+    "公共V2原始五项分数完全保留：52周位置4.4/20、相对13周折价5.9/15、止跌/反转11.3/15、完整周供给2.8/10、次年供给4.1/10；合计28.5/70。不因持续下跌或单个价格观测加分。",
+    "期限结构12分：第三方历史数据列示2026-10-22 EUA Dec26 €86.47，较同日EEX拍卖€84.88高约€1.59；拍卖价不等于可直接成交的现货价，不能据此推导完整contango/backwardation。缺少可核验近月、Dec27和同日现货，暂不评分。",
+    "法规/MSR/拍卖/CCP 8分：欧委会2026-10-01已发布2027 ETS1修订拍卖日历（包括希腊脱碳基金新增2,500万配额）；2026-05-29宣布2026-09至2027-08向MSR纳入190,494,202张。这些属于既有公开信息，不能当作今天的新重大政策。2026-04-01停止MSR无效化的修法仍须区分提案与生效文本。",
+    "CCP：2027-02-01开始销售CBAM证书已由基础条例确定。有关单笔交易限额、平台手续费、付款时锁价、回购及注销的具体最终规则未得到完整核验；第三方文章提到的€0.05/张来自2026年7月咨询草案，不作为已生效收费标准。",
+    "能源与工业排放6分：未获得2026-10-23 TTF、煤价、发电边际燃料切换、电力负荷及工业活动同频可靠证据，不评分。",
+    "技术/资金流4分：未获得同一统计期的EUA期货持仓、投机净仓、资金流及完整技术面数据，不评分；不把前日单日上涨当成确认趋势。",
+    "2026年进口义务：官方Q1 €75.36、Q2 €75.28、Q3 €82.32/张；Q4待2027-01-04公布。2027年购买用于2026进口的证书，仍按对应2026进口季度的价格，不做周度择时。",
+    "2027及以后当年义务：需用有效100分模型才可提出60%/70%/85%/接近100%等内部覆盖率；在研究层无效时仅观察，不推断加购量或合规缺口。",
+    "Article 22(2)季度持仓底线按法定独立口径计算，不能用最终年度交证量×50%替代；未取得企业持仓与实际进口排放资料，不能判断底仓是否不足。",
+    "本次未发现经过核验的当日重大新规或满足完整评分≥65的采购机会；下一次应优先补齐交易所期限结构、TTF/煤电切换、持仓资金流与CCP正式文件。"
   ],
   "sources": [
     "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
-    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
+    "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
+    "https://climate.ec.europa.eu/news-other-reads/news/revised-2027-eu-ets1-and-initial-2027-eu-ets2-auction-calendars-published-2026-10-01_en",
+    "https://climate.ec.europa.eu/news-other-reads/news/190-million-eu-ets-allowances-be-placed-market-stability-reserve-between-september-2026-and-august-2026-05-29_en",
+    "https://climate.ec.europa.eu/areas-action/carbon-markets/eu-emissions-trading-system-eu-ets/market-stability-reserve_en",
+    "https://eur-lex.europa.eu/eli/reg/2023/956/2025-10-20/eng/pdf",
+    "https://taxation-customs.ec.europa.eu/about-us/tenders-and-grants_en",
+    "https://ca.investing.com/commodities/european-union-allowance-eua-year-futures-historical-data",
+    "https://www.cattwyk.com/en/news/eu-cbam-konsultation-bis-zum-6-august-2026-geoeffnet"
   ]
 }
