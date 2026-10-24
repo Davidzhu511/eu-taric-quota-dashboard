@@ -1,11 +1,11 @@
 {
   "meta": {
-    "updated_at": "2026-10-23T20:32:36+00:00",
+    "updated_at": "2026-10-24T19:36:06+00:00",
     "status": "public_only_fallback",
     "confidence": "仅核实V2公共层；EUA远期曲线、能源基本面及持仓资金流未得到足够交叉验证，研究层不可评分",
     "producer": "github_actions",
     "public_data_date": "2026-10-23",
-    "public_checked_at": "2026-10-23T20:32:32.896932+00:00",
+    "public_checked_at": "2026-10-24T19:36:03.591798+00:00",
     "research_completed": false
   },
   "overlay_score": null,
