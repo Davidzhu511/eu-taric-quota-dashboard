@@ -1,79 +1,26 @@
 {
   "meta": {
-    "updated_at": "2026-10-24T19:44:36.642Z",
-    "status": "partial_data",
-    "confidence": "政策和EEX一级拍卖可核验；EUA现货/近月/Dec期限结构缺少多源同日可核验报价，TTF/煤电切换与工业排放缺少同步证据，资金持仓与拥挤度缺少可靠更新。故研究层不评分。",
-    "producer": "chatgpt_research",
+    "updated_at": "2026-10-25T19:48:43+00:00",
+    "status": "public_only_fallback",
+    "confidence": "仅核实V2公共层；EUA远期曲线、能源基本面及持仓资金流未得到足够交叉验证，研究层不可评分",
+    "producer": "github_actions",
     "public_data_date": "2026-10-23",
-    "public_checked_at": "2026-10-24T19:36:03.591798+00:00",
-    "research_completed": false,
-    "methodology_version": "V2_public_70_plus_research_30",
-    "research_asof_date": "2026-10-24",
-    "alert_triggered": false
+    "public_checked_at": "2026-10-25T19:48:40.222389+00:00",
+    "research_completed": false
   },
   "overlay_score": null,
-  "headline": "未触发加速采购预警：V2公共层29.4/70；研究层资料不足，暂不计算100分总分",
-  "summary": "截至2026-10-24柏林时间晚间，沿用2026-10-23 EEX拍卖数据的公共层V2原始29.4/70，不重算或补分。最新一级拍卖€85.89/tCO₂（10月23日），10月19—23日拍卖加权€85.17，前一完整周€86.37；当前价格在52周拍卖区间较高位置（81.3%），不符合“价格吸引力+止跌确认”同时成立的加速采购条件。即使研究层满分30，总分上限59.4，无法触发>=65加速采购阈值。现货/近月/Dec期货、能源基本面和持仓缺少充分交叉验证，研究层维持null，不能给出正式总分或建议覆盖率。2026年进口义务按2026进口季度固定价格管理，2027及以后当年义务才按官方周度价格择时。未发现已核实、足以立即改变采购动作的最新生效CCP细则；2026年7月CCP委托条例文本仍应视为草案，不能把其中€0.05/张等条款当作生效费用。",
+  "headline": "公共数据已同步；30分研究层尚未完成可靠量化",
+  "summary": "公共层V2数据日期为2026-10-23，评分29.4/70，最近一级拍卖价€85.89/tCO₂。GitHub Actions已维护本次数据状态，但这不是ChatGPT完整研究报告。在远期曲线、政策、能源及仓位数据充分核实前，不给出100分总分、采购覆盖率或加速采购指令。",
   "bullets": [
-    "价格与公共评分：V2=29.4/70（52周位置3.7/20、13周折价5.7/15、止跌确认13/15、已完成周供给2.8/10、2027供给4.1/10），全部原样读取current.json；不因下跌而加分。",
-    "一级拍卖：2026-10-23 EEX清算价€85.89/tCO₂；本周（10月19—23日）4场拍卖加权€85.17，较前一完整周€86.37低约1.39%；Q4截至10月23日的€85.28仅为进行中估算，非官方季度最终价。",
-    "EUA期限结构（12分）：第三方网站列示2026-10-23 Dec-2026期货收盘€86.26，但缺乏与EEX/ICE同日现货及近月和远月价格的可靠交叉验证，不能据此判定期限结构或打分。",
-    "政策/MSR/CCP（8分）：欧委会2026-05-29公布2026-09至2027-08向MSR吸纳190,494,202 EUA；理事会2026-09-23关于MSR失效机制仅形成谈判立场，尚非最终生效修改。2026-07-09 CCP委托条例为草案，交易处理、€0.05/张拟议费用、付款确认与操作限制不得视为正式规则。",
-    "能源与排放（6分）：缺少同日、可交叉核验的TTF、煤电切换价差、欧洲电力、工业排放最新数据，不给方向分。",
-    "技术面/持仓（4分）：缺少同日可靠的EUA期货交易量、未平仓、资金持仓和拥挤度证据，不以一级拍卖短期波动替代资金流评分。",
-    "2026进口义务：Q1 €75.36、Q2 €75.28、Q3 €82.32/张，Q4官方尚未公布（计划2027-01-04）；2027年购入用于2026年进口的证书仍适用2026对应进口季度价格，不做择时。",
-    "2027及以后当年义务：按官方周度证书价择时；本次既无有效100分总分也无合规企业持仓，不能给出覆盖率或加购数量。Article 22(2)季度最低持仓采用独立法定口径，不得用最终年度交证量×50%直接替代。",
-    "结论：本次不触发>=65采购机会、逼近65且明显上涨风险、低估并止跌、已验证合规缺口或重大生效法规变更预警；后续继续核实CCP正式法规及四类研究证据。"
+    "公共层70分保留V2原始得分，不重复计算或用价格下跌直接加分。",
+    "研究层30分依次为：EUA期限结构12分、ETS/CBAM/MSR/CCP政策8分、能源与工业排放6分、技术面和市场持仓4分；缺失可靠数据时不评分。",
+    "2026进口义务按进口季度固定价格管理，不进行周度择时；2027及以后当年义务才按周度价格择时。",
+    "Article 22(2)季度底仓需按独立法定口径和企业实际数据核算；公开网页无法验证企业义务及实际持仓。",
+    "CCP购买限制、交易费用、付款锁价、回购与注销规则必须以正式生效文件为准，不把草案参数当作确定规则。",
+    "如果ChatGPT研究任务写入被阻止，本自动兜底仍能更新公开状态；研究层结论缺失不代表出现采购机会。"
   ],
   "sources": [
     "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
-    "https://www.eex.com/en/markets/environmentals/environmental-indices",
-    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
-    "https://climate.ec.europa.eu/news-other-reads/news/190-million-eu-ets-allowances-be-placed-market-stability-reserve-between-september-2026-and-august-2027-2026-05-29_en",
-    "https://www.consilium.europa.eu/en/press/press-releases/2026/09/23/market-stability-reserve-council-agrees-targeted-amendment-for-a-resilient-and-predictable-carbon-market/",
-    "https://eur-lex.europa.eu/legal-content/NL/ALL/?uri=PI_COM%3AAres%282026%296860249",
-    "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32025R2548",
-    "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32025R2083",
-    "https://za.investing.com/commodities/european-union-allowance-eua-year-futures-historical-data"
-  ],
-  "research_dimensions": [
-    {
-      "name": "EUA现货/近月/Dec期货期限结构",
-      "max_score": 12,
-      "score": null,
-      "status": "insufficient_cross_verified_quotes"
-    },
-    {
-      "name": "EU ETS/CBAM/MSR/拍卖/CCP生效规则",
-      "max_score": 8,
-      "score": null,
-      "status": "verified_legal_baseline_but_full_market_implications_unscored"
-    },
-    {
-      "name": "TTF/煤电切换/电力/工业排放",
-      "max_score": 6,
-      "score": null,
-      "status": "insufficient_current_verified_data"
-    },
-    {
-      "name": "技术面/持仓/资金流/拥挤度",
-      "max_score": 4,
-      "score": null,
-      "status": "insufficient_current_verified_data"
-    }
-  ],
-  "public_v2_snapshot": {
-    "score": 29.4,
-    "max_score": 70,
-    "data_date": "2026-10-23",
-    "source": "cbam/data/current.json",
-    "methodology_version": "2.0.0"
-  },
-  "alert": {
-    "triggered": false,
-    "reason": "公共V2分数29.4，即使研究层满分30，总分理论上限59.4<65；未证实其他预警触发条件。",
-    "full_score": null,
-    "coverage_recommendation": null,
-    "private_holdings_verified": false
-  }
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
+  ]
 }
