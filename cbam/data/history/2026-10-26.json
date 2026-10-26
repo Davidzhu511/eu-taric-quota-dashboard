@@ -1,0 +1,1940 @@
+{
+  "meta": {
+    "checked_at": "2026-10-26T21:43:27.051693+00:00",
+    "data_date": "2026-10-26",
+    "status": "ok",
+    "errors": [],
+    "methodology_version": "2.0.0"
+  },
+  "sources": {
+    "eex_auction_report": "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
+    "eex_auction_page": "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
+    "eex_cbam_reference": "https://www.eex.com/en/markets/environmentals/environmental-indices",
+    "ec_cbam_price": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
+  },
+  "official_cbam_prices": [
+    {
+      "year": 2026,
+      "quarter": 1,
+      "price": 75.36,
+      "publication_date": "7 April 2026"
+    },
+    {
+      "year": 2026,
+      "quarter": 2,
+      "price": 75.28,
+      "publication_date": "6 July 2026"
+    },
+    {
+      "year": 2026,
+      "quarter": 3,
+      "price": 82.32,
+      "publication_date": "5 October 2026"
+    },
+    {
+      "year": 2026,
+      "quarter": 4,
+      "price": null,
+      "publication_date": "4 January 2027"
+    }
+  ],
+  "auction_supply": {
+    "2026": {
+      "cap_common": 387582000,
+      "germany": 55608000,
+      "poland": 40609500,
+      "northern_ireland": 584000,
+      "total": 484383500
+    },
+    "2027": {
+      "cap_common": 364476500,
+      "germany": 77631500,
+      "poland": 49770500,
+      "northern_ireland": 896500,
+      "total": 492775000
+    }
+  },
+  "auctions": [
+    {
+      "date": "2026-01-07",
+      "price": 86.27,
+      "volume": 1524500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-01-08",
+      "price": 85.47,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-01-09",
+      "price": 87.0,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-01-12",
+      "price": 87.87,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-01-13",
+      "price": 88.71,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-01-15",
+      "price": 91.32,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-01-16",
+      "price": 91.34,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-01-19",
+      "price": 87.34,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-01-20",
+      "price": 84.58,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-01-21",
+      "price": 83.55,
+      "volume": 1524500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-01-22",
+      "price": 86.55,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-01-23",
+      "price": 87.51,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-01-26",
+      "price": 86.4,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-01-27",
+      "price": 85.93,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-01-29",
+      "price": 82.58,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-01-30",
+      "price": 81.68,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-02-02",
+      "price": 80.57,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-03",
+      "price": 81.7,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-04",
+      "price": 80.8,
+      "volume": 1524500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-02-05",
+      "price": 80.55,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-06",
+      "price": 77.23,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-02-09",
+      "price": 78.53,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-10",
+      "price": 79.2,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-12",
+      "price": 70.89,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-13",
+      "price": 71.5,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-02-16",
+      "price": 69.8,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-17",
+      "price": 67.82,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-18",
+      "price": 69.22,
+      "volume": 1524500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-02-19",
+      "price": 70.51,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-20",
+      "price": 70.87,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-02-23",
+      "price": 70.4,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-24",
+      "price": 69.7,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-26",
+      "price": 68.37,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-02-27",
+      "price": 70.26,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-03-02",
+      "price": 68.42,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-03",
+      "price": 68.77,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-04",
+      "price": 70.75,
+      "volume": 1524500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-03-05",
+      "price": 68.99,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-06",
+      "price": 69.66,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-03-09",
+      "price": 68.53,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-10",
+      "price": 71.1,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-12",
+      "price": 70.58,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-13",
+      "price": 67.07,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-03-16",
+      "price": 68.41,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-17",
+      "price": 64.52,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-18",
+      "price": 65.16,
+      "volume": 1524500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-03-19",
+      "price": 62.19,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-20",
+      "price": 66.69,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-03-23",
+      "price": 64.7,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-24",
+      "price": 67.06,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-26",
+      "price": 69.12,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-27",
+      "price": 70.55,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-03-30",
+      "price": 70.0,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-03-31",
+      "price": 71.13,
+      "volume": 2728000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-01",
+      "price": 71.56,
+      "volume": 1524500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-04-02",
+      "price": 71.71,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-07",
+      "price": 70.6,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-09",
+      "price": 70.67,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-10",
+      "price": 72.0,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-04-13",
+      "price": 70.62,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-14",
+      "price": 72.1,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-15",
+      "price": 73.57,
+      "volume": 1524500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-04-16",
+      "price": 72.4,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-17",
+      "price": 75.9,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-04-20",
+      "price": 74.84,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-21",
+      "price": 73.9,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-23",
+      "price": 73.63,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-24",
+      "price": 74.03,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-04-27",
+      "price": 73.2,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-28",
+      "price": 74.14,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-04-29",
+      "price": 73.96,
+      "volume": 1524500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-04-30",
+      "price": 71.8,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-05-04",
+      "price": 72.65,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-05-05",
+      "price": 72.63,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-05-07",
+      "price": 74.72,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-05-08",
+      "price": 74.16,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-05-11",
+      "price": 73.82,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-05-12",
+      "price": 75.0,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-05-13",
+      "price": 73.31,
+      "volume": 1524500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-05-18",
+      "price": 74.75,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-05-19",
+      "price": 74.26,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-05-21",
+      "price": 73.85,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-05-22",
+      "price": 74.4,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-05-26",
+      "price": 75.7,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-05-27",
+      "price": 77.96,
+      "volume": 1524500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-05-28",
+      "price": 77.67,
+      "volume": 2712500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-05-29",
+      "price": 79.37,
+      "volume": 1093000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-06-01",
+      "price": 78.2,
+      "volume": 3198500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-02",
+      "price": 77.15,
+      "volume": 3198500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-04",
+      "price": 76.96,
+      "volume": 3198500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-05",
+      "price": 76.3,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-06-08",
+      "price": 75.08,
+      "volume": 3198500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-09",
+      "price": 75.11,
+      "volume": 3198500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-10",
+      "price": 74.97,
+      "volume": 1380000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-06-11",
+      "price": 75.62,
+      "volume": 3198500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-12",
+      "price": 76.82,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-06-15",
+      "price": 77.01,
+      "volume": 3198500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-16",
+      "price": 78.61,
+      "volume": 3198500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-18",
+      "price": 78.57,
+      "volume": 3198500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-19",
+      "price": 79.12,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-06-22",
+      "price": 79.04,
+      "volume": 3198500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-23",
+      "price": 80.1,
+      "volume": 2817500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-24",
+      "price": 80.43,
+      "volume": 1380000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-06-25",
+      "price": 80.38,
+      "volume": 2817500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-26",
+      "price": 79.72,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-06-29",
+      "price": 79.01,
+      "volume": 2817500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-06-30",
+      "price": 78.13,
+      "volume": 2818000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-02",
+      "price": 78.62,
+      "volume": 2817500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-03",
+      "price": 79.0,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-07-06",
+      "price": 78.88,
+      "volume": 2817500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-07",
+      "price": 80.11,
+      "volume": 2817500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-08",
+      "price": 79.23,
+      "volume": 1380000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-07-09",
+      "price": 77.7,
+      "volume": 2817500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-10",
+      "price": 78.03,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-07-13",
+      "price": 78.48,
+      "volume": 2817500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-14",
+      "price": 79.56,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-16",
+      "price": 79.01,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-17",
+      "price": 77.0,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-07-20",
+      "price": 79.61,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-21",
+      "price": 82.55,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-22",
+      "price": 83.91,
+      "volume": 1380000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-07-23",
+      "price": 84.62,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-24",
+      "price": 83.07,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-07-27",
+      "price": 82.28,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-28",
+      "price": 81.4,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-30",
+      "price": 80.93,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-07-31",
+      "price": 81.22,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-08-03",
+      "price": 80.43,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-04",
+      "price": 80.86,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-05",
+      "price": 80.57,
+      "volume": 1380000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-08-06",
+      "price": 80.74,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-07",
+      "price": 81.9,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-08-10",
+      "price": 81.36,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-11",
+      "price": 81.25,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-13",
+      "price": 81.75,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-14",
+      "price": 82.44,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-08-17",
+      "price": 80.85,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-18",
+      "price": 80.74,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-19",
+      "price": 81.46,
+      "volume": 1381000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-08-20",
+      "price": 81.0,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-21",
+      "price": 82.53,
+      "volume": 1000000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-08-24",
+      "price": 82.6,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-25",
+      "price": 83.45,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-27",
+      "price": 82.17,
+      "volume": 2246500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-08-28",
+      "price": 82.4,
+      "volume": 717500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-08-31",
+      "price": 82.39,
+      "volume": 2296500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-01",
+      "price": 81.3,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-02",
+      "price": 82.48,
+      "volume": 1945000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-09-03",
+      "price": 82.84,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-04",
+      "price": 83.61,
+      "volume": 1548000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-09-07",
+      "price": 83.45,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-08",
+      "price": 84.4,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-10",
+      "price": 85.16,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-11",
+      "price": 85.01,
+      "volume": 1548000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-09-14",
+      "price": 86.44,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-15",
+      "price": 85.52,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-16",
+      "price": 83.69,
+      "volume": 1945000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-09-17",
+      "price": 84.08,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-18",
+      "price": 85.66,
+      "volume": 1548000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-09-21",
+      "price": 86.41,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-22",
+      "price": 85.53,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-24",
+      "price": 86.05,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-25",
+      "price": 85.5,
+      "volume": 1548000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-09-28",
+      "price": 85.9,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-29",
+      "price": 84.87,
+      "volume": 2792000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-09-30",
+      "price": 84.41,
+      "volume": 1945000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-10-01",
+      "price": 84.7,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-10-02",
+      "price": 85.31,
+      "volume": 1548000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-10-05",
+      "price": 82.6,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-10-06",
+      "price": 84.31,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-10-07",
+      "price": 83.83,
+      "volume": 584000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 NIR"
+    },
+    {
+      "date": "2026-10-08",
+      "price": 85.07,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-10-09",
+      "price": 86.11,
+      "volume": 1548000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-10-12",
+      "price": 86.28,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-10-13",
+      "price": 87.04,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-10-14",
+      "price": 87.02,
+      "volume": 1945000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-10-15",
+      "price": 85.84,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-10-16",
+      "price": 85.5,
+      "volume": 1548000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-10-19",
+      "price": 85.12,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-10-20",
+      "price": 85.1,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-10-22",
+      "price": 84.88,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-10-23",
+      "price": 85.89,
+      "volume": 1548000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
+    },
+    {
+      "date": "2026-10-26",
+      "price": 87.68,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    }
+  ],
+  "auction_analytics": {
+    "latest": {
+      "date": "2026-10-26",
+      "price": 87.68,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    "weekly": [
+      {
+        "week_start": "2026-01-05",
+        "week_end": "2026-01-11",
+        "price": 86.01,
+        "volume": 5330000,
+        "auctions": 3
+      },
+      {
+        "week_start": "2026-01-12",
+        "week_end": "2026-01-18",
+        "price": 89.54,
+        "volume": 9230500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-01-19",
+        "week_end": "2026-01-25",
+        "price": 85.92,
+        "volume": 10755000,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-01-26",
+        "week_end": "2026-02-01",
+        "price": 84.58,
+        "volume": 9230500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-02-02",
+        "week_end": "2026-02-08",
+        "price": 80.54,
+        "volume": 10755000,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-02-09",
+        "week_end": "2026-02-15",
+        "price": 75.65,
+        "volume": 9230500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-02-16",
+        "week_end": "2026-02-22",
+        "price": 69.51,
+        "volume": 10755000,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-02-23",
+        "week_end": "2026-03-01",
+        "price": 69.58,
+        "volume": 9230500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-03-02",
+        "week_end": "2026-03-08",
+        "price": 69.11,
+        "volume": 10755000,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-03-09",
+        "week_end": "2026-03-15",
+        "price": 69.71,
+        "volume": 9230500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-03-16",
+        "week_end": "2026-03-22",
+        "price": 65.22,
+        "volume": 10755000,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-03-23",
+        "week_end": "2026-03-29",
+        "price": 67.39,
+        "volume": 9230500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-03-30",
+        "week_end": "2026-04-05",
+        "price": 71.04,
+        "volume": 9677500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-04-06",
+        "week_end": "2026-04-12",
+        "price": 70.86,
+        "volume": 6518000,
+        "auctions": 3
+      },
+      {
+        "week_start": "2026-04-13",
+        "week_end": "2026-04-19",
+        "price": 72.4,
+        "volume": 10755000,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-04-20",
+        "week_end": "2026-04-26",
+        "price": 74.11,
+        "volume": 9230500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-04-27",
+        "week_end": "2026-05-03",
+        "price": 73.19,
+        "volume": 9662000,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-05-04",
+        "week_end": "2026-05-10",
+        "price": 73.43,
+        "volume": 9230500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-05-11",
+        "week_end": "2026-05-17",
+        "price": 74.17,
+        "volume": 6949500,
+        "auctions": 3
+      },
+      {
+        "week_start": "2026-05-18",
+        "week_end": "2026-05-24",
+        "price": 74.3,
+        "volume": 9230500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-05-25",
+        "week_end": "2026-05-31",
+        "price": 77.29,
+        "volume": 8042500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-06-01",
+        "week_end": "2026-06-07",
+        "price": 77.33,
+        "volume": 10595500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-06-08",
+        "week_end": "2026-06-14",
+        "price": 75.36,
+        "volume": 11975500,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-06-15",
+        "week_end": "2026-06-21",
+        "price": 78.16,
+        "volume": 10595500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-06-22",
+        "week_end": "2026-06-28",
+        "price": 79.87,
+        "volume": 11213500,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-06-29",
+        "week_end": "2026-07-05",
+        "price": 78.63,
+        "volume": 9453000,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-07-06",
+        "week_end": "2026-07-12",
+        "price": 78.86,
+        "volume": 10832500,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-07-13",
+        "week_end": "2026-07-19",
+        "price": 78.74,
+        "volume": 8310500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-07-20",
+        "week_end": "2026-07-26",
+        "price": 82.6,
+        "volume": 9119500,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-07-27",
+        "week_end": "2026-08-02",
+        "price": 81.5,
+        "volume": 7739500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-08-03",
+        "week_end": "2026-08-09",
+        "price": 80.79,
+        "volume": 9119500,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-08-10",
+        "week_end": "2026-08-16",
+        "price": 81.58,
+        "volume": 7739500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-08-17",
+        "week_end": "2026-08-23",
+        "price": 81.14,
+        "volume": 9120500,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-08-24",
+        "week_end": "2026-08-30",
+        "price": 82.71,
+        "volume": 7457000,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-08-31",
+        "week_end": "2026-09-06",
+        "price": 82.41,
+        "volume": 11372500,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-09-07",
+        "week_end": "2026-09-13",
+        "price": 84.44,
+        "volume": 9922500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-09-14",
+        "week_end": "2026-09-20",
+        "price": 85.12,
+        "volume": 11867500,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-09-21",
+        "week_end": "2026-09-27",
+        "price": 85.92,
+        "volume": 9922500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-09-28",
+        "week_end": "2026-10-04",
+        "price": 85.05,
+        "volume": 11868000,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-10-05",
+        "week_end": "2026-10-11",
+        "price": 84.3,
+        "volume": 10506500,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-10-12",
+        "week_end": "2026-10-18",
+        "price": 86.37,
+        "volume": 11867500,
+        "auctions": 5
+      },
+      {
+        "week_start": "2026-10-19",
+        "week_end": "2026-10-25",
+        "price": 85.17,
+        "volume": 9922500,
+        "auctions": 4
+      },
+      {
+        "week_start": "2026-10-26",
+        "week_end": "2026-11-01",
+        "price": 87.68,
+        "volume": 2791500,
+        "auctions": 1
+      }
+    ],
+    "quarterly": [
+      {
+        "year": 2026,
+        "quarter": 1,
+        "price": 75.36,
+        "volume": 119928500,
+        "auctions": 54,
+        "complete": false
+      },
+      {
+        "year": 2026,
+        "quarter": 2,
+        "price": 75.28,
+        "volume": 123871000,
+        "auctions": 53,
+        "complete": false
+      },
+      {
+        "year": 2026,
+        "quarter": 3,
+        "price": 82.32,
+        "volume": 123869500,
+        "auctions": 59,
+        "complete": false
+      },
+      {
+        "year": 2026,
+        "quarter": 4,
+        "price": 85.45,
+        "volume": 39427500,
+        "auctions": 17,
+        "complete": false
+      }
+    ],
+    "stats": {
+      "latest_price": 87.68,
+      "latest_date": "2026-10-26",
+      "ma_5_auctions": 85.73,
+      "ma_20_auctions": 85.37,
+      "low_52w": 62.19,
+      "high_52w": 91.34,
+      "position_52w": 0.8744,
+      "last_5_vs_20": 0.0042
+    }
+  },
+  "public_score": {
+    "score": 29.5,
+    "max_score": 70,
+    "confidence": "high",
+    "components": [
+      {
+        "name": "52周价格位置",
+        "score": 2.5,
+        "max": 20,
+        "value": 0.8744,
+        "note": "价格越靠近52周低位，估值分越高"
+      },
+      {
+        "name": "相对13周均价折价",
+        "score": 3.5,
+        "max": 15,
+        "value": -0.0432,
+        "note": "衡量当前周度拍卖均价相对中期基准是否便宜"
+      },
+      {
+        "name": "止跌 / 反转确认",
+        "score": 15.0,
+        "max": 15,
+        "value": 0.0042,
+        "note": "持续下跌不再自动加分；横盘或反转后才提高采购分"
+      },
+      {
+        "name": "已完成周拍卖供给动量",
+        "score": 4.4,
+        "max": 10,
+        "value": 0.0251,
+        "note": "排除本周未完成数据，避免假性供给收缩"
+      },
+      {
+        "name": "下一年度拍卖供给方向",
+        "score": 4.1,
+        "max": 10,
+        "value": 0.0173,
+        "note": "下一年度拍卖供应减少会提高提前采购分"
+      }
+    ]
+  },
+  "analysis": {
+    "headline": "公共数据暂不支持在合规需要之外加速采购",
+    "stance": "minimum",
+    "bullets": [
+      "最新EEX EUA一级拍卖清算价：€87.68/tCO₂（2026-10-26）。",
+      "过去52周拍卖区间：€62.19–€91.34；当前位于自低点向上的约87%位置。",
+      "V2模型不再把单纯下跌视为买点；只有价格具有相对吸引力且出现止跌/反转确认，采购分才会明显上升。",
+      "本周截至最新拍卖的成交量加权均价：€87.68/tCO₂，共1场拍卖。",
+      "本季度截至目前拍卖加权均价：€85.45/tCO₂；在官方价格发布前仅作为透明跟踪值。",
+      "公共自动层最高70分；EUA远期曲线、政策/MSR、能源基本面和持仓/技术面由每日研究层补充至100分。"
+    ]
+  },
+  "model": {
+    "version": "2.0.0",
+    "public_layer_max": 70,
+    "research_layer_max": 30,
+    "principle": "价格吸引力 + 止跌确认 + 拍卖供给；避免重复计权和 falling-knife 信号"
+  }
+}
