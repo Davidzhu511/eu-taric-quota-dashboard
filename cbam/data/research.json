@@ -1,39 +1,45 @@
 {
   "meta": {
-    "updated_at": "2026-10-25T20:51:42.285Z",
+    "updated_at": "2026-10-26T20:46:20.785Z",
     "status": "partial_data",
-    "confidence": "公共层V2高可信（2026-10-23 EEX拍卖快照）；研究层低可信：缺乏同日交叉核验的EUA现货/近月/Dec26/Dec27完整期限结构、TTF与煤电切换、工业排放、技术面持仓/资金流。未找到可确认已生效的CCP最终细则，草案不作法律依据。",
+    "confidence": "公共层V2原样沿用（EEX拍卖快照截至2026-10-23）；研究层低可信：尚未核实2026-10-26最新EEX拍卖、完整同日EUA现货/近月/Dec26/Dec27期限结构、TTF/煤电切换/工业排放、COT/持仓资金流；CCP授权条例仅找到2026-07草案，未核实正式生效文本。2026-10-20 MSR 700m为立法机构临时协议，未生效。",
     "producer": "chatgpt_research",
     "public_data_date": "2026-10-23",
     "public_checked_at": "2026-10-25T19:48:40.222389+00:00",
     "research_completed": false,
     "methodology_version": "V2 public 70 + verified overlay up to 30",
-    "data_cutoff": "2026-10-23 (last EEX auction business day; 2026-10-25 is Sunday)"
+    "data_cutoff": "2026-10-23 (EEX public V2 snapshot); policy research checked 2026-10-26",
+    "policy_checked_at": "2026-10-26T20:46:20.785Z"
   },
   "overlay_score": null,
-  "headline": "暂无可验证的加速购证信号：V2公共层29.4/70，研究层数据不足，暂不形成100分总分",
-  "summary": "截至2026-10-25柏林时间，读取main分支2026-10-23公共层快照：EEX一级拍卖最新€85.89/tCO₂，最近完整周拍卖加权均价€85.17，2026Q4迄今拍卖加权€85.28（非官方Q4证书价）。原样保留V2公共层29.4/70；52周区间位置81.3%，相对13周均价未形成明显折价，止跌项已有13/15分但估值不便宜，故不构成低估止跌加速采购机会。无法可靠验证完整EUA期限结构、能源与持仓数据，因此研究层不打分，不提供总分或建议覆盖率。2026进口义务采用2026各季度官方固定价，2027及以后当年义务才适用周度择时。",
+  "headline": "暂无已验证加速购证触发：V2公共层29.4/70（截至2026-10-23）；MSR达成700m临时协议但尚未生效",
+  "summary": "2026-10-26柏林晚间复核：main分支cbam/data/current.json最近数据日为2026-10-23，未包含10月26日拍卖。完全保留公共层V2 29.4/70（五项3.7、5.7、13、2.8、4.1），不以旧模型重算。2026-10-23 EEX拍卖€85.89/tCO₂、该周€85.17，2026Q4截至当日拍卖加权€85.28（不是欧委会正式Q4 CBAM价格）。2026-10-20欧盟理事会与议会就MSR取消/失效阈值由400m提高至700m EUA达成临时协议，理事会2026-10-21正式公告明确仍须双方确认、法律语言审查与正式通过；不能当作已生效供给变化，更不能当作当期EUA立即释放300m。EUA Dec26在2026-10-23的€86.26获两家第三方一致佐证，Dec27约€89.49仅单一二级源，缺完整同日现货、近月及官方/交易所可复核期限结构；能源和资金流也不全，研究层不打分，完整总分与覆盖率均不输出。",
   "bullets": [
-    "价格与V2：2026-10-23德国EUA拍卖€85.89；2026-10-19至23完整周€85.17，前一完整周€86.37。52周拍卖区间€62.19–€91.34，当前位置81.3%；V2五项分数依次为3.7/20、5.7/15、13/15、2.8/10、4.1/10，合计29.4/70；不重算也不因下跌额外加分。",
-    "研究层12分（期限结构）：可找到第三方2026-10-23 Dec26 EUA期货收盘€86.26，但缺同日可交叉验证的EUA现货、近月、Dec27和完整期限结构；不得据单一价格评分。",
-    "研究层8分（政策）：欧委会2026Q1/Q2/Q3官方CBAM价格分别€75.36、€75.28、€82.32，Q4定于2027-01-04公布；2027-02起购证，2026进口对应季度固定价、2027起按周度定价。2026-09-23理事会MSR立场仍属立法谈判立场，不能当作已生效规则。",
-    "研究层8分（MSR）：欧委会已公布2026-09至2027-08拟向MSR转入190,494,202 EUA；EEX所列2027年拍卖量部分仍为指示性、可调整，不据此推断法案已通过。",
-    "研究层8分（CCP）：检索到2026-07公开征询的CCP授权条例草案（Ares(2026)6860249），其中手续费€0.05/张等仅为草案参数；本轮未核实正式编号、生效日期及最终购买限制/付款锁价/回购/注销执行细则，不能用草案作为采购依据。",
-    "研究层6分（能源/工业）：缺2026-10-23 TTF、煤电切换、现货电价和工业排放同口径可信数据，不能评分。",
-    "研究层4分（技术/仓位）：缺最新EUA期货持仓、资金流及多期限技术确认数据，不能评分。",
-    "2026固定价义务：仅核算季度进口对应证书数量、现金流、首次年度交证及适用的回购/注销规定；不得拿2027年周价择时重新计算2026进口义务。",
-    "2027及以后周价义务：本次不建议提高覆盖率；需在研究层有效评分后再按总分阈值判断。Article 22(2)季度持仓底线必须按独立法定口径核算，未获得企业私有进口与账户持仓数据，无法判断合规缺口。",
-    "触发检查：未确认有效总分≥65、明显低估止跌、临近65且上涨风险显著、已证实的企业季度持仓不足、或足以改变购证决策的已生效重大新规；无触发通知条件。"
+    "【V2公共层】原值29.4/70；五项为52周位置3.7/20、13周折价5.7/15、止跌13/15、完整周供给2.8/10、下一年度供给4.1/10。52周区间€62.19–€91.34，位置81.3%，价格并不便宜；止跌分较高不能替代价格吸引力，不额外加分。",
+    "【数据时效】GitHub EEX拍卖最新记录为2026-10-23德国€85.89，完整自然周2026-10-19至25累计4场€85.17；2026-10-26为星期一，EEX当日拍卖结果未在本次读取的公开快照内，不能将10月23日价格冒充今天收盘。GitHub公开自动数据层独立运行；本轮研究更新不改写其V2分数。",
+    "【研究12分：期限结构】2026-10-23 EUA Dec26期货€86.26在Advantag 10月26日报告与EnergyMarketPrice 10月26日报告一致；EnergyMarketPrice列Dec27 €89.49、Dec28 €93.07，属第三方报价且未找到交易所官方同日交叉验证，也缺现货/近月。无法完整评价期限结构，暂不评分。",
+    "【研究8分：MSR重大政策进展】理事会2026-10-21官方公告：理事会与欧洲议会2026-10-20达成临时协议，拟把MSR超额配额失效阈值从4亿提高至7亿，保留失效机制，未来年度逐步下降另议。需双方正式确认、审校、通过并生效；此举增加潜在缓冲库存，不代表立即向市场投放3亿EUA。此前2026-09-23理事会单方800m/2031方案已被后续700m临时妥协取代，二者均不能视为现行法。",
+    "【研究8分：MSR既定机制】欧委会2026-05-29宣布2026-09至2027-08合计190,494,202 EUA转入MSR；EEX列2027年度拍卖总量492,775,000，部分为indicative，不能因临时MSR协议自动调整现有拍卖数据。",
+    "【研究8分：CCP】EUR-Lex Ares(2026)6860249为2026-07-09公开的授权条例草案，涉及平台费用、销售、付款、回购及操作流程。未核实正式发布/生效的最终授权条例，草案中的任何费用、限额、锁价安排均不作为生效法律。另已生效的Regulation (EU) 2023/956经2025/2083修订及实施条例2025/2548可作为2027-02起售证、2026季度价/2027周度价依据。",
+    "【研究6分：能源】2026-10-23 UK天然气Dec26 €233.73（p/therm）见Advantag，但不能代替荷兰TTF；缺同日TTF、煤电切换边际、电力价格、工业排放的可靠完整数据，故不评分。",
+    "【研究4分：技术/资金流】Dec26期货近几日价格可见，但缺2026-10-26的多期限趋势验证、COT持仓/资金流及拥挤度；不得从单一价格序列臆造4分。",
+    "【2026固定价义务】欧委会正式2026Q1 €75.36、Q2 €75.28、Q3 €82.32/张；Q4预定2027-01-04公布，2026Q4截至10月23日EEX拍卖参考€85.28不是正式证书价。2027年购买2026年进口义务证书按2026进口季度价，不做2027周度择时，重点为应购数量、现金流、交证、回购及注销。",
+    "【2027及以后周价义务】欧委会从2027年按周公布价格，正常购证时点影响成本。当前研究层无有效0–30分，不形成100分总分、合规底仓以上的加购覆盖率或加速指令；不得将MSR临时协议直接视为价格确定性方向。",
+    "【Article 22(2)季度底仓】须使用法律定义的当年累计进口货物相关排放等法定口径计算，不直接以最终年度交证量×50%替代。无企业私有进口及CBAM账户持仓数据，无法判断季度底仓缺口。",
+    "【触发结论】尚无有效总分≥65、低估+止跌、逼近65且上涨风险显著、经核实合规缺口或已经生效并足以改变采购的重大新规。10月20日MSR临时协议属于需跟踪的重大立法进展，但目前不构成正式生效的购证指令；本次不触发主动通知。"
   ],
   "sources": [
     "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
     "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
-    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
-    "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02023R0956-20251020",
-    "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2083",
+    "https://www.consilium.europa.eu/en/press/press-releases/2026/10/21/ets-market-stability-reserve-council-and-parliament-reach-provisional-agreement-on-targeted-amendment/",
     "https://www.consilium.europa.eu/en/press/press-releases/2026/09/23/market-stability-reserve-council-agrees-targeted-amendment-for-a-resilient-and-predictable-carbon-market/",
     "https://climate.ec.europa.eu/news-other-reads/news/190-million-eu-ets-allowances-be-placed-market-stability-reserve-between-september-2026-and-august-2026-05-29_en",
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/cbam-communication-and-news_en",
+    "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=oj:L_202502548",
+    "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02023R0956-20251020",
     "https://eur-lex.europa.eu/legal-content/EN/PIN/?uri=intcom:Ares(2026)6860249",
-    "https://za.investing.com/commodities/european-union-allowance-eua-year-futures-historical-data"
+    "https://www.energymarketprice.com/HorizonDailyReport1Chart.asp",
+    "https://advantag.de/en/emissions-trading-carbon-market-news-26-10-2026"
   ]
 }
