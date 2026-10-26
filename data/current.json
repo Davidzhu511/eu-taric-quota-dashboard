@@ -1,16 +1,207 @@
 {
   "meta": {
-    "checked_at": "2026-10-25T21:52:07+01:00",
+    "checked_at": "2026-10-26T08:05:15+01:00",
     "official_update_date": "2026-10-23",
     "validity_period": "01-10-2026 - 31-12-2026",
     "next_period": "01-01-2027 - 31-03-2027",
     "blocking_period": "06-10-2026 - 12-10-2026",
     "source_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_consultation.jsp?Lang=en",
-    "successful_count": 55,
-    "failed_count": 0,
+    "successful_count": 17,
+    "failed_count": 38,
     "total_count": 55
   },
-  "failures": [],
+  "failures": [
+    {
+      "category": "1A",
+      "code": "099801",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099803",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099804",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099805",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099806",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099807",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099808",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099809",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099500",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099701",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099705",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099702",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099810",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099811",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099704",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099812",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099703",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099600",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "1A",
+      "code": "099700",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099817",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099818",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099819",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099820",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099821",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099822",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099823",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099502",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099602",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099707",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099709",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099710",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "2",
+      "code": "099708",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "4A",
+      "code": "099832",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "4A",
+      "code": "099833",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "4A",
+      "code": "099834",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "4A",
+      "code": "099835",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "4A",
+      "code": "099836",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    },
+    {
+      "category": "4A",
+      "code": "099505",
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
+    }
+  ],
   "items": [
     {
       "category": "1A",
@@ -45,8 +236,8 @@
         "balance_kg": 160573740,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099801"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -117,8 +308,8 @@
         "balance_kg": 149318610,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099803"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -153,8 +344,8 @@
         "balance_kg": 69730640,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099804"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -189,8 +380,8 @@
         "balance_kg": 120882350,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099805"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -225,8 +416,8 @@
         "balance_kg": 115457520,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099806"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -261,8 +452,8 @@
         "balance_kg": 103743080,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099807"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -297,8 +488,8 @@
         "balance_kg": 101232210,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099808"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -333,8 +524,8 @@
         "balance_kg": 64523650,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099809"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -369,8 +560,8 @@
         "balance_kg": 120920560,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099500"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -405,8 +596,8 @@
         "balance_kg": 42512750,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099701"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -441,8 +632,8 @@
         "balance_kg": 38481140,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099705"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -477,8 +668,8 @@
         "balance_kg": 31834460,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099702"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -513,8 +704,8 @@
         "balance_kg": 11830050,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099810"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -549,8 +740,8 @@
         "balance_kg": 9545080,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099811"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -585,8 +776,8 @@
         "balance_kg": 5472500,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099704"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -621,8 +812,8 @@
         "balance_kg": 2377670,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099812"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -657,8 +848,8 @@
         "balance_kg": 3531910,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099703"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -693,8 +884,8 @@
         "balance_kg": 5564010,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099600"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "1A",
@@ -729,8 +920,8 @@
         "balance_kg": 4271870,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099700"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -765,8 +956,8 @@
         "balance_kg": 33586540,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099817"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -801,8 +992,8 @@
         "balance_kg": 67493580,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099818"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -837,8 +1028,8 @@
         "balance_kg": 63652670,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099819"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -873,8 +1064,8 @@
         "balance_kg": 60152910,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099820"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -909,8 +1100,8 @@
         "balance_kg": 19834630,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099821"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -945,8 +1136,8 @@
         "balance_kg": 29457810,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099822"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -981,8 +1172,8 @@
         "balance_kg": 26549480,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099823"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -1017,8 +1208,8 @@
         "balance_kg": 33670610,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099502"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -1053,8 +1244,8 @@
         "balance_kg": 24933920,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099602"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -1089,8 +1280,8 @@
         "balance_kg": 21283600,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099707"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -1125,8 +1316,8 @@
         "balance_kg": 1294540,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099709"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -1161,8 +1352,8 @@
         "balance_kg": 745650,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099710"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "2",
@@ -1197,8 +1388,8 @@
         "balance_kg": 3533820,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099708"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "4A",
@@ -1233,8 +1424,8 @@
         "balance_kg": 117496920,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099832"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "4A",
@@ -1269,8 +1460,8 @@
         "balance_kg": 33783390,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099833"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "4A",
@@ -1305,8 +1496,8 @@
         "balance_kg": 63925330,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099834"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "4A",
@@ -1341,8 +1532,8 @@
         "balance_kg": 58295850,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099835"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "4A",
@@ -1377,8 +1568,8 @@
         "balance_kg": 26119930,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099836"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "4A",
@@ -1413,8 +1604,8 @@
         "balance_kg": 38881490,
         "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099505"
       },
-      "stale": false,
-      "error": ""
+      "stale": true,
+      "error": "403 Client Error: Forbidden for url: https://sorry.ec.europa.eu/"
     },
     {
       "category": "4A",
@@ -1441,13 +1632,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-23",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099605",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099605",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 33338760,
         "balance_kg": 33338760,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099605"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099605"
       },
       "stale": false,
       "error": ""
@@ -1477,13 +1668,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-23",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099714",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099714",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 12761320,
         "balance_kg": 12761320,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099714"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099714"
       },
       "stale": false,
       "error": ""
@@ -1513,13 +1704,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-23",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099718",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099718",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 11600080,
         "balance_kg": 11600080,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099718"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099718"
       },
       "stale": false,
       "error": ""
@@ -1549,13 +1740,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-23",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099716",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099716",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 2874210,
         "balance_kg": 2874210,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099716"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099716"
       },
       "stale": false,
       "error": ""
@@ -1585,13 +1776,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-23",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099715",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099715",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 2943830,
         "balance_kg": 2943830,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099715"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099715"
       },
       "stale": false,
       "error": ""
@@ -1621,13 +1812,13 @@
       "blocking_period": "",
       "suspension_period": "",
       "official_update_date": "2026-10-23",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099717",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099717",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 3150340,
         "balance_kg": 3150340,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099717"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099717"
       },
       "stale": false,
       "error": ""
