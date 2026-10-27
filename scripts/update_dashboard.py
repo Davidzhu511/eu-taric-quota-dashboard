@@ -423,6 +423,32 @@ def validate_items(items: list[dict[str, Any]]) -> None:
                 raise RuntimeError(f"{code}: 详情链接不是欧盟委员会官方地址")
 
 
+
+def should_preserve_previous_snapshot(previous_meta: dict[str, Any], candidate_meta: dict[str, Any]) -> bool:
+    """Keep a more complete snapshot when a same-scope retry is degraded."""
+    try:
+        previous_success = int(previous_meta.get("successful_count", 0) or 0)
+        candidate_success = int(candidate_meta.get("successful_count", 0) or 0)
+        previous_total = int(previous_meta.get("total_count", 0) or 0)
+        candidate_total = int(candidate_meta.get("total_count", 0) or 0)
+    except (TypeError, ValueError):
+        return False
+
+    previous_official_date = str(previous_meta.get("official_update_date", "") or "")
+    candidate_official_date = str(candidate_meta.get("official_update_date", "") or "")
+    previous_period = str(previous_meta.get("validity_period", "") or "")
+    candidate_period = str(candidate_meta.get("validity_period", "") or "")
+
+    same_scope = (
+        bool(previous_official_date)
+        and previous_official_date == candidate_official_date
+        and bool(previous_period)
+        and previous_period == candidate_period
+        and previous_total > 0
+        and previous_total == candidate_total
+    )
+    return same_scope and previous_success > candidate_success
+
 def main() -> int:
     now = datetime.now(BERLIN)
     today = now.date()
@@ -514,6 +540,15 @@ def main() -> int:
         "failures": failures,
         "items": items,
     }
+
+    if should_preserve_previous_snapshot(previous_meta, payload["meta"]):
+        print(
+            "Preserved the previous EU snapshot: "
+            f"same official date/period, candidate quality {successful}/{len(CODES)} "
+            f"is below previous {previous_meta.get('successful_count', 0)}/{previous_meta.get('total_count', 0)}",
+            flush=True,
+        )
+        return 0
 
     atomic_json_write(CURRENT_FILE, payload)
     if re.fullmatch(r"\d{4}-\d{2}-\d{2}", official_update_date):
