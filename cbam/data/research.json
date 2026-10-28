@@ -1,86 +1,26 @@
 {
   "meta": {
-    "updated_at": "2026-10-28T20:49:24.997Z",
-    "status": "partial_data",
-    "confidence": "研究层证据不足：2026-10-28仅核得第三方Dec26期货盘中参考值，缺少同一时点EUA现货、近月、Dec27/Dec28官方或交叉验证的完整期限结构；TTF虽有第三方行情但缺煤电切换、电力/工业排放官方序列；缺资金流、持仓与可审计技术信号。故30分研究层不评分。",
-    "producer": "chatgpt_research",
-    "research_completed": true,
-    "public_data_date": "2026-10-27",
-    "public_checked_at": "2026-10-27T21:24:40.299522+00:00",
-    "public_score_version": "2.0.0",
-    "public_score_unchanged": 29,
-    "public_data_staleness": "截至本次研究，GitHub main公共快照为2026-10-27，2026-10-28 EEX拍卖结果尚未在current.json核验；GitHub Actions最近一次CBAM数据任务为2026-10-27成功，不代表全站失效。",
-    "evidence_as_of": "2026-10-28T20:49:24.997Z"
+    "updated_at": "2026-10-28T21:47:21+00:00",
+    "status": "public_only_fallback",
+    "confidence": "仅核实V2公共层；EUA远期曲线、能源基本面及持仓资金流未得到足够交叉验证，研究层不可评分",
+    "producer": "github_actions",
+    "public_data_date": "2026-10-28",
+    "public_checked_at": "2026-10-28T21:47:17.701312+00:00",
+    "research_completed": false
   },
   "overlay_score": null,
-  "headline": "EUA价格处于近一年高位，未确认加速采购机会；研究层数据不足，维持审慎观察",
-  "summary": "公共V2层严格沿用2026-10-27快照29.0/70，不重新计算。最新已核EEX一级拍卖为2026-10-27 €87.71/tCO₂，处于52周拍卖区间€62.19–€91.34的约87.5%位置；2026年Q4拍卖加权参考均价€85.60/tCO₂（未完成季度，非法定官方价）。10月28日第三方Dec26 EUA期货参考€88.77/tCO₂（16:25，盘中非收盘），与27日拍卖并非同一时点，不能当作可靠基差或期限结构。理论上即使研究层取得30分满分，基于当前公共快照也仅59.0/100，未达65分加速采购阈值；但因研究层未评分，不发布完整总分或建议覆盖率。10月20日MSR 7亿阈值临时协议尚待正式通过，未确认新的已生效重大法规变化。",
+  "headline": "公共数据已同步；30分研究层尚未完成可靠量化",
+  "summary": "公共层V2数据日期为2026-10-28，评分28.1/70，最近一级拍卖价€87.84/tCO₂。GitHub Actions已维护本次数据状态，但这不是ChatGPT完整研究报告。在远期曲线、政策、能源及仓位数据充分核实前，不给出100分总分、采购覆盖率或加速采购指令。",
   "bullets": [
-    "【公共价格与评分】保留V2五项原分，不重算：52周价格位置2.5/20；相对13周均价折价3.4/15；止跌 / 反转确认14.5/15；已完成周拍卖供给动量4.4/10；下一年度拍卖供给方向4.1/10；最新EEX拍卖2026-10-27 €87.71/tCO₂，52周价格位置87.55%。价格偏高，虽止跌/反转分较高，缺乏“明显低估+止跌”组合。",
-    "【研究层12分·期限结构】第三方10月28日16:25记录EUA Dec26期货€88.77/tCO₂（非结算价）；另一第三方10月27日Dec26收盘€88.05。不同时间点不得计算基差。未取得同一时间EUA现货、近月、Dec27/Dec28完整报价及交易所交叉验证，不赋分。",
-    "【研究层8分·政策】欧盟理事会2026-10-21公告确认：10月20日与议会就ETS1 MSR失效阈值由4亿提高至7亿EUA达成临时协议；仍需双方正式通过，不能视为已生效、亦不能理解为立即向拍卖市场释放3亿EUA。ETS2 MSR规则与ETS1需严格区分。",
-    "【研究层8分·CCP】现行CBAM条例合并文本第20条规定2027-02-01开始通过CCP销售证书，且平台成本可由费用筹资；第23条规定超额证书回购申请及限额，第24条规定注销机制。未核实到完整正式生效的CCP交易限额、具体费率、付款锁价和操作细则，不使用2026-07-09未定编号授权条例草案参数。",
-    "【研究层6分·能源】第三方10月28日TTF近月盘中参考约€99.15/MWh，缺ICE正式结算交叉核验、煤电边际切换价、电力负荷及工业排放数据，不能据此推断EUA净需求，不赋分。",
-    "【研究层4分·技术/持仓】未取得同日可靠COT持仓、资金流、期货成交/未平仓量、跨期技术指标的完整证据，不赋分。",
-    "【2026年进口义务】按货物进口季度固定官方价，Q1 €75.36、Q2 €75.28、Q3 €82.32/张；Q4官方价预计2027-01-04公布，当前€85.60仅拍卖参考。2027年购买2026义务证书不以当周EUA价择时；关注数量、现金流、交证及适用回购/注销规则。",
-    "【2027及以后当年义务】按未来购买时官方周度价择时，但本次没有有效完整研究评分，既不提供完整总分，也不建议加购覆盖比例；不要把衍生品对冲仓位视为实际CBAM证书。",
-    "【Article22(2)季度底仓】必须依照独立法定口径及进口商真实持仓/排放数据计算，不能用年度最终交证量×50%替代；未取得企业私有持仓，不能推断合规缺口。",
-    "【运行质量】2026-10-28研究时main的current.json仍为2026-10-27，未获得28日官方拍卖快照；属于待更新/核查事项，单日延迟不构成持续系统故障。独立GitHub Actions兜底仅同步公开状态，不能替代本研究。"
+    "公共层70分保留V2原始得分，不重复计算或用价格下跌直接加分。",
+    "研究层30分依次为：EUA期限结构12分、ETS/CBAM/MSR/CCP政策8分、能源与工业排放6分、技术面和市场持仓4分；缺失可靠数据时不评分。",
+    "2026进口义务按进口季度固定价格管理，不进行周度择时；2027及以后当年义务才按周度价格择时。",
+    "Article 22(2)季度底仓需按独立法定口径和企业实际数据核算；公开网页无法验证企业义务及实际持仓。",
+    "CCP购买限制、交易费用、付款锁价、回购与注销规则必须以正式生效文件为准，不把草案参数当作确定规则。",
+    "如果ChatGPT研究任务写入被阻止，本自动兜底仍能更新公开状态；研究层结论缺失不代表出现采购机会。"
   ],
   "sources": [
-    {
-      "title": "EEX EU ETS1拍卖官方页面与年度报告",
-      "url": "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
-      "date_checked": "2026-10-28"
-    },
-    {
-      "title": "EEX官方2026一级拍卖结果原始文件",
-      "url": "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
-      "date_checked": "2026-10-28",
-      "note": "公开看板已抓取至2026-10-27"
-    },
-    {
-      "title": "欧委会CBAM证书官方季度价格及2027周度方法",
-      "url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
-      "date_checked": "2026-10-28"
-    },
-    {
-      "title": "理事会2026-10-21 ETS1 MSR临时协议公告",
-      "url": "https://www.consilium.europa.eu/en/press/press-releases/2026/10/21/ets-market-stability-reserve-council-and-parliament-reach-provisional-agreement-on-targeted-amendment/",
-      "date_checked": "2026-10-28"
-    },
-    {
-      "title": "EUR-Lex CBAM条例合并文本：Articles 20–24",
-      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02023R0956-20251020",
-      "date_checked": "2026-10-28"
-    },
-    {
-      "title": "欧委会CBAM CCP招标公告（2026-03-02）",
-      "url": "https://taxation-customs.ec.europa.eu/news/cbam-call-tender-establish-common-central-platform-ccp-2026-03-02_en",
-      "date_checked": "2026-10-28"
-    },
-    {
-      "title": "欧委会2026-07-09 CCP授权条例未定编号文本（不作为生效规则）",
-      "url": "https://op.europa.eu/de/publication-detail/-/publication/5da8f8ff-7b79-11f1-bf5e-01aa75ed71a1/language-en",
-      "date_checked": "2026-10-28"
-    },
-    {
-      "title": "EUA Dec26第三方盘中参考（2026-10-28 16:25）",
-      "url": "https://oenergetice.cz/en/energostat/online-prices/emission-allowance",
-      "date_checked": "2026-10-28",
-      "reliability": "第三方，非交易所官方结算"
-    },
-    {
-      "title": "EUA Dec26 10月27日第三方收盘参考",
-      "url": "https://za.investing.com/commodities/european-union-allowance-eua-year-futures-historical-data",
-      "date_checked": "2026-10-28",
-      "reliability": "第三方，未用于评分"
-    },
-    {
-      "title": "TTF近月10月28日第三方盘中参考",
-      "url": "https://ng.investing.com/commodities/ice-dutch-ttf-gas-c1-futures-historical-data",
-      "date_checked": "2026-10-28",
-      "reliability": "第三方，未用于评分"
-    }
+    "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
   ]
 }
