@@ -1,26 +1,76 @@
 {
   "meta": {
-    "updated_at": "2026-10-28T21:47:21+00:00",
-    "status": "public_only_fallback",
-    "confidence": "仅核实V2公共层；EUA远期曲线、能源基本面及持仓资金流未得到足够交叉验证，研究层不可评分",
-    "producer": "github_actions",
+    "updated_at": "2026-10-29T20:34:01.877Z",
+    "status": "partial_data",
+    "confidence": "研究层证据不足：尚无同一时点可交叉验证的EUA现货/近月/Dec期货完整期限结构；TTF及电力虽有当日公开行情，但缺少煤电切换、实际工业排放与发电结构量化验证；技术面缺乏可信资金流和持仓/拥挤度数据；CCP收费、限额及付款锁价的最终生效实施细则尚未核实。因此不打研究分。",
+    "producer": "chatgpt_research",
     "public_data_date": "2026-10-28",
     "public_checked_at": "2026-10-28T21:47:17.701312+00:00",
-    "research_completed": false
+    "research_completed": true,
+    "research_scope": "公开数据研究已执行，因数据不足而不量化评分；不等同于GitHub Actions公共层兜底"
   },
   "overlay_score": null,
-  "headline": "公共数据已同步；30分研究层尚未完成可靠量化",
-  "summary": "公共层V2数据日期为2026-10-28，评分28.1/70，最近一级拍卖价€87.84/tCO₂。GitHub Actions已维护本次数据状态，但这不是ChatGPT完整研究报告。在远期曲线、政策、能源及仓位数据充分核实前，不给出100分总分、采购覆盖率或加速采购指令。",
+  "headline": "2026-10-29 EUA/CBAM：能源价格剧烈波动需观察，但无可确认的加速采购信号；研究层不凑分",
+  "summary": "截至2026年10月29日晚，已读取main分支V2公共快照（数据日期2026-10-28），保留原始公共层28.1/70分，未重算。该快照最新EEX一级拍卖为2026-10-28 €87.84/tCO₂，位于其52周拍卖价区间约87.99%，不属于低估区；理论上即使研究层满分30，合计上限也仅58.1，不足65分加速采购阈值。10月29日EUA Dec26在不同时间的第三方参考报价约€88.97–89.34/t，非同一时点、非官方CBAM证书价格，不能用于完整期限结构评分。欧洲TTF近月因供气与库存紧张在10月28日一度触及€100/MWh，10月29日行业行情约€97.60/MWh；可能影响发电燃料切换及碳价，但缺乏可信的煤电切换量化与资金流证据，不能据此发出买入指令。10月21日欧盟公布的MSR 7亿EUA阈值仍为待正式通过的临时政治协议，不是已生效供应释放。2026年进口义务按进口季度固定价格管理；2027及以后当年义务才适用周度择时。研究层维持null，不输出完整100分或采购覆盖率。",
   "bullets": [
-    "公共层70分保留V2原始得分，不重复计算或用价格下跌直接加分。",
-    "研究层30分依次为：EUA期限结构12分、ETS/CBAM/MSR/CCP政策8分、能源与工业排放6分、技术面和市场持仓4分；缺失可靠数据时不评分。",
-    "2026进口义务按进口季度固定价格管理，不进行周度择时；2027及以后当年义务才按周度价格择时。",
-    "Article 22(2)季度底仓需按独立法定口径和企业实际数据核算；公开网页无法验证企业义务及实际持仓。",
-    "CCP购买限制、交易费用、付款锁价、回购与注销规则必须以正式生效文件为准，不把草案参数当作确定规则。",
-    "如果ChatGPT研究任务写入被阻止，本自动兜底仍能更新公开状态；研究层结论缺失不代表出现采购机会。"
+    "【V2公共层】截至2026-10-28原始评分28.1/70；五项分别为52周价格位置:2.4/20；相对13周均价折价:3.4/15；止跌 / 反转确认:13.8/15；已完成周拍卖供给动量:4.4/10；下一年度拍卖供给方向:4.1/10。全部沿用，不因持续下跌或未经证实的市场信息自行加分。",
+    "【拍卖/价格】EEX公开数据快照最新拍卖2026-10-28 €87.84/tCO₂；10月29日正式拍卖结果未在本次读取的GitHub公共快照中，且未独立核实，不能宣称当日官方拍卖价。EUA Dec26 10月29日行业参考报价约€88.97（power2market当日分析）及€89.34（oEnergetice 16:11更新），不同时间点仅用于观察，不能当作同日统一收盘价或官方CBAM价。",
+    "【期限结构12分】只有单个Dec26合约的不同时间报价，缺少同一时点EUA现货、近月与Dec26/Dec27等期限结构和可靠双源校验；该维度不评分。",
+    "【政策8分】欧委会2026-10-21公告：MSR失效阈值由4亿提高至7亿EUA的协议为临时政治协议，须议会和理事会正式通过并在欧盟公报公布后方生效；不能解读为立即向市场释放3亿EUA。CBAM产品范围扩展等仍属立法进程，不当作现行规则。",
+    "【能源与工业排放6分】路透社2026-10-29报道TTF近月10月28日触及€100/MWh、德国储气率约61.7%；power2market 10月29日行业行情显示TTF近月约€97.60/MWh、德国次日基荷电价€268.62/MWh、Dec26 EUA约€88.97。高气价可能促使煤电切换增加EUA需求，也可能抑制工业活动，方向不能单边推断；缺少同日煤/气边际成本、实际发电量与工业排放证据，不评分。",
+    "【技术与持仓4分】未取得经交叉验证的ICE/EEX成交持仓、投机净头寸、基金流入流出及拥挤度；不评分，不用单个价格涨跌代替持仓数据。",
+    "【2026固定价义务】欧委会正式公布2026 Q1 €75.36、Q2 €75.28、Q3 €82.32/张；Q4预计2027-01-04公布，目前无官方定价。2027年购买对应2026年进口的证书按进口季度价格，不做周度择时；重点是核实数量、现金流、交证、回购及注销时点。",
+    "【2027及以后当年义务】证书官方价格按周计算，可研究择时，但仅当公共层与研究层均有效时才给出完整评分及采购覆盖率。当前无有效研究层分数，不建议按85%或100%覆盖策略加购；不将期货/互换持仓视作实际CBAM证书。",
+    "【Article 22(2)季度底仓】季度最低持仓须依据独立法定口径及企业真实进口/排放/证书账户数据计算，不得以年度最终交证量直接乘50%代替；没有私有持仓数据，不推断缺口。",
+    "【CCP最终规则】(EU)2025/2083确定2027-02-01起通过CCP销售并规定费用法定框架，2026-07-09的Ares(2026)6860249仍标记为授权法规草案。本次未核实到最终生效的交易限额、具体费率、付款锁价操作规则；不能把草案数字当作已生效规定。回购与注销以现行CBAM条例第23、24条及后续正式修订为准。",
+    "【系统与触发】公共快照截至2026-10-28，距本次研究约1日；GitHub Actions自动兜底状态不等于ChatGPT研究。未见连续多日GitHub写入失败证据；本次没有有效总分≥65、逼近65的可证实采购机会、明显低估且止跌、已核实企业季度持仓不足或足以改变采购的生效法规变化。继续监控，不触发采购提醒。"
   ],
   "sources": [
     "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
-    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
-  ]
+    "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
+    "https://www.power2market.com/de/news/marketview-261029153624",
+    "https://oenergetice.cz/en/energostat/online-prices/emission-allowance",
+    "https://www.reuters.com/business/energy/italy-blames-german-gas-storage-delays-price-spike-2026-10-29/",
+    "https://cyprus.representation.ec.europa.eu/news/commission-welcomes-political-agreement-rules-enhancing-stability-and-long-term-resilience-eu-carbon-2026-10-21_en",
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
+    "https://eur-lex.europa.eu/eli/reg/2025/2083/oj",
+    "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=PI_COM:Ares(2026)6860249",
+    "https://www.consilium.europa.eu/en/policies/carbon-border-adjustment-mechanism/"
+  ],
+  "evidence": {
+    "public_score_v2": {
+      "data_date": "2026-10-28",
+      "score": 28.1,
+      "max_score": 70,
+      "latest_auction_date": "2026-10-28",
+      "latest_auction_price_eur": 87.84,
+      "price_position_52w": 0.8799,
+      "theoretical_max_if_overlay_30": 58.1
+    },
+    "research_dimensions": [
+      {
+        "name": "EUA现货/近月/Dec期货期限结构",
+        "max": 12,
+        "score": null
+      },
+      {
+        "name": "ETS/CBAM/MSR/拍卖/CCP正式法规",
+        "max": 8,
+        "score": null
+      },
+      {
+        "name": "TTF/煤电切换/电力/工业排放",
+        "max": 6,
+        "score": null
+      },
+      {
+        "name": "技术面/持仓/资金流/拥挤度",
+        "max": 4,
+        "score": null
+      }
+    ],
+    "notification_triggered": false,
+    "source_snapshot_sha": "c5274370c49076a5ea1c043740b34dab8eea8eb6",
+    "source_prior_research_status": "public_only_fallback"
+  }
 }
