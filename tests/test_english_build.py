@@ -36,5 +36,11 @@ class EnglishBuildTests(unittest.TestCase):
         self.assertIn('${exhausted ? "exhausted" : ""}', zh)
         self.assertIn('.quota-card.high.exhausted::before { content: "Exhausted"; }', en)
 
+    def test_active_blocking_notice_only_uses_active_ranges(self):
+        source = (ROOT/'index.html').read_text()
+        self.assertIn('const activeBlockingPeriods = (value) => {', source)
+        self.assertIn('rows.flatMap((row) => activeBlockingPeriods(row.blocking_period))', source)
+        self.assertNotIn('activeBlocking.map((row) => row.blocking_period)', source)
+
     def test_new_untranslated_label_fails_build(self):
         with self.assertRaises(ValueError):translate('<span>新增漏译词汇</span>')

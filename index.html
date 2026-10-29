@@ -568,11 +568,14 @@
       preview.hidden = !future.length;
       if (future.length) preview.innerHTML = `<details><summary>下一季度 · ${escapeHtml(meta.next_period || "官方预告")} · ${future.length} 个编号（展开查看）</summary><p>下列初始额度来自 TARIC 未来有效期记录。当前余额与待分配量仍属于本季度；未来余额未公布时不作零余额判断。点击编号核对原文。</p><div class="preview-grid">${future.map((item) => `<div class="preview-item"><a href="${escapeHtml(item.next_period.detail_url)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(item.category)} · ${escapeHtml(item.code)} · ${escapeHtml(item.origin)}</strong></a><span>${escapeHtml(item.next_period.validity_period)}</span><span>初始额度：${number.format(item.next_period.initial_amount_kg)} kg</span><span>余额：${item.next_period.balance_kg == null ? "尚未公布" : number.format(item.next_period.balance_kg) + " kg"}</span></div>`).join("")}</div></details>`;
 
-      const activeBlocking = rows.filter((row) => periodContainsToday(row.blocking_period));
+      const activeBlockingPeriods = (value) => {
+        const periods = String(value || "").match(/\d{2}-\d{2}-\d{4}\s*-\s*\d{2}-\d{2}-\d{4}/g) || [];
+        return periods.filter(periodContainsToday);
+      };
+      const periods = [...new Set(rows.flatMap((row) => activeBlockingPeriods(row.blocking_period)))];
       let blocking = "";
-      if (activeBlocking.length) {
-        const periods = [...new Set(activeBlocking.map((row) => row.blocking_period).filter(Boolean))].join("；");
-        blocking = `当前仍处于官方封锁期（${periods}），实际分配尚未完成。`;
+      if (periods.length) {
+        blocking = `当前仍处于官方封锁期（${periods.join("；")}），实际分配尚未完成。`;
       } else if (meta.blocking_period) {
         blocking = `官方记录的封锁期：${meta.blocking_period}（当前已结束）。`;
       }
