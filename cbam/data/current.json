@@ -1,7 +1,7 @@
 {
   "meta": {
-    "checked_at": "2026-10-28T21:47:17.701312+00:00",
-    "data_date": "2026-10-28",
+    "checked_at": "2026-10-29T21:53:51.590110+00:00",
+    "data_date": "2026-10-29",
     "status": "ok",
     "errors": [],
     "methodology_version": "2.0.0"
@@ -1534,16 +1534,24 @@
       "status": "successful",
       "contract": "T3PA",
       "auction_name": "Auction 4. Period CAP3 PL"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 88.05,
+      "volume": 2791500,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 EU"
     }
   ],
   "auction_analytics": {
     "latest": {
-      "date": "2026-10-28",
-      "price": 87.84,
-      "volume": 1945000,
+      "date": "2026-10-29",
+      "price": 88.05,
+      "volume": 2791500,
       "status": "successful",
       "contract": "T3PA",
-      "auction_name": "Auction 4. Period CAP3 PL"
+      "auction_name": "Auction 4. Period CAP3 EU"
     },
     "weekly": [
       {
@@ -1843,9 +1851,9 @@
       {
         "week_start": "2026-10-26",
         "week_end": "2026-11-01",
-        "price": 87.73,
-        "volume": 7528000,
-        "auctions": 3
+        "price": 87.82,
+        "volume": 10319500,
+        "auctions": 4
       }
     ],
     "quarterly": [
@@ -1876,47 +1884,47 @@
       {
         "year": 2026,
         "quarter": 4,
-        "price": 85.7,
-        "volume": 44164000,
-        "auctions": 19,
+        "price": 85.84,
+        "volume": 46955500,
+        "auctions": 20,
         "complete": false
       }
     ],
     "stats": {
-      "latest_price": 87.84,
-      "latest_date": "2026-10-28",
-      "ma_5_auctions": 86.8,
-      "ma_20_auctions": 85.61,
+      "latest_price": 88.05,
+      "latest_date": "2026-10-29",
+      "ma_5_auctions": 87.43,
+      "ma_20_auctions": 85.79,
       "low_52w": 62.19,
       "high_52w": 91.34,
-      "position_52w": 0.8799,
-      "last_5_vs_20": 0.0139
+      "position_52w": 0.8871,
+      "last_5_vs_20": 0.0191
     }
   },
   "public_score": {
-    "score": 28.1,
+    "score": 27.1,
     "max_score": 70,
     "confidence": "high",
     "components": [
       {
         "name": "52周价格位置",
-        "score": 2.4,
+        "score": 2.3,
         "max": 20,
-        "value": 0.8799,
+        "value": 0.8871,
         "note": "价格越靠近52周低位，估值分越高"
       },
       {
         "name": "相对13周均价折价",
-        "score": 3.4,
+        "score": 3.3,
         "max": 15,
-        "value": -0.0437,
+        "value": -0.0447,
         "note": "衡量当前周度拍卖均价相对中期基准是否便宜"
       },
       {
         "name": "止跌 / 反转确认",
-        "score": 13.8,
+        "score": 13.1,
         "max": 15,
-        "value": 0.0139,
+        "value": 0.0191,
         "note": "持续下跌不再自动加分；横盘或反转后才提高采购分"
       },
       {
@@ -1939,11 +1947,11 @@
     "headline": "公共数据暂不支持在合规需要之外加速采购",
     "stance": "minimum",
     "bullets": [
-      "最新EEX EUA一级拍卖清算价：€87.84/tCO₂（2026-10-28）。",
-      "过去52周拍卖区间：€62.19–€91.34；当前位于自低点向上的约88%位置。",
+      "最新EEX EUA一级拍卖清算价：€88.05/tCO₂（2026-10-29）。",
+      "过去52周拍卖区间：€62.19–€91.34；当前位于自低点向上的约89%位置。",
       "V2模型不再把单纯下跌视为买点；只有价格具有相对吸引力且出现止跌/反转确认，采购分才会明显上升。",
-      "本周截至最新拍卖的成交量加权均价：€87.73/tCO₂，共3场拍卖。",
-      "本季度截至目前拍卖加权均价：€85.70/tCO₂；在官方价格发布前仅作为透明跟踪值。",
+      "本周截至最新拍卖的成交量加权均价：€87.82/tCO₂，共4场拍卖。",
+      "本季度截至目前拍卖加权均价：€85.84/tCO₂；在官方价格发布前仅作为透明跟踪值。",
       "公共自动层最高70分；EUA远期曲线、政策/MSR、能源基本面和持仓/技术面由每日研究层补充至100分。"
     ]
   },
