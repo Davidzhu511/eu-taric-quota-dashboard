@@ -1,7 +1,7 @@
 {
   "meta": {
-    "checked_at": "2026-10-30T08:13:25+01:00",
-    "official_update_date": "2026-10-29",
+    "checked_at": "2026-10-30T20:55:52+01:00",
+    "official_update_date": "2026-10-30",
     "validity_period": "01-10-2026 - 31-12-2026",
     "next_period": "01-01-2027 - 31-03-2027",
     "blocking_period": "29-10-2026 - 13-11-2026",
@@ -36,7 +36,7 @@
       "last_allocation_date": "26-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099801",
       "not_yet_effective": false,
       "next_period": {
@@ -72,7 +72,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099802",
       "not_yet_effective": false,
       "next_period": {
@@ -108,7 +108,7 @@
       "last_allocation_date": "08-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099803",
       "not_yet_effective": false,
       "next_period": {
@@ -144,7 +144,7 @@
       "last_allocation_date": "27-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099804",
       "not_yet_effective": false,
       "next_period": {
@@ -180,7 +180,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099805",
       "not_yet_effective": false,
       "next_period": {
@@ -216,7 +216,7 @@
       "last_allocation_date": "27-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099806",
       "not_yet_effective": false,
       "next_period": {
@@ -252,7 +252,7 @@
       "last_allocation_date": "19-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099807",
       "not_yet_effective": false,
       "next_period": {
@@ -288,7 +288,7 @@
       "last_allocation_date": "26-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099808",
       "not_yet_effective": false,
       "next_period": {
@@ -324,7 +324,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099809",
       "not_yet_effective": false,
       "next_period": {
@@ -360,7 +360,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026 06-10-2026 - 12-10-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099500",
       "not_yet_effective": false,
       "next_period": {
@@ -396,7 +396,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099701",
       "not_yet_effective": false,
       "next_period": {
@@ -432,7 +432,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099705",
       "not_yet_effective": false,
       "next_period": {
@@ -468,7 +468,7 @@
       "last_allocation_date": "15-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099702",
       "not_yet_effective": false,
       "next_period": {
@@ -504,7 +504,7 @@
       "last_allocation_date": "07-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099810",
       "not_yet_effective": false,
       "next_period": {
@@ -540,7 +540,7 @@
       "last_allocation_date": "",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099811",
       "not_yet_effective": false,
       "next_period": {
@@ -576,7 +576,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099704",
       "not_yet_effective": false,
       "next_period": {
@@ -612,7 +612,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099812",
       "not_yet_effective": false,
       "next_period": {
@@ -648,7 +648,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099703",
       "not_yet_effective": false,
       "next_period": {
@@ -684,7 +684,7 @@
       "last_allocation_date": "12-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099600",
       "not_yet_effective": false,
       "next_period": {
@@ -720,7 +720,7 @@
       "last_allocation_date": "12-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099700",
       "not_yet_effective": false,
       "next_period": {
@@ -756,7 +756,7 @@
       "last_allocation_date": "22-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099817",
       "not_yet_effective": false,
       "next_period": {
@@ -792,7 +792,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099818",
       "not_yet_effective": false,
       "next_period": {
@@ -828,7 +828,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099819",
       "not_yet_effective": false,
       "next_period": {
@@ -864,7 +864,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099820",
       "not_yet_effective": false,
       "next_period": {
@@ -900,7 +900,7 @@
       "last_allocation_date": "27-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099821",
       "not_yet_effective": false,
       "next_period": {
@@ -936,7 +936,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099822",
       "not_yet_effective": false,
       "next_period": {
@@ -972,7 +972,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099823",
       "not_yet_effective": false,
       "next_period": {
@@ -1008,7 +1008,7 @@
       "last_allocation_date": "",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099502",
       "not_yet_effective": false,
       "next_period": {
@@ -1044,7 +1044,7 @@
       "last_allocation_date": "19-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099602",
       "not_yet_effective": false,
       "next_period": {
@@ -1080,7 +1080,7 @@
       "last_allocation_date": "21-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099707",
       "not_yet_effective": false,
       "next_period": {
@@ -1116,7 +1116,7 @@
       "last_allocation_date": "22-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099709",
       "not_yet_effective": false,
       "next_period": {
@@ -1152,7 +1152,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099710",
       "not_yet_effective": false,
       "next_period": {
@@ -1188,14 +1188,14 @@
       "last_allocation_date": "27-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099708",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 3533820,
         "balance_kg": 3533820,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099708"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099708"
       },
       "stale": false,
       "error": ""
@@ -1224,14 +1224,14 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099832",
+      "official_update_date": "2026-10-30",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099832",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 117496920,
         "balance_kg": 117496920,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099832"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099832"
       },
       "stale": false,
       "error": ""
@@ -1260,7 +1260,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099833",
       "not_yet_effective": false,
       "next_period": {
@@ -1296,7 +1296,7 @@
       "last_allocation_date": "07-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099834",
       "not_yet_effective": false,
       "next_period": {
@@ -1332,7 +1332,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099835",
       "not_yet_effective": false,
       "next_period": {
@@ -1368,7 +1368,7 @@
       "last_allocation_date": "27-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099836",
       "not_yet_effective": false,
       "next_period": {
@@ -1404,14 +1404,14 @@
       "last_allocation_date": "21-10-2026",
       "blocking_period": "06-10-2026 - 12-10-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099505",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 38881490,
         "balance_kg": 38881490,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099505"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099505"
       },
       "stale": false,
       "error": ""
@@ -1440,14 +1440,14 @@
       "last_allocation_date": "07-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
-      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099605",
+      "official_update_date": "2026-10-30",
+      "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099605",
       "not_yet_effective": false,
       "next_period": {
         "validity_period": "01-01-2027 - 31-03-2027",
         "initial_amount_kg": 33338760,
         "balance_kg": 33338760,
-        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099605"
+        "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2027-01-01&Code=099605"
       },
       "stale": false,
       "error": ""
@@ -1476,7 +1476,7 @@
       "last_allocation_date": "15-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099714",
       "not_yet_effective": false,
       "next_period": {
@@ -1512,7 +1512,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099718",
       "not_yet_effective": false,
       "next_period": {
@@ -1548,7 +1548,7 @@
       "last_allocation_date": "05-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099716",
       "not_yet_effective": false,
       "next_period": {
@@ -1584,7 +1584,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099715",
       "not_yet_effective": false,
       "next_period": {
@@ -1620,7 +1620,7 @@
       "last_allocation_date": "05-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099717",
       "not_yet_effective": false,
       "next_period": {
@@ -1656,7 +1656,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099837",
       "not_yet_effective": false,
       "next_period": {
@@ -1692,7 +1692,7 @@
       "last_allocation_date": "20-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099838",
       "not_yet_effective": false,
       "next_period": {
@@ -1728,7 +1728,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099839",
       "not_yet_effective": false,
       "next_period": {
@@ -1764,7 +1764,7 @@
       "last_allocation_date": "07-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099840",
       "not_yet_effective": false,
       "next_period": {
@@ -1800,7 +1800,7 @@
       "last_allocation_date": "26-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099841",
       "not_yet_effective": false,
       "next_period": {
@@ -1836,7 +1836,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "06-10-2026 - 12-10-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099506",
       "not_yet_effective": false,
       "next_period": {
@@ -1872,7 +1872,7 @@
       "last_allocation_date": "27-10-2026",
       "blocking_period": "29-10-2026 - 13-11-2026",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099606",
       "not_yet_effective": false,
       "next_period": {
@@ -1908,7 +1908,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099719",
       "not_yet_effective": false,
       "next_period": {
@@ -1944,7 +1944,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099720",
       "not_yet_effective": false,
       "next_period": {
@@ -1980,7 +1980,7 @@
       "last_allocation_date": "28-10-2026",
       "blocking_period": "",
       "suspension_period": "",
-      "official_update_date": "2026-10-29",
+      "official_update_date": "2026-10-30",
       "detail_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099721",
       "not_yet_effective": false,
       "next_period": {
