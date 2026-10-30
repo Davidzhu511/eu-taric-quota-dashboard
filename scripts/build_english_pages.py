@@ -5,6 +5,9 @@ import sys
 
 # Longer phrases are applied first. Numeric data and source URLs are unchanged.
 PHRASES = '''
+FCFS drawing requests 最早在报关接受后的第二个工作日处理，因此页面可能低估实际在途申请。\tFCFS drawing requests are processed no earlier than the second working day after declaration acceptance. The page may therefore understate requests in transit.
+当前仍处于官方封锁期（\tCurrently within the official blocking period (
+），实际分配尚未完成。\t). Actual allocation is not yet complete.
 预估分摊税率仅为把已知待分配申请合并计算的情景估算\tThe blended duty estimate is a scenario using the known pending requests together
 及看板情景估算不能替代具体产品的最终税率核定\tand dashboard scenarios do not replace the final duty assessment for the specific product
 看板风险标签独立比较待分配申请与官方\tDashboard risk labels independently compare pending requests with the official
