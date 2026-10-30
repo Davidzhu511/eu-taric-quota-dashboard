@@ -1,42 +1,26 @@
 {
   "meta": {
-    "updated_at": "2026-10-30T19:55:26.145Z",
-    "status": "partial_data",
-    "confidence": "研究层证据不足：缺少同一时点可独立核验的EUA现货/近月/Dec期限结构、完整TTF/煤电切换/电力/工业排放序列及EUA持仓资金流；10月30日EEX公共快照尚未同步，不评分",
-    "producer": "chatgpt_research",
-    "public_data_date": "2026-10-29",
-    "public_checked_at": "2026-10-29T21:53:51.590110+00:00",
-    "research_completed": true,
-    "public_model_version": "2.0.0",
-    "policy_check_date": "2026-10-30",
-    "last_run_result": "no_alert_trigger"
+    "updated_at": "2026-10-30T21:38:14+00:00",
+    "status": "public_only_fallback",
+    "confidence": "仅核实V2公共层；EUA远期曲线、能源基本面及持仓资金流未得到足够交叉验证，研究层不可评分",
+    "producer": "github_actions",
+    "public_data_date": "2026-10-30",
+    "public_checked_at": "2026-10-30T21:38:11.201217+00:00",
+    "research_completed": false
   },
   "overlay_score": null,
-  "headline": "EUA价格处52周高位附近，尚无可验证的加速采购机会；能源冲击继续观察",
-  "summary": "截至2026-10-30晚间（欧洲柏林），已读取main分支公共V2快照（数据日2026-10-29），原始公共评分27.1/70，最近已核实EEX一级拍卖为2026-10-29 €88.05/tCO₂；公共层未重算。TTF近月10月30日第三方行情约€103.41/MWh，能源供应紧张但尚不能确定对EUA净影响。MSR 700百万EUA失效阈值仍为待正式通过的临时协议。研究层证据不满足可靠量化标准，故不生成总分及采购覆盖率；2026进口季度固定价义务与2027及以后周度择时义务分别管理。未核实到触发采购、重大生效法规或持续系统故障的条件。",
+  "headline": "公共数据已同步；30分研究层尚未完成可靠量化",
+  "summary": "公共层V2数据日期为2026-10-30，评分27.2/70，最近一级拍卖价€89.55/tCO₂。GitHub Actions已维护本次数据状态，但这不是ChatGPT完整研究报告。在远期曲线、政策、能源及仓位数据充分核实前，不给出100分总分、采购覆盖率或加速采购指令。",
   "bullets": [
-    "公共层V2原始评分27.1/70（截至2026-10-29，未重算）：52周价格位置2.3/20、相对13周均价折价3.3/15、止跌/反转13.1/15、已完成周供给4.4/10、下一年度供给4.1/10。坚持价格吸引力与止跌确认并重，不能仅凭反弹就提高覆盖。",
-    "EEX公共快照：2026-10-29最近一级拍卖清算价€88.05/tCO₂；52周€62.19–€91.34，区间位置88.71%；本周截至10月29日的四场拍卖量加权价€87.82；2026年Q4截至该日20场拍卖加权价€85.84，仅为跟踪值而非官方Q4证书定价。10月30日EEX公共快照尚未同步，不能假装已核实当日拍卖结果。",
-    "研究层期限结构（12分）缺口：TradingView动态合约列表显示Nov26约€89.09、Dec26约€89.20、Jan27约€89.54、Mar27约€89.93/t，但缺少统一时间戳的ICE/EEX官方成交与现货报价，不能据此建立可靠的现货—近月—Dec期限结构评分；不将动态网页报价作为10月30日官方收盘价。",
-    "政策（8分）核验：欧盟理事会2026-10-21公告（2026-10-28补充协议文本）确认ETS1 MSR失效阈值由4亿提高至7亿EUA仅属临时协议，仍待理事会与议会正式批准；不是已生效规则，也不等于立即向拍卖市场投放3亿EUA。ETS2 MSR另有独立规则，不与ETS1混用。",
-    "能源（6分）观察：第三方TTF近月2026-10-30行情约€103.41/MWh（页面延时报价；10月29日约€98.55），与10月29日路透社报道的天然气供应紧张方向一致。高气价既可能影响煤电切换和发电EUA需求，也可能抑制工业产量；缺乏同期煤价、电价、发电结构和工业实际排放证据，无法量化净影响。",
-    "技术与持仓（4分）缺口：没有可交叉核验的同期EUA持仓、基金净仓、资金流、成交量与价格技术指标组合，不能以单一网站技术评级或开放持仓数字替代研究层评分。",
-    "2026进口义务：欧委会官方Q1 €75.36、Q2 €75.28、Q3 €82.32/张，Q4计划2027-01-04公布且目前未公布；2027年购买用于2026年各季度进口义务的证书按对应进口季度固定价结算，管理重点为排放量、资金安排、交证、回购和注销，不用2027周价择时。",
-    "2027及以后当年进口义务：CBAM证书适用欧委会公布的周度价格，金融采购择时与法定季度最低持仓分开；Article 22(2)季度持仓须按法定独立口径计算，不能用最终年度交证量直接乘50%。缺少企业私有进口与持仓数据，不推断合规缺口。",
-    "CCP：Regulation (EU) 2025/2083已经确立平台费用的法律框架及授权委托立法机制；但截至本次核验，未找到可确认最终生效的完整交易限额、具体收费标准、付款锁价与平台操作细则。2026年公开的相关委托法规草案不得当作生效文本。回购/注销的基本法律边界以现行CBAM条例第23–24条为准。",
-    "研究层缺乏四组关键证据的完整交叉验证，overlay_score=null、meta.status=partial_data；不生成100分总分或采购覆盖率。仅作阈值排查：公共层27.1分即使叠加研究层理论满分30也仅57.1，低于65分加速采购阈值；未确认新生效重大规则、经验证的季度底仓缺口或持续系统异常。"
+    "公共层70分保留V2原始得分，不重复计算或用价格下跌直接加分。",
+    "研究层30分依次为：EUA期限结构12分、ETS/CBAM/MSR/CCP政策8分、能源与工业排放6分、技术面和市场持仓4分；缺失可靠数据时不评分。",
+    "2026进口义务按进口季度固定价格管理，不进行周度择时；2027及以后当年义务才按周度价格择时。",
+    "Article 22(2)季度底仓需按独立法定口径和企业实际数据核算；公开网页无法验证企业义务及实际持仓。",
+    "CCP购买限制、交易费用、付款锁价、回购与注销规则必须以正式生效文件为准，不把草案参数当作确定规则。",
+    "如果ChatGPT研究任务写入被阻止，本自动兜底仍能更新公开状态；研究层结论缺失不代表出现采购机会。"
   ],
   "sources": [
     "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
-    "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
-    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
-    "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02023R0956-20251020",
-    "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32025R2083",
-    "https://eur-lex.europa.eu/eli/reg_impl/2025/2548/oj/eng",
-    "https://www.consilium.europa.eu/en/press/press-releases/2026/10/21/ets-market-stability-reserve-council-and-parliament-reach-provisional-agreement-on-targeted-amendment/",
-    "https://taxation-customs.ec.europa.eu/news/cbam-call-tender-establish-common-central-platform-ccp-2026-03-02_en",
-    "https://www.investing.com/commodities/ice-dutch-ttf-gas-c1-futures-historical-data",
-    "https://kr.tradingview.com/symbols/ICEENDEX-ECF1%21/contracts/",
-    "https://www.reuters.com/business/energy/italy-blames-german-gas-storage-delays-price-spike-2026-10-29/"
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
   ]
 }
