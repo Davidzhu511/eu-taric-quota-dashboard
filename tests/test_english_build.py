@@ -46,7 +46,8 @@ class EnglishBuildTests(unittest.TestCase):
         en = translate((ROOT/'index.html').read_text())
         self.assertIn('Currently within the official blocking period (', en)
         self.assertIn('). Actual allocation is not yet complete.', en)
-        self.assertIn('declaration acceptance. The page may therefore understate requests in transit.', en)
+        self.assertIn('declaration acceptance. The page may therefore understate requests in transit. Estimated blended duty', en)
+        self.assertNotIn('requests in transit.Estimated blended duty', en)
         self.assertNotIn('official blocking period(', en)
         self.assertNotIn('complete.  Pending', en)
 
