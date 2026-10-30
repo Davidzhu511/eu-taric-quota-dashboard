@@ -5,7 +5,7 @@ import sys
 
 # Longer phrases are applied first. Numeric data and source URLs are unchanged.
 PHRASES = '''
-FCFS drawing requests 最早在报关接受后的第二个工作日处理，因此页面可能低估实际在途申请。\tFCFS drawing requests are processed no earlier than the second working day after declaration acceptance. The page may therefore understate requests in transit.
+FCFS drawing requests 最早在报关接受后的第二个工作日处理，因此页面可能低估实际在途申请。\tFCFS drawing requests are processed no earlier than the second working day after declaration acceptance. The page may therefore understate requests in transit. 
 当前仍处于官方封锁期（\tCurrently within the official blocking period (
 ），实际分配尚未完成。\t). Actual allocation is not yet complete.
 预估分摊税率仅为把已知待分配申请合并计算的情景估算\tThe blended duty estimate is a scenario using the known pending requests together
