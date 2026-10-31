@@ -1,26 +1,42 @@
 {
   "meta": {
-    "updated_at": "2026-10-30T21:38:14+00:00",
-    "status": "public_only_fallback",
-    "confidence": "仅核实V2公共层；EUA远期曲线、能源基本面及持仓资金流未得到足够交叉验证，研究层不可评分",
-    "producer": "github_actions",
+    "updated_at": "2026-10-31T20:22:07.998Z",
+    "status": "partial_data",
+    "confidence": "已核实2026-10-30的EEX一级拍卖及V2公共层、欧委会CBAM季度价、MSR临时协议与现行CBAM条例；但未取得2026-10-30同一时点可交叉验证的EUA现货/近月/Dec26/Dec27完整期限结构、煤电切换及工业排放、持仓/资金流数据，故研究层30分不可量化。",
+    "producer": "chatgpt_research",
     "public_data_date": "2026-10-30",
     "public_checked_at": "2026-10-30T21:38:11.201217+00:00",
-    "research_completed": false
+    "research_completed": true,
+    "market_asof": "2026-10-30",
+    "review_date": "2026-10-31",
+    "methodology_version": "2.0.0",
+    "notification_triggered": false
   },
   "overlay_score": null,
-  "headline": "公共数据已同步；30分研究层尚未完成可靠量化",
-  "summary": "公共层V2数据日期为2026-10-30，评分27.2/70，最近一级拍卖价€89.55/tCO₂。GitHub Actions已维护本次数据状态，但这不是ChatGPT完整研究报告。在远期曲线、政策、能源及仓位数据充分核实前，不给出100分总分、采购覆盖率或加速采购指令。",
+  "headline": "10月31日周末复核：EUA处于52周高位，V2公共层27.2/70；研究层证据不足，不触发加速采购",
+  "summary": "2026年10月31日（周六）研究以10月30日EEX官方拍卖快照为基准。最新EUA一级拍卖清算价€89.55/tCO₂，52周区间€62.19–€91.34，位置约93.86%；10月26–30日完整周拍卖加权均价€88.04/tCO₂，Q4迄今加权参考均价€85.96/tCO₂（非欧委会最终Q4价格）。严格保留V2公共层27.2/70，不重算；即便研究层满分30分，理论上限57.2，低于65分加速采购门槛。EUA完整期限结构、煤电切换/工业排放及持仓证据不充分，研究层保持null，不输出有效完整总分或采购覆盖率。MSR 7亿EUA失效阈值仍为待正式通过的临时协议；CCP平台操作规则草案未核实为生效文本。2026进口义务按季度固定价、2027及以后当年义务才按周度购证择时；没有企业持仓数据，不推断Article 22(2)合规缺口。",
   "bullets": [
-    "公共层70分保留V2原始得分，不重复计算或用价格下跌直接加分。",
-    "研究层30分依次为：EUA期限结构12分、ETS/CBAM/MSR/CCP政策8分、能源与工业排放6分、技术面和市场持仓4分；缺失可靠数据时不评分。",
-    "2026进口义务按进口季度固定价格管理，不进行周度择时；2027及以后当年义务才按周度价格择时。",
-    "Article 22(2)季度底仓需按独立法定口径和企业实际数据核算；公开网页无法验证企业义务及实际持仓。",
-    "CCP购买限制、交易费用、付款锁价、回购与注销规则必须以正式生效文件为准，不把草案参数当作确定规则。",
-    "如果ChatGPT研究任务写入被阻止，本自动兜底仍能更新公开状态；研究层结论缺失不代表出现采购机会。"
+    "【公共层原样保留】V2=27.2/70：52周价格位置1.2/20；相对13周均价折价3.1/15；止跌/反转14.3/15；完整周供给动量4.4/10；下一年度供给4.1/10。反转信号较强，但价格接近52周高位，缺乏低估条件；不因上涨/下跌单独建议买入。",
+    "【价格证据】EEX一级拍卖10月30日€89.55/tCO₂（当日德国拍卖，1,548,000 EUA）；较10月29日€88.05上涨€1.50；10月26–30日完整周拍卖加权€88.04。公共快照状态ok，数据日期2026-10-30；10月31日周六无新增常规拍卖，不将第三方报价当作官方CBAM购证价。",
+    "【研究层：期限结构12分】第三方历史页提供10月29日EUA Dec26期货€89.20参考，但未取得10月30日同一时点的EUA现货、近月、Dec26和Dec27权威可复核组合，不判断期货升贴水或基差，未赋分。",
+    "【研究层：政策8分】欧盟理事会10月21日公告（10月28日补充协议文本）：MSR失效阈值由4亿提高至7亿EUA的方案仅达临时协议，仍须欧洲议会和理事会确认并正式通过；不能解释为立即释放3亿EUA或已生效。未核实到CCP费用、交易限额、付款锁价及回购/注销的完整最终生效细则；EUR-Lex Ares(2026)6860249仍按草案对待，未据此设定操作参数。",
+    "【研究层：能源6分】10月28日路透社报道TTF天然气短暂触及€100/MWh；10月29日WSJ报道回落至约€96.59/MWh。冬季LNG供应紧张可增加气转煤及EUA需求，但高能源成本亦可能压制工业产出和排放；缺少同步煤价、发电结构和工业排放数据，无法确定净方向，不赋分。",
+    "【研究层：技术/资金4分】公共拍卖快照显示近期价格上行，但缺少可靠的同期限成交量/持仓变动、基金净头寸及资金流，不能据此判定拥挤交易或突破确认，不赋分。",
+    "【2026固定价义务】欧委会官方2026Q1 €75.36、Q2 €75.28、Q3 €82.32/张；Q4尚未公布，拟于2027-01-04公布。当前Q4 €85.96仅为拍卖加权跟踪值，不得当作官方锁定价。2027年购买2026进口对应证书仍按2026进口季度价，管理重点为应购数量、现金流、申报交证、回购/注销。",
+    "【2027周度择时义务】2027及以后当年进口义务采用欧委会官方周度证书价格，价格风险可在合规前提下管理；但本次没有有效完整总分，不给出60/70/85/100%采购覆盖率，也不发加购指令。",
+    "【Article 22(2)】2027年起季度末最低持仓按年初至今进口货物嵌入排放量的独立法定计算口径（适用默认值或符合条件的前期交证参考）核定，不等同最终年度净交证量乘50%。无企业实际进口/持仓数据，不能推断缺口。",
+    "【监控结果】本次未确认>=65有效完整评分、逼近65且上涨风险显著、明显低估并止跌、经企业实际数据确认的底仓不足、重大已生效法规改变购证决策或连续系统异常。GitHub Actions public_only_fallback是公共状态同步而非ChatGPT研究完成；本次独立研究已尝试更新。"
   ],
   "sources": [
     "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
-    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
+    "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
+    "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX%3A02023R0956-20251020",
+    "https://eur-lex.europa.eu/eli/reg_impl/2025/2548/oj/eng",
+    "https://www.consilium.europa.eu/en/press/press-releases/2026/10/21/ets-market-stability-reserve-council-and-parliament-reach-provisional-agreement-on-targeted-amendment/",
+    "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=PI_COM%3AAres%282026%296860249",
+    "https://fr.investing.com/commodities/european-union-allowance-eua-year-futures-historical-data",
+    "https://www.reuters.com/business/energy/european-benchmark-gas-price-touches-100-first-time-since-december-2022-2026-10-28/",
+    "https://www.wsj.com/articles/european-gas-prices-retreat-after-topping-100-euros-a-megawatt-hour-b9a8807b"
   ]
 }
