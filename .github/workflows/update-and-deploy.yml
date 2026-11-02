@@ -11,7 +11,6 @@ on:
     paths:
       - "index.html"
       - "uk.html"
-      - "cbam/data/research.json"
       - "scripts/build_english_pages.py"
       - "scripts/build_quarterly_summary.py"
       - "scripts/inject_uk_nav.py"
@@ -84,7 +83,7 @@ jobs:
             IFS="|" read -r eu_date eu_success eu_failed eu_total uk_date uk_success uk_failed uk_total <<< "$current_meta"
 
             complete=false
-            if [[ "$eu_date" == "$berlin_today" && "$uk_date" == "$berlin_today" && "$eu_total" -gt 0 && "$uk_total" -gt 0 && "$eu_success" -eq "$eu_total" && "$uk_success" -eq "$uk_total" && "$eu_failed" -eq 0 && "$uk_failed" -eq 0 ]]; then
+            if [[ "$eu_date" == "$berlin_today" && "$uk_date" == "$berlin_today" && "$eu_total" -eq 55 && "$uk_total" -eq 5 && "$eu_success" -eq "$eu_total" && "$uk_success" -eq "$uk_total" && "$eu_failed" -eq 0 && "$uk_failed" -eq 0 ]]; then
               complete=true
             fi
 
