@@ -1,40 +1,26 @@
 {
   "meta": {
-    "updated_at": "2026-11-02T20:06:16.840Z",
-    "status": "partial_data",
-    "confidence": "低：2026-11-02未获得可同一时点交叉核验的EUA现货、近月、Dec26/Dec27期货完整期限结构；煤电切换、电力及工业排放、基金持仓/资金流也不足。仅有公开V2拍卖快照和部分ICE TTF行情，研究层不得量化。",
-    "producer": "chatgpt_research",
-    "public_data_date": "2026-10-30",
-    "public_checked_at": "2026-11-01T21:17:57.315816+00:00",
-    "research_completed": true,
-    "research_asof_date": "2026-11-02",
-    "market_data_caveat": "GitHub public data snapshot last auction 2026-10-30; 2026-11-02 EEX auction not yet present in the verified current.json; not treated as today's clearing price."
+    "updated_at": "2026-11-02T22:44:40+00:00",
+    "status": "public_only_fallback",
+    "confidence": "仅核实V2公共层；EUA远期曲线、能源基本面及持仓资金流未得到足够交叉验证，研究层不可评分",
+    "producer": "github_actions",
+    "public_data_date": "2026-11-02",
+    "public_checked_at": "2026-11-02T22:44:37.252022+00:00",
+    "research_completed": false
   },
   "overlay_score": null,
-  "headline": "2026-11-02 EUA/CBAM研究：暂无可靠加速采购信号；研究层证据不足，不给完整评分",
-  "summary": "已读取main分支公共层V2，原始评分27.2/70（数据日期2026-10-30），完全沿用五项原分，未重新计算。最近已核验EEX一级拍卖为2026-10-30 €89.55/tCO₂，位于52周区间约93.86%位置，价格不低估。即使研究层理论满分30，总分上限也仅57.2，低于65加速采购阈值；这不是有效完整评分。11月2日能源市场仍受高气价及地缘风险影响，但未取得足够的EUA期货期限结构、煤电切换和持仓证据，overlay_score保持null。未发现可确认已生效、足以改变采购策略的MSR/CCP重大法规变更，也无企业真实季度底仓数据。",
+  "headline": "公共数据已同步；30分研究层尚未完成可靠量化",
+  "summary": "公共层V2数据日期为2026-11-02，评分26.0/70，最近一级拍卖价€89.43/tCO₂。GitHub Actions已维护本次数据状态，但这不是ChatGPT完整研究报告。在远期曲线、政策、能源及仓位数据充分核实前，不给出100分总分、采购覆盖率或加速采购指令。",
   "bullets": [
-    "公共层V2 27.2/70（2026-10-30）：52周价格位置1.2/20、13周折价3.1/15、止跌反转14.3/15、已完成周供给4.4/10、下一年供给4.1/10。仅照录已有分数，不因持续下跌或短期涨跌重算。",
-    "最近公开快照为2026-10-30 EEX拍卖€89.55/tCO₂；52周价格区间€62.19–€91.34，位置93.86%。2026-11-02新拍卖数据尚未进入已核验current.json；不把旧价冒充今日收盘价。",
-    "研究层12分（EUA现货、近月、Dec26/Dec27期限结构）：无法取得同一时点完整、可靠交叉验证的曲线，不能评分；不可用EEX拍卖价代替EUA期货或现货报价。",
-    "研究层8分（ETS/CBAM/MSR/CCP）：欧盟理事会2026-10-21公告、10-28补充协议文本明确ETS1 MSR失效阈值由4亿提高到7亿的协议仍须正式通过；不能视为立即释放3亿配额。2026-07-09 CCP授权法规草案不能作为最终生效的交易限额、费用、付款锁价、回购规则。",
-    "研究层6分（能源与排放）：ICE公开的2026-11-02 13:42 GMT TTF Dec26期货盘中报价约€96.00/MWh，表明天然气价格仍高且波动明显；该报价不是当日结算价。11月2日路透社报道欧盟11月1日储气率74.62%、德国61.03%，但缺少煤价、电力调度、工业活动及排放需求联动证据，不能推断EUA净方向。",
-    "研究层4分（技术/持仓）：缺少可核查的同期EUA成交量、交易所持仓、COT和资金流/拥挤度证据，不能评分。四项研究证据不足，overlay_score=null，meta.status=partial_data，不输出完整总分或建议覆盖率。",
-    "2026进口义务：按进口季度固定CBAM价格，Q1 €75.36、Q2 €75.28、Q3 €82.32/张，Q4官方尚未公布（预计2027-01-04）；2027年付款不改变对应2026季度已锁定的单价。重点管理应购数量、现金流、交证、回购和注销，而非周度择时。",
-    "2027及以后当年进口义务：CBAM证书按欧委会周度价格机制销售，只有具备完整证据时才考虑加速采购。内部模型覆盖率建议不代表法定账户上限，也不应投机超买。",
-    "Article 22(2)季度持仓底线须按独立法定口径核算；未取得进口商私有排放义务、证书实际持仓、免费配额调整及已购证数据，不得推断底仓缺口。",
-    "CCP：持续检查最终生效的交易限额、费用、付款锁价及回购/注销细则。2025年修订后的CBAM基本条例第20、22—24条提供基础法律框架，不能据此猜测尚未核实的具体平台收费及操作参数。",
-    "采购预警筛查：现有公共V2+研究层满分的理论上限低于65，且当前拍卖价格接近52周高位；未核实到重大生效法规变更、真实合规缺口或连续多日写入故障，本次不触发加购通知。"
+    "公共层70分保留V2原始得分，不重复计算或用价格下跌直接加分。",
+    "研究层30分依次为：EUA期限结构12分、ETS/CBAM/MSR/CCP政策8分、能源与工业排放6分、技术面和市场持仓4分；缺失可靠数据时不评分。",
+    "2026进口义务按进口季度固定价格管理，不进行周度择时；2027及以后当年义务才按周度价格择时。",
+    "Article 22(2)季度底仓需按独立法定口径和企业实际数据核算；公开网页无法验证企业义务及实际持仓。",
+    "CCP购买限制、交易费用、付款锁价、回购与注销规则必须以正式生效文件为准，不把草案参数当作确定规则。",
+    "如果ChatGPT研究任务写入被阻止，本自动兜底仍能更新公开状态；研究层结论缺失不代表出现采购机会。"
   ],
   "sources": [
     "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
-    "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
-    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
-    "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02023R0956-20251020",
-    "https://www.consilium.europa.eu/en/press/press-releases/2026/10/21/ets-market-stability-reserve-council-and-parliament-reach-provisional-agreement-on-targeted-amendment/",
-    "https://op.europa.eu/de/publication-detail/-/publication/5da8f8ff-7b79-11f1-bf5e-01aa75ed71a1/language-en",
-    "https://www.ice.com/products/27996665/Dutch-TTF-Natural-Gas-Futures/data?marketId=6277412",
-    "https://www.reuters.com/business/totalenergies-chief-sees-no-gas-shortage-europe-this-winter-2026-11-02/",
-    "https://climate.ec.europa.eu/news-other-reads/news/european-energy-exchange-appointed-eu-ets-common-auction-platform-2027-2026-06-04_en"
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
   ]
 }
