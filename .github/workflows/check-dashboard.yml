@@ -28,3 +28,7 @@ jobs:
           python scripts/build_english_pages.py _site
           node --check quarterly-summary.js
           node --check _site/shared-ui.js
+          mkdir -p _site/data _site/cbam
+          cp -R data/. _site/data/
+          cp -R cbam/. _site/cbam/
+          python scripts/write_publish_manifest.py

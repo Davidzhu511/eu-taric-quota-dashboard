@@ -11,7 +11,6 @@ on:
     paths:
       - "index.html"
       - "uk.html"
-      - "cbam/data/research.json"
       - "scripts/build_english_pages.py"
       - "scripts/build_quarterly_summary.py"
       - "scripts/inject_uk_nav.py"
@@ -60,31 +59,8 @@ jobs:
             berlin_today="$(TZ=Europe/Berlin date +%F)"
             berlin_hhmm="$(TZ=Europe/Berlin date +%H%M)"
 
-            current_meta="$(python - <<'PY'
-          import json
-          from pathlib import Path
-
-          def status(path):
-              try:
-                  meta = json.loads(Path(path).read_text(encoding="utf-8")).get("meta", {})
-              except (OSError, json.JSONDecodeError, TypeError):
-                  meta = {}
-              return (
-                  str(meta.get("checked_at", ""))[:10],
-                  int(meta.get("successful_count", 0) or 0),
-                  int(meta.get("failed_count", 0) or 0),
-                  int(meta.get("total_count", 0) or 0),
-              )
-
-          eu = status("data/current.json")
-          uk = status("data/uk/current.json")
-          print("|".join(map(str, (*eu, *uk))))
-          PY
-            )"
-            IFS="|" read -r eu_date eu_success eu_failed eu_total uk_date uk_success uk_failed uk_total <<< "$current_meta"
-
             complete=false
-            if [[ "$eu_date" == "$berlin_today" && "$uk_date" == "$berlin_today" && "$eu_total" -gt 0 && "$uk_total" -gt 0 && "$eu_success" -eq "$eu_total" && "$uk_success" -eq "$uk_total" && "$eu_failed" -eq 0 && "$uk_failed" -eq 0 ]]; then
+            if python scripts/dashboard_health.py --complete-on "$berlin_today"; then
               complete=true
             fi
 
@@ -210,6 +186,7 @@ jobs:
           cp -R data/. _site/data/
           cp -R cbam/. _site/cbam/
           touch _site/.nojekyll
+          python scripts/write_publish_manifest.py
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -238,3 +215,9 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-${{ github.run_attempt }}
+
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - name: Verify published HTML and JSON match this run
+        run: python -m scripts.verify_live_site
