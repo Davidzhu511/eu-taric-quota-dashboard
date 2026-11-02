@@ -209,6 +209,7 @@ jobs:
           cp -R data/. _site/data/
           cp -R cbam/. _site/cbam/
           touch _site/.nojekyll
+          python scripts/write_publish_manifest.py
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -237,3 +238,9 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-${{ github.run_attempt }}
+
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - name: Verify published HTML and JSON match this run
+        run: python -m scripts.verify_live_site
