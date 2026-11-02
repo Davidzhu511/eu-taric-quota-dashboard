@@ -1,0 +1,63 @@
+name: Deploy edited CBAM research without quota re-fetch
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "cbam/data/research.json"
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: quota-dashboard-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Check deployment fingerprint regression tests
+        run: python -m unittest discover -s tests -p "test_publish_manifest.py" -v
+      - name: Build complete site using existing EU UK CBAM snapshots
+        run: |
+          mkdir -p _site/data _site/cbam
+          cp index.html uk.html _site/
+          python scripts/inject_uk_nav.py _site/index.html
+          cp quarterly-summary.js quarterly-summary.css _site/
+          python scripts/build_english_pages.py _site
+          cp -R data/. _site/data/
+          cp -R cbam/. _site/cbam/
+          touch _site/.nojekyll
+          python scripts/write_publish_manifest.py
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          name: github-pages-content-${{ github.run_attempt }}
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy complete site
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-content-${{ github.run_attempt }}
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - name: Verify published HTML and JSON match this run
+        run: python -m scripts.verify_live_site
