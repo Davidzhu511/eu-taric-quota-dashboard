@@ -1,0 +1,61 @@
+name: Log failed quota and CBAM workflows as GitHub Issues
+on:
+  workflow_run:
+    workflows:
+      - "Update EU and UK quota dashboards and deploy Pages"
+      - "Update CBAM procurement dashboard data"
+      - "Deploy edited CBAM research without quota re-fetch"
+    types: [completed]
+permissions:
+  contents: read
+  issues: write
+jobs:
+  record:
+    if: ${{ github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Create or comment on a deduplicated incident Issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          WORKFLOW: ${{ github.event.workflow_run.name }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+
+          repo = os.environ["REPOSITORY"]
+          name = os.environ["WORKFLOW"]
+          title = "[dashboard incident] " + name
+          run_url = os.environ["RUN_URL"]
+          attempt = os.environ["RUN_ATTEMPT"]
+          body = (
+              "A production workflow has failed. No code or official quota data has been changed by this incident monitor.\n\n"
+              f"- Failed workflow: **{name}**\n"
+              f"- Execution: {run_url}\n"
+              f"- Attempt: {attempt}\n"
+              "- Next action: inspect the failed job logs, reproduce the issue, and run bounded retries. "
+              "If code repair is necessary, use an isolated PR with tests; do not change policy mappings or rates without review.\n"
+          )
+          raw = subprocess.check_output(
+              ["gh", "issue", "list", "--repo", repo, "--state", "open",
+               "--limit", "100", "--json", "number,title"], text=True
+          )
+          existing = next((x for x in json.loads(raw) if x["title"] == title), None)
+          if existing:
+              subprocess.run(
+                  ["gh", "issue", "comment", str(existing["number"]), "--repo", repo,
+                   "--body", body], check=True
+              )
+              print(f"Updated incident Issue #{existing['number']}")
+          else:
+              subprocess.run(
+                  ["gh", "issue", "create", "--repo", repo, "--title", title,
+                   "--body", body], check=True
+              )
+              print("Created incident Issue")
+          PY
