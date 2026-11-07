@@ -466,7 +466,17 @@ def main() -> int:
             successful += 1
         except Exception as exc:  # Keep the last good value but disclose the failure.
             message = clean_text(exc)
+            # A single summary traceback hid the root cause of the 55/55
+            # failures on 2026-11-07. Emit a bounded diagnostic for each code.
+            print(f"[EU quota error] {code}: {type(exc).__name__}: {message[:500]}", flush=True)
             failures.append({"category": category, "code": code, "error": message})
+            # When the first five unrelated orders all fail, stop the global
+            # outage promptly. Nothing partial can pass the full 55/55 gate.
+            if successful == 0 and len(failures) >= 5:
+                raise RuntimeError(
+                    "EU quota preflight: first five order numbers all failed; "
+                    f"first error: {failures[0]['error'][:350]}"
+                ) from exc
             if code in previous:
                 item = dict(previous[code])
                 item.update(
