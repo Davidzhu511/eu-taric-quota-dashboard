@@ -3,9 +3,9 @@ name: Recover missing daily EU and UK quota snapshots
 on:
   workflow_dispatch:
   schedule:
-    # UTC slots cover approximately 08:17 and 09:17 Berlin, including DST.
-    # They provide an independent fallback when the primary cron event is missed.
-    - cron: "17 6,7,8 * * *"
+    # UTC slots cover morning and afternoon recovery through CET/CEST.
+    # Later slots rescue transient upstream outages without manual intervention.
+    - cron: "17 6,7,8,11,13,15 * * *"
 
 permissions:
   contents: read
@@ -47,33 +47,14 @@ jobs:
             exit 0
           fi
 
-          # Do not create duplicate runs while the original scrape/deploy is active.
+          # Do not create duplicate runs during an active scrape/deploy or
+          # retry indefinitely against a temporarily unavailable EU endpoint.
           gh run list --repo "$GITHUB_REPOSITORY" \
-            --workflow update-and-deploy.yml --branch main --limit 20 \
-            --json status,createdAt > "$RUNNER_TEMP/quota-workflow-runs.json"
+            --workflow update-and-deploy.yml --branch main --limit 60 \
+            --json status,createdAt,conclusion > "$RUNNER_TEMP/quota-workflow-runs.json"
 
-          if python - "$RUNNER_TEMP/quota-workflow-runs.json" <<'PY'
-          import json
-          import sys
-          from datetime import datetime, timedelta, timezone
-
-          now = datetime.now(timezone.utc)
-          recent = now - timedelta(minutes=90)
-          active_statuses = {"queued", "requested", "waiting", "pending", "in_progress"}
-          runs = json.load(open(sys.argv[1], encoding="utf-8"))
-          for run in runs:
-              stamp = run.get("createdAt") or ""
-              try:
-                  created = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
-              except ValueError:
-                  continue
-              if run.get("status") in active_statuses and recent <= created <= now:
-                  print("A quota workflow is already queued or running:", stamp)
-                  sys.exit(0)
-          sys.exit(1)
-          PY
-          then
-            echo "- Result: existing fresh quota workflow is pending/running; no duplicate" >> "$GITHUB_STEP_SUMMARY"
+          if python -m scripts.quota_retry_guard "$RUNNER_TEMP/quota-workflow-runs.json"; then
+            echo "- Result: retry deferred (active workflow or daily cap reached)" >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
 
