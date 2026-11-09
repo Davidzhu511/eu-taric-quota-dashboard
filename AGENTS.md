@@ -2,6 +2,12 @@
 
 Scope: EU tariff-quota categories 1A, 2, 4A, 4B; UK Category 4; related CBAM public research. GitHub Actions is responsible for deterministic extraction, validation and publishing. Never add daily LLM execution just to re-scrape the same data.
 
+## Routine business analysis
+- Daily ChatGPT tasks interpret meaningful quota changes from the latest available snapshots; they do not audit CI, poll deployment, trigger collection or repair workflows.
+- Use the previous analysed version or a comparable historical snapshot; unchanged data needs no report. Unknown/stale values must not become zero balances or false changes.
+- The existing GitHub watchdog owns freshness checks and bounded retries. Normal skips, queued work and upstream dates over a weekend are not failures. Report persistent business-impacting incidents once, not recurring technical tables.
+- Content explanations must cite their data dates and official sources. A user-requested engineering repair is separate from routine business analysis.
+
 ## Trust and accuracy
 - Read the latest main, actual failed GitHub Actions job and current snapshots before diagnosing. Do not treat an old chat result or successful job title as proof that live Pages contains new data.
 - Preserve official order numbers, mapping, dates, values and source links unless authoritative EU/UK primary evidence supports change.
