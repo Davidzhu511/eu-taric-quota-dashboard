@@ -1,11 +1,9 @@
 {
   "meta": {
-    "checked_at": "2026-11-20T23:13:20.714724+00:00",
+    "checked_at": "2026-11-21T22:14:42.708052+00:00",
     "data_date": "2026-11-20",
     "status": "ok",
-    "errors": [
-      "EEX auction page supply summary: 504 Server Error: Gateway Time-out for url: https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions"
-    ],
+    "errors": [],
     "methodology_version": "2.0.0"
   },
   "sources": {
@@ -2037,9 +2035,9 @@
     }
   },
   "public_score": {
-    "score": 33.4,
+    "score": 32.6,
     "max_score": 70,
-    "confidence": "medium",
+    "confidence": "high",
     "components": [
       {
         "name": "52周价格位置",
@@ -2071,9 +2069,9 @@
       },
       {
         "name": "下一年度拍卖供给方向",
-        "score": 5.0,
+        "score": 4.1,
         "max": 10,
-        "value": null,
+        "value": 0.0173,
         "note": "下一年度拍卖供应减少会提高提前采购分"
       }
     ]
