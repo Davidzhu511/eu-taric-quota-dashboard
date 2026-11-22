@@ -73,7 +73,8 @@ def preserve_previous(data, previous):
     current_file = data / 'history' / f'{official}.json'
     current_rows = json.loads(current_file.read_text())['items'] if current_file.is_file() else []
     retained = {(r['code'], r.get('validity_period'), r.get('allocated_percentage'), r.get('last_allocation_date'))
-                for r in current_rows if not r.get('stale') and not r.get('error')}
+                for r in current_rows
+                if any(opening_record(r, code, origin, period, start) for _, code, origin in TARGETS)}
     rows = [row for row in previous['items']
             if any(opening_record(row, code, origin, period, start) for _, code, origin in TARGETS)
             and (row['code'], period, row['allocated_percentage'], row['last_allocation_date']) not in retained]
