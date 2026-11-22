@@ -2,10 +2,25 @@ name: Update EU and UK quota dashboards and deploy Pages
 
 on:
   workflow_dispatch:
+    inputs:
+      recovery:
+        description: Recover the latest due snapshot or Pages publication
+        type: boolean
+        default: false
   schedule:
-    # UTC fallback slots. The gate below converts actual start time to Europe/Berlin.
-    # Primary target: 07:50 Berlin; later slots recover delayed/dropped events.
-    - cron: "45,50 5,6,7 * * *"
+    - cron: "50 7 * * *"
+      timezone: Europe/Berlin
+    - cron: "20 14 * * 1-5"
+      timezone: Europe/Berlin
+    # Extra inspections around the first allocations and carryover publication.
+    - cron: "20 11 1-10,22-31 1,4,7,10 *"
+      timezone: Europe/Berlin
+    - cron: "10 16 1-10,22-31 1,4,7,10 *"
+      timezone: Europe/Berlin
+    - cron: "20 11 1-3 2,5,8,11 *"
+      timezone: Europe/Berlin
+    - cron: "10 16 1-3 2,5,8,11 *"
+      timezone: Europe/Berlin
   push:
     branches: [main]
     paths:
@@ -13,6 +28,11 @@ on:
       - "uk.html"
       - "scripts/build_english_pages.py"
       - "scripts/build_quarterly_summary.py"
+      - "scripts/build_quota_events.py"
+      - "scripts/dashboard_health.py"
+      - "scripts/verify_live_site.py"
+      - "scripts/write_publish_manifest.py"
+      - "data/quota-policy.json"
       - "scripts/inject_uk_nav.py"
       - "scripts/update_dashboard.py"
       - "scripts/update_uk_dashboard.py"
@@ -38,72 +58,39 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
-      should_run: ${{ steps.check.outputs.should_run }}
-      wait_seconds: ${{ steps.check.outputs.wait_seconds }}
-      reason: ${{ steps.check.outputs.reason }}
+      eu: ${{ steps.check.outputs.eu }}
+      uk: ${{ steps.check.outputs.uk }}
+      publish: ${{ steps.check.outputs.publish }}
+      slot: ${{ steps.check.outputs.slot }}
     steps:
       - name: Check out latest main for daily deduplication
         uses: actions/checkout@v6
         with:
           ref: main
 
-      - name: Select the daily 07:50 Europe/Berlin refresh
+      - name: Select the latest due Berlin refresh window
         id: check
         env:
           EVENT_NAME: ${{ github.event_name }}
+          RECOVERY: ${{ inputs.recovery }}
         run: |
-          should_run=true
-          wait_seconds=0
-          reason="manual or source-code update"
-
-          if [[ "$EVENT_NAME" == "schedule" ]]; then
-            berlin_today="$(TZ=Europe/Berlin date +%F)"
-            berlin_hhmm="$(TZ=Europe/Berlin date +%H%M)"
-
-            complete=false
-            if python scripts/dashboard_health.py --complete-on "$berlin_today"; then
-              complete=true
-            fi
-
-            if (( 10#$berlin_hhmm < 745 )); then
-              should_run=false
-              reason="pre-DST fallback slot: local time is before 07:45"
-            elif [[ "$complete" == "true" ]]; then
-              should_run=false
-              reason="today already has complete EU and UK refreshes"
-            else
-              reason="today has no complete EU+UK refresh; run or retry"
-              now_epoch="$(date +%s)"
-              target_epoch="$(TZ=Europe/Berlin date -d "$berlin_today 07:50:00" +%s)"
-              if (( now_epoch < target_epoch )); then
-                wait_seconds="$((target_epoch - now_epoch))"
-                reason="$reason after waiting for 07:50 Berlin"
-              fi
-            fi
+          args=()
+          if [[ "$RECOVERY" == "true" ]]; then
+            args+=(--verify-publication)
+          elif [[ "$EVENT_NAME" != "schedule" ]]; then
+            args+=(--force)
           fi
-
-          echo "should_run=$should_run" >> "$GITHUB_OUTPUT"
-          echo "wait_seconds=$wait_seconds" >> "$GITHUB_OUTPUT"
-          echo "reason=$reason" >> "$GITHUB_OUTPUT"
-          {
-            echo "### EU + UK quota schedule gate"
-            printf -- '- should_run: `%s`\n' "$should_run"
-            printf -- '- wait_seconds: `%s`\n' "$wait_seconds"
-            echo "- reason: $reason"
-          } >> "$GITHUB_STEP_SUMMARY"
+          python -m scripts.dashboard_health "${args[@]}" | tee -a "$GITHUB_OUTPUT" "$GITHUB_STEP_SUMMARY"
 
   update-and-build:
     needs: schedule-gate
-    if: needs.schedule-gate.outputs.should_run == 'true'
+    if: needs.schedule-gate.outputs.publish == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 35
+    outputs:
+      eu: ${{ steps.eu.outcome }}
+      uk: ${{ steps.uk.outcome }}
     steps:
-      - name: Wait for the 07:50 Berlin target
-        if: needs.schedule-gate.outputs.wait_seconds != '0'
-        env:
-          WAIT_SECONDS: ${{ needs.schedule-gate.outputs.wait_seconds }}
-        run: sleep "$WAIT_SECONDS"
-
       - name: Check out repository
         uses: actions/checkout@v6
         with:
@@ -122,11 +109,37 @@ jobs:
       - name: Check quota parsing and quarter transitions
         run: python -m unittest discover -s tests -v
 
+      - name: Preserve the preceding snapshots for comparison
+        run: |
+          mkdir -p "$RUNNER_TEMP/quota-before/uk"
+          cp data/current.json data/quarterly-summary.json "$RUNNER_TEMP/quota-before/"
+          cp data/uk/current.json "$RUNNER_TEMP/quota-before/uk/"
+
       - name: Fetch current EU TARIC quota data
+        id: eu
+        if: needs.schedule-gate.outputs.eu == 'true'
+        continue-on-error: true
+        timeout-minutes: 22
         run: python scripts/update_dashboard.py
 
+      - name: Restore the last valid EU snapshot after a failed fetch
+        if: steps.eu.outcome == 'failure'
+        run: |
+          git restore -- data/current.json data/history
+          git clean -fd -- data/history
+
       - name: Fetch current UK Category 4 quota data
+        id: uk
+        if: needs.schedule-gate.outputs.uk == 'true'
+        continue-on-error: true
+        timeout-minutes: 5
         run: python scripts/update_uk_dashboard.py
+
+      - name: Restore the last valid UK snapshot after a failed fetch
+        if: steps.uk.outcome == 'failure'
+        run: |
+          git restore -- data/uk
+          git clean -fd -- data/uk
 
       - name: Validate generated dashboard data
         run: |
@@ -155,14 +168,16 @@ jobs:
           print(f"validated EU {len(eu_items)} and UK {len(uk_items)} quota records")
           PY
 
-      - name: Preserve quarterly allocation evidence
-        run: python scripts/build_quarterly_summary.py
+      - name: Preserve opening evidence and prepare the business change feed
+        run: |
+          python scripts/build_quarterly_summary.py --previous "$RUNNER_TEMP/quota-before/current.json"
+          python scripts/build_quota_events.py --previous-dir "$RUNNER_TEMP/quota-before"
 
       - name: Save current data and history
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/current.json data/history data/uk data/quarterly-summary.json
+          git add data/current.json data/history data/uk data/quarterly-summary.json data/quota-events.json
           if ! git diff --cached --quiet; then
             git commit -m "data: update EU and UK quota snapshots"
             for attempt in 1 2 3; do
@@ -204,7 +219,7 @@ jobs:
           path: _site
 
   deploy:
-    needs: update-and-build
+    needs: [schedule-gate, update-and-build]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment:
@@ -222,3 +237,13 @@ jobs:
           ref: main
       - name: Verify published HTML and JSON match this run
         run: python -m scripts.verify_live_site
+
+      - name: Record any collection failure after publishing available data
+        if: needs.update-and-build.outputs.eu == 'failure' || needs.update-and-build.outputs.uk == 'failure'
+        env:
+          EU_OUTCOME: ${{ needs.update-and-build.outputs.eu }}
+          UK_OUTCOME: ${{ needs.update-and-build.outputs.uk }}
+          REFRESH_SLOT: ${{ needs.schedule-gate.outputs.slot }}
+        run: |
+          echo "::error::Quota collection was incomplete for ${REFRESH_SLOT:-manual refresh}. EU=$EU_OUTCOME UK=$UK_OUTCOME. Pages verified with last valid data for the failed source."
+          exit 1

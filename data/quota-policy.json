@@ -1,0 +1,10 @@
+[
+  {
+    "from": "2026-07-01",
+    "through": "2026-12-31",
+    "sources": [
+      {"name": "(EU) 2026/1457", "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1457/oj"},
+      {"name": "(EU) 2026/1930", "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1930/oj"}
+    ]
+  }
+]
