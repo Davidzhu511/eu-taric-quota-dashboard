@@ -103,7 +103,7 @@ def calendar_days(blob, year):
     return days
 
 
-def mark_weeks(weekly, auctions, calendars, cancelled, as_of):
+def mark_weeks(weekly, auctions, calendars, cancelled, due_through):
     by_day = Counter()
     counts = Counter()
     for row in auctions:
@@ -120,7 +120,7 @@ def mark_weeks(weekly, auctions, calendars, cancelled, as_of):
         w["planned_volume"] = sum(planned.values()) or None
         w["planned_auctions"] = len(planned) or None
         # Calendar files describe one consolidated scheduled auction per listed day.
-        missing_due = any(d <= as_of and not by_day[d] and d not in cancelled for d in planned)
+        missing_due = any(d <= due_through and not by_day[d] and d not in cancelled for d in planned)
         matches = bool(planned) and not missing_due and all(not by_day[d] or (counts[d] == 1 and by_day[d] == planned.get(d)) for d in dates)
         accounted = matches and all(by_day[d] or d in cancelled for d in planned)
         w["complete"] = bool(accounted)
@@ -196,3 +196,14 @@ def build_window(today, weekly, official, market_fresh=True, calendars=None):
     next_start = following.get("valid_from") if following else None
     return dict(as_of=today.isoformat(), next_effective_from=next_start or (switch.isoformat() if switch else None), mode="simulation" if simulation else "live",
                 current=current, next=following, **score_window(current, following, weekly))
+
+
+def project_morning(snapshot_day, weekly, official, market_fresh, calendars):
+    """Price periods as of the next weekday, using only evidence in this snapshot."""
+    review_day = snapshot_day + DAY
+    while review_day.weekday() >= 5:
+        review_day += DAY
+    known = [row for row in official if row["published"] <= snapshot_day.isoformat()]
+    projection = build_window(review_day, weekly, known, market_fresh, calendars)
+    projection.update(evidence_as_of=snapshot_day.isoformat(), actionable=False)
+    return projection
