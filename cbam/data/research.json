@@ -1,26 +1,22 @@
 {
   "meta": {
-    "updated_at": "2026-11-21T22:14:46+00:00",
+    "updated_at": "2026-11-22T13:50:17+00:00",
     "status": "public_only_fallback",
-    "confidence": "仅核实V2公共层；EUA远期曲线、能源基本面及持仓资金流未得到足够交叉验证，研究层不可评分",
     "producer": "github_actions",
+    "confidence": "公开市场快照",
+    "research_completed": false,
     "public_data_date": "2026-11-20",
-    "public_checked_at": "2026-11-21T22:14:42.708052+00:00",
-    "research_completed": false
+    "public_checked_at": "2026-11-22T13:50:13.284724+00:00"
   },
   "overlay_score": null,
-  "headline": "公共数据已同步；30分研究层尚未完成可靠量化",
-  "summary": "公共层V2数据日期为2026-11-20，评分32.6/70，最近一级拍卖价€80.60/tCO₂。GitHub Actions已维护本次数据状态，但这不是ChatGPT完整研究报告。在远期曲线、政策、能源及仓位数据充分核实前，不给出100分总分、采购覆盖率或加速采购指令。",
-  "bullets": [
-    "公共层70分保留V2原始得分，不重复计算或用价格下跌直接加分。",
-    "研究层30分依次为：EUA期限结构12分、ETS/CBAM/MSR/CCP政策8分、能源与工业排放6分、技术面和市场持仓4分；缺失可靠数据时不评分。",
-    "2026进口义务按进口季度固定价格管理，不进行周度择时；2027及以后当年义务才按周度价格择时。",
-    "Article 22(2)季度底仓需按独立法定口径和企业实际数据核算；公开网页无法验证企业义务及实际持仓。",
-    "CCP购买限制、交易费用、付款锁价、回购与注销规则必须以正式生效文件为准，不把草案参数当作确定规则。",
-    "如果ChatGPT研究任务写入被阻止，本自动兜底仍能更新公开状态；研究层结论缺失不代表出现采购机会。"
-  ],
+  "headline": "暂无新增公开研究",
+  "summary": "最近拍卖日期为 2026-11-20。价格比较见购证窗口。",
+  "bullets": [],
   "sources": [
+    "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
     "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
-    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
+    "https://www.eex.com/en/markets/environmentals/environmental-indices",
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
+    "https://eur-lex.europa.eu/eli/reg_impl/2025/2548/oj/eng"
   ]
 }
