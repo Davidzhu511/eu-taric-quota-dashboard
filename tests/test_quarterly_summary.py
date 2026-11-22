@@ -33,17 +33,18 @@ class QuarterlyEvidenceTests(unittest.TestCase):
         self.assertIsNone(result['allocation_pct'])
 
 
-    def test_same_day_zero_update_preserves_opening_batch(self):
-        with TemporaryDirectory() as directory:
-            data = Path(directory)
-            history = data / "history"
-            history.mkdir()
-            file, old = self.snapshot(self.item)
-            old["meta"]["validity_period"] = self.period
-            _, new = self.snapshot(dict(self.item, allocated_percentage=0))
-            (history / file).write_text(json.dumps(new))
-            preserve_previous(data, old)
-            preserved, = (history / "opening-evidence").glob("*.json")
-            evidence = json.loads(preserved.read_text())
-            result = summarize(self.eu, [(file, new), (preserved.name, evidence)], {})["eu"][0]
-            self.assertEqual(result["weighted_duty_pct"], 40.688)
+    def test_same_day_update_preserves_opening_batch(self):
+        for change in ({"allocated_percentage": 0}, {"balance_kg": 1}):
+            with self.subTest(change=change), TemporaryDirectory() as directory:
+                data = Path(directory)
+                history = data / "history"
+                history.mkdir()
+                file, old = self.snapshot(self.item)
+                old["meta"]["validity_period"] = self.period
+                _, new = self.snapshot(dict(self.item, **change))
+                (history / file).write_text(json.dumps(new))
+                preserve_previous(data, old)
+                preserved, = (history / "opening-evidence").glob("*.json")
+                evidence = json.loads(preserved.read_text())
+                result = summarize(self.eu, [(file, new), (preserved.name, evidence)], {})["eu"][0]
+                self.assertEqual(result["weighted_duty_pct"], 40.688)
