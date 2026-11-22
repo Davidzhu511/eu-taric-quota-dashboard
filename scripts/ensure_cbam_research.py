@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import json
 import math
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -42,6 +42,13 @@ def valid_same_day_research(research: dict, current: dict, now: datetime) -> boo
     meta = research.get("meta") or {}
     public_meta = current.get("meta") or {}
     score = research.get("overlay_score")
+    if "procurement_window" in current:
+        # V3 keeps dated narrative separately from deterministic market scores.
+        researched = utc_timestamp(meta.get("updated_at", ""))
+        return bool(meta.get("status") == "research_note" and score is None
+                    and researched and now - timedelta(hours=48) <= researched <= now
+                    and meta.get("public_data_date") == public_meta.get("data_date")
+                    and research.get("sources") and research.get("summary"))
     if type(score) not in (int, float) or not math.isfinite(score) or not 0 <= score <= 30:
         return False
     if meta.get("status") not in ("scored", "validated"):
@@ -63,6 +70,16 @@ def valid_same_day_research(research: dict, current: dict, now: datetime) -> boo
 
 def create_fallback(current: dict, now: datetime) -> dict:
     meta = current.get("meta") or {}
+    if "procurement_window" in current:
+        return {
+            "meta": {"updated_at": now.astimezone(timezone.utc).isoformat(timespec="seconds"),
+                     "status": "public_only_fallback", "producer": "github_actions",
+                     "confidence": "公开市场快照", "research_completed": False,
+                     "public_data_date": meta["data_date"], "public_checked_at": meta["checked_at"]},
+            "overlay_score": None, "headline": "暂无新增公开研究",
+            "summary": "最近拍卖日期为 " + meta["data_date"] + "。价格比较见购证窗口。",
+            "bullets": [], "sources": list(current.get("sources", {}).values()),
+        }
     public = current.get("public_score") or {}
     stats = (current.get("auction_analytics") or {}).get("stats") or {}
     score = public.get("score")

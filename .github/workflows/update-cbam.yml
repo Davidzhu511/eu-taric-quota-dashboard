@@ -8,10 +8,11 @@ on:
   push:
     branches: [main]
     paths:
+      - "scripts/cbam_windows.py"
       - "scripts/update_cbam_dashboard.py"
       - "scripts/update_cbam_dashboard_runner.py"
       - "scripts/ensure_cbam_research.py"
-      - "tests/test_cbam_research_fallback.py"
+      - "tests/test_cbam*.py"
       - "cbam/index.html"
       - "cbam/app.js"
       - "cbam/style.css"
@@ -80,13 +81,19 @@ jobs:
           assert 'official_cbam_prices' in d
           assert 'auction_analytics' in d
           assert 'public_score' in d
+          w = d['procurement_window']
+          assert d['model']['version'] == '3.0.0'
+          assert w['mode'] in ('simulation', 'live')
+          assert w['score'] is None or (0 <= w['score'] <= 100 and w['history_weeks'] == 26)
+          if w['actionable']:
+              assert w['mode'] == 'live' and w['current']['kind'] == 'official' and w['official_source_verified']
           if d['meta']['status'] == 'ok':
               assert d['auction_analytics']['stats'].get('latest_price') is not None
           print('CBAM JSON validation OK')
           PY
 
       - name: Test CBAM fallback and research freshness guardrails
-        run: python -m unittest discover -s tests -p "test_cbam_research_fallback.py" -v
+        run: python -m unittest discover -s tests -p "test_cbam*.py" -v
 
       - name: Ensure independently updated research JSON every day
         run: python scripts/ensure_cbam_research.py

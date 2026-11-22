@@ -16,6 +16,11 @@ from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
 from io import BytesIO
 from pathlib import Path
+from urllib.parse import urljoin, urlsplit
+from zoneinfo import ZoneInfo
+from zipfile import BadZipFile
+
+from cbam_windows import SALES_START, build_window, calendar_days, mark_weeks, official_weeks
 from typing import Any, Iterable
 
 import requests
@@ -89,31 +94,73 @@ def as_date(v: Any) -> date | None:
     return None
 
 
-def find_header_row(ws) -> tuple[int, dict[str, int]] | None:
-    for row_idx, row in enumerate(ws.iter_rows(min_row=1, max_row=min(ws.max_row, 30), values_only=True), start=1):
+def find_header_row(ws):
+    for row_idx, row in enumerate(
+        ws.iter_rows(min_row=1, max_row=min(ws.max_row, 100), values_only=True), start=1
+    ):
         labels = [norm(v) for v in row]
-        date_i = next((i for i, x in enumerate(labels) if "auction date" in x), None)
-        price_i = next((i for i, x in enumerate(labels) if "auction clearing price" in x), None)
+        date_i = next((i for i, x in enumerate(labels) if x == "date" or "auction date" in x), None)
+        price_i = next(
+            (
+                i for i, x in enumerate(labels)
+                if "auction clearing price" in x
+                or x.startswith("auction price")
+                or "auction price €" in x
+            ),
+            None,
+        )
         vol_i = next((i for i, x in enumerate(labels) if "auction volume" in x), None)
-        if date_i is not None and price_i is not None and vol_i is not None:
-            mapping = {"date": date_i, "price": price_i, "volume": vol_i}
-            status_i = next((i for i, x in enumerate(labels) if x == "status" or x.endswith(" status")), None)
-            if status_i is not None:
-                mapping["status"] = status_i
-            contract_i = next((i for i, x in enumerate(labels) if x == "contract"), None)
-            if contract_i is not None:
-                mapping["contract"] = contract_i
-            auction_i = next((i for i, x in enumerate(labels) if x == "auction name"), None)
-            if auction_i is not None:
-                mapping["auction_name"] = auction_i
-            return row_idx, mapping
+        if date_i is None or price_i is None or vol_i is None:
+            continue
+
+        mapping = {"date": date_i, "price": price_i, "volume": vol_i}
+        status_i = next((i for i, x in enumerate(labels) if x == "status" or x.endswith(" status")), None)
+        if status_i is not None:
+            mapping["status"] = status_i
+        contract_i = next((i for i, x in enumerate(labels) if x == "contract"), None)
+        if contract_i is not None:
+            mapping["contract"] = contract_i
+        auction_i = next((i for i, x in enumerate(labels) if x in ("auction name", "auction")), None)
+        if auction_i is not None:
+            mapping["auction_name"] = auction_i
+        return row_idx, mapping
     return None
 
 
-def parse_auction_xlsx(content: bytes) -> list[dict[str, Any]]:
+def extract_supply_summary(html: str):
+    text = BeautifulSoup(html, "html.parser").get_text(" ", strip=True)
+    result = {}
+    for year in sorted(set(re.findall(r"EUA\s+Volume\s+(20\d{2})", text, re.I))):
+        m = re.search(rf"(?:indicative\s+)?EUA\s+Volume\s+{year}(.*?)(?:EUA\s+Volume\s+20\d{{2}}|$)", text, re.I)
+        if not m:
+            continue
+        nums = re.findall(r"\b\d[\d,.]*\b", m.group(1))
+        vals = []
+        for token in nums:
+            digits = re.sub(r"[^0-9]", "", token)
+            if digits:
+                vals.append(int(digits))
+        # EEX may show a footnote marker immediately after the year heading.
+        while len(vals) > 4 and vals and vals[0] < 1000:
+            vals.pop(0)
+        if len(vals) >= 4:
+            vals = vals[:4]
+            result[str(year)] = {
+                "cap_common": vals[0],
+                "germany": vals[1],
+                "poland": vals[2],
+                "northern_ireland": vals[3],
+                "total": sum(vals),
+            }
+    return result
+
+
+def parse_auction_xlsx(content: bytes, cancelled: set | None = None) -> list[dict[str, Any]]:
     wb = load_workbook(BytesIO(content), read_only=True, data_only=True)
     found: list[dict[str, Any]] = []
     for ws in wb.worksheets:
+        if re.search(r"ETS\s*2|EUAA|aviation", ws.title, re.I):
+            continue
         header = find_header_row(ws)
         if not header:
             continue
@@ -123,9 +170,11 @@ def parse_auction_xlsx(content: bytes) -> list[dict[str, Any]]:
             price = as_float(row[m["price"]] if m["price"] < len(row) else None)
             volume = as_float(row[m["volume"]] if m["volume"] < len(row) else None)
             status = str(row[m["status"]]).strip() if "status" in m and m["status"] < len(row) and row[m["status"]] is not None else ""
-            if not d or price is None or volume is None or volume <= 0:
-                continue
             if status and any(word in status.lower() for word in ("cancel", "abort", "fail")):
+                if d and cancelled is not None:
+                    cancelled.add(d.isoformat())
+                continue
+            if not d or not price or price <= 0 or not volume or volume <= 0:
                 continue
             found.append({
                 "date": d.isoformat(),
@@ -135,6 +184,7 @@ def parse_auction_xlsx(content: bytes) -> list[dict[str, Any]]:
                 "contract": str(row[m["contract"]]).strip() if "contract" in m and m["contract"] < len(row) and row[m["contract"]] is not None else None,
                 "auction_name": str(row[m["auction_name"]]).strip() if "auction_name" in m and m["auction_name"] < len(row) and row[m["auction_name"]] is not None else None,
             })
+    wb.close()
     seen = set()
     deduped = []
     for item in sorted(found, key=lambda x: (x["date"], x.get("auction_name") or "", x["price"], x["volume"])):
@@ -237,116 +287,6 @@ def parse_price_table(html: str, year: int) -> list[dict[str, Any]]:
     return [by_q[q] for q in sorted(by_q)]
 
 
-def fetch_official_prices(year: int) -> tuple[list[dict[str, Any]], list[str]]:
-    errors = []
-    prices: list[dict[str, Any]] = []
-    try:
-        html = get(EC_CBAM_PRICE_PAGE)
-        prices = parse_price_table(html, year)
-    except Exception as exc:
-        errors.append(f"European Commission price page: {exc}")
-    if not any(x.get("price") is not None for x in prices):
-        try:
-            html = get(EEX_CBAM_PAGE)
-            fallback = parse_price_table(html, year)
-            if fallback:
-                prices = fallback
-                errors.append("Official Commission table unavailable; showing EEX quarterly cross-check values where available.")
-        except Exception as exc:
-            errors.append(f"EEX quarterly fallback: {exc}")
-    return prices, errors
-
-
-def extract_supply_summary(html: str) -> dict[str, Any]:
-    text = BeautifulSoup(html, "html.parser").get_text(" ", strip=True)
-    result: dict[str, Any] = {}
-    for year in (2026, 2027):
-        m = re.search(rf"(?:indicative\s+)?EUA\s+Volume\s+{year}\s+([0-9,\.]+)\s+([0-9,\.]+)\s+([0-9,\.]+)\s+([0-9,\.]+)", text, re.I)
-        if m:
-            nums = [int(re.sub(r"[^0-9]", "", x)) for x in m.groups()]
-            result[str(year)] = {"cap_common": nums[0], "germany": nums[1], "poland": nums[2], "northern_ireland": nums[3], "total": sum(nums)}
-    return result
-
-
-def score_from_public_data(agg: dict[str, Any]) -> dict[str, Any]:
-    stats = agg.get("stats") or {}
-    if not stats:
-        return {"score": None, "max_score": 70, "confidence": "low", "components": []}
-    pos = float(stats.get("position_52w", 0.5))
-    price_attract = max(0.0, min(25.0, 25.0 * (1 - pos)))
-
-    weekly = agg.get("weekly") or []
-    last_price = weekly[-1]["price"] if weekly else stats["latest_price"]
-    recent_prices = [w["price"] for w in weekly[-13:]]
-    recent_avg = sum(recent_prices) / len(recent_prices) if recent_prices else last_price
-    discount = (recent_avg - last_price) / recent_avg if recent_avg else 0
-    recent_discount = max(0.0, min(15.0, 7.5 + 7.5 * discount / 0.08))
-
-    trend = float(stats.get("last_5_vs_20", 0))
-    short_trend = max(0.0, min(10.0, 5.0 - 5.0 * trend / 0.06))
-
-    recent4 = weekly[-4:]
-    prior4 = weekly[-8:-4]
-    if recent4 and prior4:
-        r = sum(w["volume"] for w in recent4) / len(recent4)
-        p = sum(w["volume"] for w in prior4) / len(prior4)
-        vol_change = (r / p - 1) if p else 0
-        supply = max(0.0, min(10.0, 5.0 - 5.0 * vol_change / 0.20))
-    else:
-        vol_change, supply = 0.0, 5.0
-
-    q = agg.get("quarterly") or []
-    if len(q) >= 2 and q[-2]["price"]:
-        qchg = q[-1]["price"] / q[-2]["price"] - 1
-        quarter_signal = max(0.0, min(10.0, 5.0 - 5.0 * qchg / 0.10))
-    else:
-        qchg, quarter_signal = 0.0, 5.0
-
-    score = price_attract + recent_discount + short_trend + supply + quarter_signal
-    components = [
-        {"name": "52-week price attractiveness", "score": round(price_attract, 1), "max": 25},
-        {"name": "discount vs 13-week auction average", "score": round(recent_discount, 1), "max": 15, "value": round(discount, 4)},
-        {"name": "short-term auction price trend", "score": round(short_trend, 1), "max": 10, "value": round(trend, 4)},
-        {"name": "auction supply momentum", "score": round(supply, 1), "max": 10, "value": round(vol_change, 4)},
-        {"name": "quarter-on-quarter auction price", "score": round(quarter_signal, 1), "max": 10, "value": round(qchg, 4)},
-    ]
-    return {"score": round(score, 1), "max_score": 70, "confidence": "medium", "components": components}
-
-
-def build_analysis(payload: dict[str, Any]) -> dict[str, Any]:
-    agg = payload["auction_analytics"]
-    stats = agg.get("stats") or {}
-    score = payload["public_score"]
-    if not stats:
-        return {"headline": "Data unavailable", "stance": "wait", "bullets": ["No valid EEX auction rows were available."]}
-
-    s = score.get("score") or 0
-    if s >= 50:
-        stance = "accumulate"
-        headline = "Public auction data are moving toward a more attractive procurement window"
-    elif s >= 35:
-        stance = "neutral"
-        headline = "Public auction data are neutral; use staged purchasing rather than chasing price"
-    else:
-        stance = "minimum"
-        headline = "Public auction data do not justify accelerating purchases beyond compliance needs"
-
-    weekly = agg.get("weekly") or []
-    latest_week = weekly[-1] if weekly else None
-    quarter = agg.get("quarterly") or []
-    current_q = quarter[-1] if quarter else None
-    bullets = [
-        f"Latest EEX auction clearing price: €{stats['latest_price']:.2f}/tCO₂ on {stats['latest_date']}.",
-        f"Trailing 52-week auction range: €{stats['low_52w']:.2f}–€{stats['high_52w']:.2f}; current position {stats['position_52w']*100:.0f}% from the low.",
-    ]
-    if latest_week:
-        bullets.append(f"Current-week auction VWAP estimate: €{latest_week['price']:.2f}/tCO₂ across {latest_week['auctions']} auctions.")
-    if current_q:
-        bullets.append(f"Current-quarter auction VWAP estimate: €{current_q['price']:.2f}/tCO₂; this is an estimate until the Commission publishes the official price where applicable.")
-    bullets.append("The automated public-data score is capped at 70/100. Forward-curve, policy/MSR, energy and positioning overlays require separate research and should not be inferred from this number alone.")
-    return {"headline": headline, "stance": stance, "bullets": bullets}
-
-
 def load_previous() -> dict[str, Any]:
     try:
         return json.loads(CURRENT.read_text(encoding="utf-8"))
@@ -354,70 +294,145 @@ def load_previous() -> dict[str, Any]:
         return {}
 
 
+def fetch_auction_years(today, previous, errors):
+    rows, cancelled, fresh = [], set(), False
+    for year in (today.year - 1, today.year):
+        key = str(year)
+        old = [a for a in previous.get("auctions", []) if a["date"].startswith(key)]
+        old_cancelled = {d for d in previous.get("cancelled_dates", []) if d.startswith(key)}
+        try:
+            cancelled_year = set()
+            new = parse_auction_xlsx(get(EEX_AUCTION_REPORT.format(year=year), binary=True), cancelled_year)
+            new = [a for a in new if a["date"].startswith(key) and a["date"] <= today.isoformat()]
+            if not new and (old or year < today.year):
+                raise ValueError("empty annual report")
+            if {a["date"] for a in old} - {a["date"] for a in new} - cancelled_year:
+                raise ValueError("annual report lost previously observed dates")
+            rows.extend(new)
+            cancelled.update(cancelled_year)
+            if year == today.year:
+                fresh = True
+        except (requests.RequestException, ValueError, OSError, KeyError, BadZipFile) as exc:
+            errors.append(f"EEX {year} auction report: {exc}")
+            rows.extend(old)
+            cancelled.update(old_cancelled)
+    return sorted(rows, key=lambda a: a["date"]), cancelled, fresh
+
+
+def fetch_calendars(page, today, previous, errors):
+    first = today.year - 1
+    result = {k: v for k, v in previous.get("auction_calendars", {}).items() if first <= int(k) <= today.year}
+    candidates = {}
+    for link in BeautifulSoup(page, "html.parser").select('tr a[href]'):
+        href = link['href']
+        label = link.find_parent('tr').get_text(" ", strip=True)
+        match = re.search(r"Auction Calendar (20\d\d)\s*\(XLS", label, re.I)
+        if not match or "ETS2" in label.upper() or not href.lower().endswith(".xlsx"):
+            continue
+        url = urljoin(EEX_AUCTION_PAGE, href)
+        if urlsplit(url).hostname == "www.eex.com":
+            candidates.setdefault(int(match[1]), url)
+    current_ok = False
+    for year in (first, today.year):
+        key = str(year)
+        url = candidates.get(year)
+        if not url:
+            if year == today.year:
+                errors.append(f"EEX {year} auction calendar link unavailable")
+            continue
+        try:
+            if result.get(key, {}).get("source") != url or year == today.year:
+                result[key] = dict(source=url, days=calendar_days(get(url, binary=True), year))
+            if year == today.year:
+                current_ok = True
+        except (requests.RequestException, ValueError, OSError, KeyError, BadZipFile) as exc:
+            errors.append(f"EEX {year} auction calendar: {exc}")
+    return result, current_ok
+
+
+def fetch_commission(today, previous, errors):
+    old = previous.get("official_cbam_prices", [])
+    if any("EEX quarterly" in msg for msg in previous.get("meta", {}).get("errors", [])):
+        old = []
+    quarters = {q["quarter"]: q for q in old if q["year"] == 2026}
+    weeks = {r["formation_week"]: r for r in previous.get("official_weekly_prices", [])}
+    ok = False
+    try:
+        page = get(EC_CBAM_PRICE_PAGE)
+        parsed = parse_price_table(page, 2026)
+        for q in parsed:
+            if q["price"] is not None or q["quarter"] not in quarters:
+                quarters[q["quarter"]] = q
+        if len(quarters) < 4 or (today >= date(2027, 1, 5) and quarters.get(4, {}).get("price") is None):
+            errors.append("EC 2026 quarterly price table incomplete")
+        updates = official_weeks(page)
+        for r in updates:
+            weeks[r["formation_week"]] = r
+        ok = bool(updates) or today < SALES_START
+        if not ok:
+            errors.append("EC official weekly price table unavailable or unrecognised")
+    except (requests.RequestException, ValueError) as exc:
+        errors.append(f"EC official price page: {exc}")
+    return [quarters[k] for k in sorted(quarters)], [weeks[k] for k in sorted(weeks)], ok
+
+
 def main() -> int:
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
     HISTORY_DIR.mkdir(parents=True, exist_ok=True)
     previous = load_previous()
-    checked_at = now_utc()
-    year = checked_at.year
-    errors: list[str] = []
-
-    auctions: list[dict[str, Any]] = []
-    auction_url = EEX_AUCTION_REPORT.format(year=year)
+    now = now_utc()
+    today = now.astimezone(ZoneInfo("Europe/Brussels")).date()
+    errors = []
+    auctions, cancelled, fresh = fetch_auction_years(today, previous, errors)
+    if not auctions:
+        raise RuntimeError("No current or archived auction evidence")
     try:
-        content = get(auction_url, binary=True)
-        auctions = parse_auction_xlsx(content)
-        if not auctions:
-            raise RuntimeError("no auction rows parsed")
-    except Exception as exc:
-        errors.append(f"EEX auction report: {exc}")
-        auctions = previous.get("auctions", [])
-
-    official, official_errors = fetch_official_prices(year)
-    errors.extend(official_errors)
-    if not official and previous.get("official_cbam_prices"):
-        official = previous["official_cbam_prices"]
-
-    supply = {}
-    try:
-        supply = extract_supply_summary(get(EEX_AUCTION_PAGE))
-    except Exception as exc:
-        errors.append(f"EEX auction page supply summary: {exc}")
-        supply = previous.get("auction_supply", {})
-
-    analytics = aggregate_auctions(auctions)
-    public_score = score_from_public_data(analytics)
-    payload: dict[str, Any] = {
-        "meta": {
-            "checked_at": checked_at.isoformat(),
-            "data_date": analytics.get("stats", {}).get("latest_date"),
-            "status": "ok" if auctions else "degraded",
-            "errors": errors,
-            "methodology_version": "1.0.0",
-        },
-        "sources": {
-            "eex_auction_report": auction_url,
-            "eex_auction_page": EEX_AUCTION_PAGE,
-            "eex_cbam_reference": EEX_CBAM_PAGE,
-            "ec_cbam_price": EC_CBAM_PRICE_PAGE,
-        },
-        "official_cbam_prices": official,
-        "auction_supply": supply,
-        "auctions": auctions[-400:],
-        "auction_analytics": analytics,
-        "public_score": public_score,
-    }
-    payload["analysis"] = build_analysis(payload)
-
-    text = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
-    CURRENT.write_text(text, encoding="utf-8")
-    hist_date = analytics.get("stats", {}).get("latest_date") or checked_at.date().isoformat()
-    (HISTORY_DIR / f"{hist_date}.json").write_text(text, encoding="utf-8")
-
-    print(f"CBAM dashboard updated: {len(auctions)} auctions, status={payload['meta']['status']}, errors={len(errors)}")
-    for err in errors:
-        print(f"WARNING: {err}", file=sys.stderr)
-    return 0 if auctions else 1
+        page = get(EEX_AUCTION_PAGE)
+    except requests.RequestException as exc:
+        errors.append(f"EEX auction page: {exc}")
+        page = ""
+    supply = extract_supply_summary(page) or previous.get("auction_supply", {})
+    calendars, calendar_ok = fetch_calendars(page, today, previous, errors)
+    year_plan = calendars.get(str(today.year), {}).get("days", {})
+    expected = {d for d, volume in year_plan.items() if volume and d <= today.isoformat()}
+    if calendar_ok and expected:
+        missing = expected - {a["date"] for a in auctions} - cancelled
+        if missing:
+            errors.append("EEX scheduled result missing: " + ", ".join(sorted(missing)[-3:]))
+            fresh = False
+    elif calendar_ok and not expected and not any(a["date"][:4] == str(today.year) for a in auctions):
+        # Before the first scheduled sale a new annual auction report may not exist yet.
+        errors = [e for e in errors if not e.startswith(f"EEX {today.year} auction report: 404")]
+    quarterly, official, ec_ok = fetch_commission(today, previous, errors)
+    agg = aggregate_auctions(auctions)
+    mark_weeks(agg["weekly"], auctions, calendars, cancelled, today.isoformat())
+    window = build_window(today, agg["weekly"], official, fresh and calendar_ok, calendars)
+    if today >= SALES_START and window["current"] is None:
+        errors.append("No unambiguous, in-force Commission weekly price for today")
+    window["official_source_verified"] = ec_ok
+    window["market_source_verified"] = fresh and calendar_ok
+    window["actionable"] = (window["mode"] == "live" and ec_ok and window["current"] is not None
+                            and window["next"] is not None)
+    last_date = auctions[-1]["date"]
+    payload = dict(
+        meta=dict(checked_at=now.isoformat(), data_date=last_date, status="degraded" if errors else "ok",
+                  errors=errors, methodology_version="3.0.0"),
+        sources=dict(eex_auction_report=EEX_AUCTION_REPORT.format(year=today.year),
+                     eex_auction_page=EEX_AUCTION_PAGE, eex_cbam_reference=EEX_CBAM_PAGE,
+                     ec_cbam_price=EC_CBAM_PRICE_PAGE, price_regulation="https://eur-lex.europa.eu/eli/reg_impl/2025/2548/oj/eng"),
+        official_cbam_prices=quarterly, official_weekly_prices=official, auction_supply=supply,
+        auctions=auctions, cancelled_dates=sorted(cancelled), auction_calendars=calendars,
+        auction_analytics=agg, procurement_window=window,
+        public_score=dict(score=window["score"], max_score=100, model="60/40", mode=window["mode"]),
+        model=dict(version="3.0.0", spread_max=60, history_max=40, history_weeks=26),
+    )
+    data = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+    CURRENT.write_text(data, encoding="utf-8")
+    # Official prices may change on a day without an EUA auction.
+    (HISTORY_DIR / f"{today.isoformat()}.json").write_text(data, encoding="utf-8")
+    print(f"CBAM V3 {today}: {len(auctions)} auctions, mode={window['mode']}, score={window['score']}")
+    for error in errors:
+        print(f"WARNING: {error}", file=sys.stderr)
+    return 0
 
 
 if __name__ == "__main__":

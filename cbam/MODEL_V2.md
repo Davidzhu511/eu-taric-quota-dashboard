@@ -1,3 +1,5 @@
+> 历史模型。现行购证窗口规则见 [MODEL_V3.md](MODEL_V3.md)。
+
 # CBAM Procurement Model V2
 
 This file documents the public-data layer of the online dashboard.
