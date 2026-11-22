@@ -1,8 +1,12 @@
 """Freshness gate must reject plausible-looking but partial/old snapshots."""
 import copy
+import json
 import unittest
-from datetime import date
-from scripts.dashboard_health import is_complete
+from datetime import date, datetime
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest.mock import patch
+from scripts.dashboard_health import BERLIN, is_complete, latest_slot, plan
 
 DAY = date(2026, 11, 2)
 EU_PERIOD = "01-10-2026 - 31-12-2026"
@@ -56,6 +60,39 @@ class DailyCompletenessTests(unittest.TestCase):
         x["meta"]["successful_count"] = 54
         x["meta"]["failed_count"] = 1
         self.assertFalse(is_complete(x, DAY, "EU"))
+
+    def test_due_window_uses_berlin_time_and_quarter_boundaries(self):
+        for utc, expected in [
+            ("2026-11-04T13:19:59+00:00", (7, 50)),
+            ("2026-11-04T13:20:00+00:00", (14, 20)),
+            ("2026-08-11T12:20:00+00:00", (14, 20)),
+            ("2027-01-02T10:20:00+00:00", (11, 20)),
+            ("2027-02-03T15:10:00+00:00", (16, 10)),
+            ("2026-11-07T15:10:00+00:00", (7, 50)),
+        ]:
+            with self.subTest(utc=utc):
+                slot = latest_slot(datetime.fromisoformat(utc))
+                self.assertEqual((slot.hour, slot.minute), expected)
+
+    def test_afternoon_recovery_collects_only_missing_region_or_republishes(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "data/uk").mkdir(parents=True)
+            now = datetime(2026, 11, 2, 14, 30, tzinfo=BERLIN)
+            uk, eu = fixture("UK"), fixture("EU")
+            uk["meta"]["checked_at"] = now.isoformat()
+            (root / "data/uk/current.json").write_text(json.dumps(uk))
+            (root / "data/current.json").write_text(json.dumps(eu))
+            incomplete = plan(root, now)
+            self.assertTrue(incomplete["eu"])
+            self.assertFalse(incomplete["uk"])
+            eu["meta"]["checked_at"] = now.isoformat()
+            (root / "data/current.json").write_text(json.dumps(eu))
+            with patch("scripts.dashboard_health.published_matches", return_value=False):
+                publication = plan(root, now, verify_publication=True)
+            self.assertFalse(publication["eu"])
+            self.assertFalse(publication["uk"])
+            self.assertTrue(publication["publish"])
 
 if __name__ == "__main__":
     unittest.main()

@@ -7,6 +7,7 @@ from pathlib import Path
 TRACKED_FILES = (
     "index.html", "en.html", "uk.html", "uk-en.html",
     "data/current.json", "data/uk/current.json", "data/quarterly-summary.json",
+    "data/quota-events.json", "data/quota-policy.json",
     "cbam/index.html", "cbam/data/current.json", "cbam/data/research.json",
 )
 

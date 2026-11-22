@@ -82,6 +82,24 @@ class QuarterTransitionTests(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, "不能按零余额"):
                     parse_detail(FakeSession(), "4A", "099605", "Other countries", date(2026, 10, 5))
 
+    def test_eu_malformed_balance_is_rejected_and_missing_pending_remains_unknown(self):
+        for balance in ("1.2.3", "1,000.500 kg", "0"):
+            response = FakeResponse("https://example.org/detail",
+                                    "<table><tr><td>Order number</td><td>099605</td></tr>"
+                                    "<tr><td>Initial amount</td><td>5 000.000 KGM</td></tr>"
+                                    f"<tr><td>Balance</td><td>{balance}</td></tr></table>")
+            with self.subTest(balance=balance), patch("update_dashboard.search_detail_url",
+                    return_value=(response.url, "2026-10-02", False, "")), patch.object(
+                    FakeSession, "get", return_value=response):
+                if balance == "1.2.3":
+                    with self.assertRaisesRegex(RuntimeError, "不能按零余额"):
+                        parse_detail(FakeSession(), "4A", "099605", "Other countries", date(2026, 10, 5))
+                    continue
+                item = parse_detail(FakeSession(), "4A", "099605", "Other countries", date(2026, 10, 5))
+                self.assertEqual(item["balance_kg"], 1000 if balance != "0" else 0)
+                self.assertIsNone(item["awaiting_allocation_kg"])
+                self.assertIsNone(item["estimated_blended_tariff_pct"])
+
 
 if __name__ == "__main__":
     unittest.main()

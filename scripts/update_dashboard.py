@@ -143,31 +143,27 @@ def iso_from_ddmmyyyy(value: str) -> str:
     return parsed.isoformat() if parsed else value
 
 
-def parse_number(value: str) -> float:
-    match = re.search(r"-?[\d\s.,]+", value or "")
-    if not match:
-        return 0.0
-    token = re.sub(r"\s+", "", match.group(0))
-    if "," in token and "." in token:
-        if token.rfind(",") > token.rfind("."):
-            token = token.replace(".", "").replace(",", ".")
-        else:
-            token = token.replace(",", "")
-    elif token.count(",") == 1 and len(token.rsplit(",", 1)[1]) <= 2:
-        token = token.replace(",", ".")
-    else:
-        token = token.replace(",", "")
-    try:
-        return float(token)
-    except ValueError:
-        return 0.0
+def parse_number(value: str) -> float | None:
+    token = re.sub(r"\s*(?:kg|kgm|%|kilograms?)$", "", value.strip(), flags=re.I)
+    if re.fullmatch(r"\d{1,3}(?:\s\d{3})+(?:[.,]\d+)?", token):
+        return float(re.sub(r"\s", "", token).replace(",", "."))
+    if re.fullmatch(r"\d{1,3}(?:,\d{3})+(?:\.\d+)?", token):
+        return float(token.replace(",", ""))
+    if re.fullmatch(r"\d{1,3}(?:\.\d{3})+,\d+", token):
+        return float(token.replace(".", "").replace(",", "."))
+    if re.fullmatch(r"\d+(?:[.,]\d+)?", token):
+        return float(token.replace(",", "."))
+    return None
 
 
-def calculate_quota_metrics(initial: float, balance: float, awaiting: float) -> dict[str, float | None]:
+def calculate_quota_metrics(initial: float, balance: float, awaiting: float | None) -> dict[str, float | None]:
     """Calculate quota metrics without confusing pending demand with the initial quota."""
+    remaining_pct = balance / initial * 100 if initial else 0.0
+    if awaiting is None:
+        return dict(awaiting_ratio=None, awaiting_to_balance_ratio=None, remaining_percentage=remaining_pct,
+                    effective_buffer_kg=None, outside_ratio=None, estimated_blended_tariff_pct=None)
     awaiting_ratio = awaiting / initial if initial else 0.0
     awaiting_to_balance_ratio = awaiting / balance if balance > 0 else None
-    remaining_pct = balance / initial * 100 if initial else 0.0
     effective_buffer = max(balance - awaiting, 0.0)
     outside_ratio = max(awaiting - balance, 0.0) / awaiting if awaiting else 0.0
     return {
@@ -274,17 +270,18 @@ def parse_detail(session: requests.Session, category: str, code: str, expected_o
     if fields.get("Order number") != code:
         raise RuntimeError("详情页未返回目标 Order Number")
 
-    initial = round(parse_number(fields.get("Initial amount", "")))
-    amount = round(parse_number(fields.get("Amount", "")))
-    if not re.search(r"\d", fields.get("Balance", "")):
+    initial = parse_number(fields.get("Initial amount", ""))
+    amount = parse_number(fields.get("Amount", ""))
+    balance = parse_number(fields.get("Balance", ""))
+    if balance is None:
         raise RuntimeError("官方余额尚未公布或无法解析，不能按零余额处理")
-    balance = round(parse_number(fields.get("Balance", "")))
-    awaiting = round(parse_number(fields.get("Total awaiting allocation", "")))
     allocated_text = fields.get("Allocated percentage at the last allocation", "")
-    allocated = parse_number(allocated_text) if re.search(r"\d", allocated_text) else None
-    if initial <= 0:
+    allocated = parse_number(allocated_text)
+    if initial is None or initial <= 0:
         raise RuntimeError("初始配额为空或无法解析")
-
+    initial, balance = round(initial), round(balance)
+    awaiting = parse_number(fields.get("Total awaiting allocation", ""))
+    awaiting = round(awaiting) if awaiting is not None else None
     metrics = calculate_quota_metrics(initial, balance, awaiting)
 
     next_period = None
@@ -297,11 +294,13 @@ def parse_detail(session: requests.Session, category: str, code: str, expected_o
                 cells = future_row.find_all("td", recursive=False)
                 if len(cells) >= 2:
                     future_fields[clean_text(cells[0]).rstrip(":")] = clean_text(cells[1])
-            if future_fields.get("Order number") == code and future_fields.get("Validity period"):
+            future_initial = parse_number(future_fields.get("Initial amount", ""))
+            future_balance = parse_number(future_fields.get("Balance", ""))
+            if future_fields.get("Order number") == code and future_fields.get("Validity period") and future_initial:
                 next_period = {
                     "validity_period": future_fields["Validity period"],
-                    "initial_amount_kg": round(parse_number(future_fields.get("Initial amount", ""))),
-                    "balance_kg": round(parse_number(future_fields["Balance"])) if re.search(r"\d", future_fields.get("Balance", "")) else None,
+                    "initial_amount_kg": round(future_initial),
+                    "balance_kg": round(future_balance) if future_balance is not None else None,
                     "detail_url": future_response.url,
                 }
         except (requests.RequestException, ValueError):
@@ -318,15 +317,11 @@ def parse_detail(session: requests.Session, category: str, code: str, expected_o
         "taric_origin": fields.get("Origin", ""),
         "validity_period": fields.get("Validity period", ""),
         "initial_amount_kg": initial,
-        "amount_kg": amount,
+        "amount_kg": round(amount) if amount is not None else None,
         "balance_kg": balance,
         "awaiting_allocation_kg": awaiting,
-        "awaiting_ratio": round(float(metrics["awaiting_ratio"] or 0), 6),
-        "awaiting_to_balance_ratio": round(float(metrics["awaiting_to_balance_ratio"]), 6) if metrics["awaiting_to_balance_ratio"] is not None else None,
-        "remaining_percentage": round(float(metrics["remaining_percentage"] or 0), 4),
-        "effective_buffer_kg": round(float(metrics["effective_buffer_kg"] or 0)),
-        "outside_ratio": round(float(metrics["outside_ratio"] or 0), 6),
-        "estimated_blended_tariff_pct": round(float(metrics["estimated_blended_tariff_pct"] or 0), 4),
+        **{key: round(value, 6 if key.endswith("ratio") else 4) if value is not None else None
+           for key, value in metrics.items()},
         "allocated_percentage": allocated,
         "critical": fields.get("Critical", ""),
         "exhaustion_date": fields.get("Exhaustion date", ""),
@@ -387,34 +382,26 @@ def validate_items(items: list[dict[str, Any]]) -> None:
         code = str(item.get("code", ""))
         if item.get("origin") != expected_origins[code]:
             raise RuntimeError(f"{code}: 主原产地未使用 PDF 映射")
+        if item.get("stale"):
+            continue
 
         initial = float(item.get("initial_amount_kg", 0) or 0)
         amount = float(item.get("amount_kg", 0) or 0)
         balance = float(item.get("balance_kg", 0) or 0)
-        awaiting = float(item.get("awaiting_allocation_kg", 0) or 0)
-        if min(initial, amount, balance, awaiting) < 0:
+        awaiting = item.get("awaiting_allocation_kg")
+        if min(initial, amount, balance, awaiting or 0) < 0:
             raise RuntimeError(f"{code}: 配额数值不得为负数")
-        if not item.get("stale") and initial <= 0:
+        if initial <= 0:
             raise RuntimeError(f"{code}: 新抓取记录的初始配额无效")
 
         metrics = calculate_quota_metrics(initial, balance, awaiting)
-        pressure = item.get("awaiting_to_balance_ratio")
-        expected_pressure = metrics["awaiting_to_balance_ratio"]
-        if expected_pressure is None:
-            if pressure is not None:
-                raise RuntimeError(f"{code}: 待分配压力应为空")
-        elif pressure is None or abs(float(pressure) - float(expected_pressure)) > 2e-6:
-            raise RuntimeError(f"{code}: 待分配压力计算校验失败")
-        checks = (
-            ("待分配占初始配额", float(item.get("awaiting_ratio", 0) or 0), float(metrics["awaiting_ratio"] or 0), 2e-6),
-            ("剩余比例", float(item.get("remaining_percentage", 0) or 0), float(metrics["remaining_percentage"] or 0), 2e-4),
-            ("已知申请后理论余额", float(item.get("effective_buffer_kg", 0) or 0), float(metrics["effective_buffer_kg"] or 0), 0.5),
-            ("配额外比例", float(item.get("outside_ratio", 0) or 0), float(metrics["outside_ratio"] or 0), 2e-6),
-            ("预估分摊税率", float(item.get("estimated_blended_tariff_pct", 0) or 0), float(metrics["estimated_blended_tariff_pct"] or 0), 2e-4),
-        )
-        for label, actual, expected, tolerance in checks:
-            if abs(actual - expected) > tolerance:
-                raise RuntimeError(f"{code}: {label}计算校验失败")
+        for key, expected in metrics.items():
+            actual = item.get(key)
+            if expected is None and actual is None:
+                continue
+            tolerance = 2e-6 if key.endswith("ratio") else 2e-4
+            if expected is None or actual is None or abs(float(actual) - expected) > tolerance:
+                raise RuntimeError(f"{code}: {key}计算校验失败")
 
         detail_url = str(item.get("detail_url", ""))
         if detail_url:
@@ -499,17 +486,17 @@ def main() -> int:
                         "origin": expected_origin,
                         "taric_origin": "",
                         "validity_period": "",
-                        "initial_amount_kg": 0,
-                        "amount_kg": 0,
-                        "balance_kg": 0,
-                        "awaiting_allocation_kg": 0,
-                        "awaiting_ratio": 0,
+                        "initial_amount_kg": None,
+                        "amount_kg": None,
+                        "balance_kg": None,
+                        "awaiting_allocation_kg": None,
+                        "awaiting_ratio": None,
                         "awaiting_to_balance_ratio": None,
-                        "remaining_percentage": 0,
-                        "effective_buffer_kg": 0,
-                        "outside_ratio": 0,
-                        "estimated_blended_tariff_pct": 0,
-                        "allocated_percentage": 0,
+                        "remaining_percentage": None,
+                        "effective_buffer_kg": None,
+                        "outside_ratio": None,
+                        "estimated_blended_tariff_pct": None,
+                        "allocated_percentage": None,
                         "critical": "",
                         "exhaustion_date": "",
                         "last_import_date": "",
@@ -546,6 +533,8 @@ def main() -> int:
             "successful_count": successful,
             "failed_count": len(failures),
             "total_count": len(CODES),
+            "pending_unknown_count": sum(not item.get("stale") and item["awaiting_allocation_kg"] is None
+                                         for item in items),
         },
         "failures": failures,
         "items": items,

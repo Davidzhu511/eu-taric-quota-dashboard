@@ -1,11 +1,10 @@
-name: Recover missing daily EU and UK quota snapshots
+name: Recover missing EU and UK quota refreshes and publication
 
 on:
   workflow_dispatch:
   schedule:
-    # UTC slots cover morning and afternoon recovery through CET/CEST.
-    # Later slots rescue transient upstream outages without manual intervention.
-    - cron: "17 6,7,8,11,13,15 * * *"
+    - cron: "37 8,12,15,17 * * *"
+      timezone: Europe/Berlin
 
 permissions:
   contents: read
@@ -25,25 +24,17 @@ jobs:
         with:
           ref: main
 
-      - name: Dispatch primary workflow only for missing data
+      - name: Dispatch recovery only for an incomplete refresh or publication
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          berlin_today="$(TZ=Europe/Berlin date +%F)"
-          berlin_hhmm="$(TZ=Europe/Berlin date +%H%M)"
-          echo "### Quota freshness fallback" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Berlin date: $berlin_today" >> "$GITHUB_STEP_SUMMARY"
-
-          # A summer/winter UTC candidate can arrive before the primary refresh.
-          if (( 10#$berlin_hhmm < 815 )); then
-            echo "- Result: before 08:15 Berlin; no recovery needed" >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-
-          # Validate actual snapshots, not merely the apparent success of a cron run.
-          if python scripts/dashboard_health.py --complete-on "$berlin_today"; then
-            echo "- Result: EU 55/55 and UK 5/5 are fresh and clean" >> "$GITHUB_STEP_SUMMARY"
+          plan="$(python -m scripts.dashboard_health --verify-publication)"
+          {
+            echo "### EU and UK quota recovery"
+            echo "$plan"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if ! grep -qx 'publish=true' <<< "$plan"; then
             exit 0
           fi
 
@@ -59,5 +50,5 @@ jobs:
           fi
 
           # GITHUB_TOKEN may dispatch workflow_dispatch without another model or server.
-          gh workflow run update-and-deploy.yml --ref main --repo "$GITHUB_REPOSITORY"
-          echo "- Result: dispatched missing daily refresh via GitHub Actions" >> "$GITHUB_STEP_SUMMARY"
+          gh workflow run update-and-deploy.yml --ref main --repo "$GITHUB_REPOSITORY" -f recovery=true
+          echo "- Result: dispatched targeted recovery via GitHub Actions" >> "$GITHUB_STEP_SUMMARY"

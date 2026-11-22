@@ -1,5 +1,9 @@
+import json
 import unittest
-from scripts.build_quarterly_summary import summarize
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+from scripts.build_quarterly_summary import preserve_previous, summarize
 
 class QuarterlyEvidenceTests(unittest.TestCase):
     def setUp(self):
@@ -27,3 +31,19 @@ class QuarterlyEvidenceTests(unittest.TestCase):
     def test_quarter_switch_clears_previous_evidence(self):
         result=summarize({'meta':{'validity_period':'01-01-2027 - 31-03-2027'}},[self.snapshot(self.item)],{})['eu'][0]
         self.assertIsNone(result['allocation_pct'])
+
+
+    def test_same_day_zero_update_preserves_opening_batch(self):
+        with TemporaryDirectory() as directory:
+            data = Path(directory)
+            history = data / "history"
+            history.mkdir()
+            file, old = self.snapshot(self.item)
+            old["meta"]["validity_period"] = self.period
+            _, new = self.snapshot(dict(self.item, allocated_percentage=0))
+            (history / file).write_text(json.dumps(new))
+            preserve_previous(data, old)
+            preserved, = (history / "opening-evidence").glob("*.json")
+            evidence = json.loads(preserved.read_text())
+            result = summarize(self.eu, [(file, new), (preserved.name, evidence)], {})["eu"][0]
+            self.assertEqual(result["weighted_duty_pct"], 40.688)
