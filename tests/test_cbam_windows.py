@@ -1,4 +1,6 @@
+import json
 import sys
+import tempfile
 import unittest
 from datetime import date, datetime, timedelta, timezone
 from io import BytesIO
@@ -25,6 +27,50 @@ def series(start, prices):
 
 
 class WindowTests(unittest.TestCase):
+    def test_due_date_uses_collection_slot_at_midnight_and_in_summer(self):
+        for stamp, expected in (
+            ("2026-11-19T00:27:00+01:00", "2026-11-18"),
+            ("2027-03-30T00:27:00+02:00", "2027-03-29"),
+            ("2027-01-01T00:27:00+01:00", "2026-12-31"),
+            ("2026-11-19T17:29:59+00:00", "2026-11-18"),
+            ("2026-11-19T17:30:00+00:00", "2026-11-19"),
+        ):
+            with self.subTest(stamp=stamp):
+                self.assertEqual(refresh.auction_results_due_through(datetime.fromisoformat(stamp)).isoformat(), expected)
+
+    def test_refresh_does_not_require_friday_result_on_friday_morning(self):
+        days = [f"2026-11-{day}" for day in (16, 17, 19, 20)]
+        rows = [dict(date=day, price=85, volume=100) for day in days[:-1]]
+        plan = {"2026": {"days": dict.fromkeys(days, 100)}}
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "current.json"
+            with patch.multiple(refresh, CURRENT=path, HISTORY_DIR=Path(temp) / "history",
+                                fetch_auction_years=lambda *_: (rows, set(), True),
+                                fetch_calendars=lambda *_: (plan, True), get=lambda *_: "",
+                                fetch_commission=lambda *_: ([], [], True)):
+                for stamp, fresh in (("2026-11-20T00:39:00+01:00", True), ("2026-11-20T19:00:00+01:00", False)):
+                    with self.subTest(stamp=stamp), patch.object(refresh, "now_utc", return_value=datetime.fromisoformat(stamp)):
+                        refresh.main()
+                        data = json.loads(path.read_text())
+                        self.assertEqual(data["procurement_window"]["market_source_verified"], fresh)
+                        self.assertEqual(data["auction_analytics"]["weekly"][-1]["eligible_estimate"], fresh)
+                        self.assertEqual(data["meta"]["status"], "ok" if fresh else "degraded")
+                        self.assertEqual(data["morning_window"]["as_of"], "2026-11-23")
+
+    def test_morning_projection_uses_only_published_evidence_and_expires_old_price(self):
+        rows = m.official_weeks(ec_table([("W03","25 January 2027","86"),
+                                          ("W04","1 February 2027","84")]))
+        friday = m.project_morning(date(2027,1,29), [], rows, True, {})
+        self.assertEqual(friday["as_of"], "2027-02-01")
+        self.assertEqual(friday["current"]["price"], 86)
+        self.assertIsNone(friday["next"])  # Monday publication was still unknown on Friday.
+        self.assertFalse(friday["actionable"])
+        after_publication = m.project_morning(date(2027,2,1), [], rows, True, {})
+        self.assertEqual(after_publication["as_of"], "2027-02-02")
+        self.assertEqual(after_publication["current"]["price"], 84)
+        self.assertIsNone(after_publication["spread"])
+        self.assertIsNone(after_publication["score"])
+
     def test_changeover_publication_and_sale_start(self):
         official = m.official_weeks(ec_table([("W03", "25 January 2027", "86.00"),
                                                ("W04", "1 February 2027", "84.00")]))

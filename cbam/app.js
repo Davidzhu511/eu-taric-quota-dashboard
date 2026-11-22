@@ -126,6 +126,8 @@ function updateLedger(){
 
 function renderWindow(w, data){
   const today = new Intl.DateTimeFormat('sv-SE', {timeZone: 'Europe/Brussels'}).format(new Date());
+  const morning = w?.as_of !== today && data.morning_window?.as_of === today;
+  if (morning) w = data.morning_window;
   const historical = w?.as_of !== today;
   const simulation = w?.mode === 'simulation';
   if (historical && !simulation && w) {
@@ -139,7 +141,7 @@ function renderWindow(w, data){
     }
   }
   const prefix = historical ? '历史快照' : simulation ? '开售前模拟' : '当期价格';
-  displayedWindow = historical ? null : w;
+  displayedWindow = historical || morning ? null : w;
   $('currentLabel').textContent = simulation ? '模拟本期参考价' : '当前有效官方价';
   $('currentPrice').textContent = euro(w?.current?.price);
   $('currentPeriod').textContent = describeQuote(w?.current);
@@ -150,7 +152,8 @@ function renderWindow(w, data){
   $('switchDate').textContent = w?.next_effective_from || '待确认';
   $('lastDay').textContent = w?.current?.valid_to ? '本期最后适用日 ' + w.current.valid_to : '开售及换价以官方适用期为准';
   renderGauge(w?.score, 100, '60/40 窗口评分 / 100');
-  $('stanceBadge').textContent = prefix + (w?.as_of ? ' · ' + w.as_of : '');
+  const badge = morning ? (simulation ? '晨间模拟' : '晨间参考 · 待当日核验') : prefix;
+  $('stanceBadge').textContent = badge + (w?.as_of ? ' · ' + w.as_of : '');
   let headline = '等待相邻价格及拍卖证据';
   if (w?.spread != null){
     const signals = {current_cheaper:'本期参考价较低', next_cheaper:'下一期参考价较低', within_threshold:'相邻价差尚未达到提醒门槛'};
@@ -158,6 +161,7 @@ function renderWindow(w, data){
   }
   $('analysisHeadline').textContent = w ? headline : '等待新版数据';
   const lines = [];
+  if (morning) lines.push('采用 ' + w.evidence_as_of + ' 已取得的数据，按今天的价格有效期推算。办理前请核对欧委会当日信息。');
   if (historical) lines.push('数据来自前次快照，官方价按有效期展示。请复核来源和平台办理时间。');
   if (simulation) lines.push('2027年2月1日开始销售证书，此处仅用于演练当年进口义务的周度比较。');
   if (w && !simulation && !w.actionable) lines.push('尚缺可执行窗口的核验材料。');

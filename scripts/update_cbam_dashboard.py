@@ -20,7 +20,7 @@ from urllib.parse import urljoin, urlsplit
 from zoneinfo import ZoneInfo
 from zipfile import BadZipFile
 
-from cbam_windows import SALES_START, build_window, calendar_days, mark_weeks, official_weeks
+from cbam_windows import SALES_START, build_window, calendar_days, mark_weeks, official_weeks, project_morning
 from typing import Any, Iterable
 
 import requests
@@ -376,6 +376,15 @@ def fetch_commission(today, previous, errors):
     return [quarters[k] for k in sorted(quarters)], [weeks[k] for k in sorted(weeks)], ok
 
 
+def auction_results_due_through(checked_at: datetime) -> date:
+    """Last daily 17:30 UTC collection slot reached, irrespective of runner delay."""
+    now = checked_at.astimezone(timezone.utc)
+    slot = now.replace(hour=17, minute=30, second=0, microsecond=0)
+    if now < slot:
+        slot -= timedelta(days=1)
+    return slot.date()
+
+
 def main() -> int:
     HISTORY_DIR.mkdir(parents=True, exist_ok=True)
     previous = load_previous()
@@ -392,8 +401,9 @@ def main() -> int:
         page = ""
     supply = extract_supply_summary(page) or previous.get("auction_supply", {})
     calendars, calendar_ok = fetch_calendars(page, today, previous, errors)
+    due = auction_results_due_through(now)
     year_plan = calendars.get(str(today.year), {}).get("days", {})
-    expected = {d for d, volume in year_plan.items() if volume and d <= today.isoformat()}
+    expected = {d for d, volume in year_plan.items() if volume and d <= due.isoformat()}
     if calendar_ok and expected:
         missing = expected - {a["date"] for a in auctions} - cancelled
         if missing:
@@ -404,7 +414,7 @@ def main() -> int:
         errors = [e for e in errors if not e.startswith(f"EEX {today.year} auction report: 404")]
     quarterly, official, ec_ok = fetch_commission(today, previous, errors)
     agg = aggregate_auctions(auctions)
-    mark_weeks(agg["weekly"], auctions, calendars, cancelled, today.isoformat())
+    mark_weeks(agg["weekly"], auctions, calendars, cancelled, due.isoformat())
     window = build_window(today, agg["weekly"], official, fresh and calendar_ok, calendars)
     if today >= SALES_START and window["current"] is None:
         errors.append("No unambiguous, in-force Commission weekly price for today")
@@ -412,16 +422,17 @@ def main() -> int:
     window["market_source_verified"] = fresh and calendar_ok
     window["actionable"] = (window["mode"] == "live" and ec_ok and window["current"] is not None
                             and window["next"] is not None)
+    morning = project_morning(today, agg["weekly"], official, fresh and calendar_ok, calendars)
     last_date = auctions[-1]["date"]
     payload = dict(
         meta=dict(checked_at=now.isoformat(), data_date=last_date, status="degraded" if errors else "ok",
-                  errors=errors, methodology_version="3.0.0"),
+                  errors=errors, auctions_due_through=due.isoformat(), methodology_version="3.0.0"),
         sources=dict(eex_auction_report=EEX_AUCTION_REPORT.format(year=today.year),
                      eex_auction_page=EEX_AUCTION_PAGE, eex_cbam_reference=EEX_CBAM_PAGE,
                      ec_cbam_price=EC_CBAM_PRICE_PAGE, price_regulation="https://eur-lex.europa.eu/eli/reg_impl/2025/2548/oj/eng"),
         official_cbam_prices=quarterly, official_weekly_prices=official, auction_supply=supply,
         auctions=auctions, cancelled_dates=sorted(cancelled), auction_calendars=calendars,
-        auction_analytics=agg, procurement_window=window,
+        auction_analytics=agg, procurement_window=window, morning_window=morning,
         public_score=dict(score=window["score"], max_score=100, model="60/40", mode=window["mode"]),
         model=dict(version="3.0.0", spread_max=60, history_max=40, history_weeks=26),
     )
