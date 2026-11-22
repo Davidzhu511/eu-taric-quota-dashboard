@@ -1,9 +1,10 @@
 {
   "meta": {
-    "checked_at": "2026-11-22T13:50:13.284724+00:00",
+    "checked_at": "2026-11-22T21:08:57.403997+00:00",
     "data_date": "2026-11-20",
     "status": "ok",
     "errors": [],
+    "auctions_due_through": "2026-11-22",
     "methodology_version": "3.0.0"
   },
   "sources": {
@@ -4629,6 +4630,39 @@
     "direction": "next_cheaper",
     "official_source_verified": true,
     "market_source_verified": true,
+    "actionable": false
+  },
+  "morning_window": {
+    "as_of": "2026-11-23",
+    "next_effective_from": null,
+    "mode": "simulation",
+    "current": {
+      "price": 88.39,
+      "formation_week": "2026-11-09",
+      "kind": "complete_estimate",
+      "auctions": 5,
+      "volume": 11867500,
+      "planned_volume": 11867500
+    },
+    "next": {
+      "price": 84.56,
+      "formation_week": "2026-11-16",
+      "kind": "complete_estimate",
+      "auctions": 4,
+      "volume": 9922500,
+      "planned_volume": 9922500
+    },
+    "score": 1.5,
+    "max_score": 100,
+    "spread": -3.83,
+    "impact_per_1000": -3830,
+    "threshold": 2.0,
+    "spread_points": 0,
+    "history_points": 1.5,
+    "percentile": 0.9615,
+    "history_weeks": 26,
+    "direction": "next_cheaper",
+    "evidence_as_of": "2026-11-22",
     "actionable": false
   },
   "public_score": {
