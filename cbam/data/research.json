@@ -1,22 +1,28 @@
 {
   "meta": {
-    "updated_at": "2026-11-22T22:38:07+00:00",
-    "status": "public_only_fallback",
-    "producer": "github_actions",
-    "confidence": "公开市场快照",
-    "research_completed": false,
+    "updated_at": "2026-11-23T06:48:08+00:00",
+    "status": "research_note",
+    "producer": "chatgpt_research",
+    "confidence": "法规与拍卖经官方来源核实；购证周价为开售前模拟",
+    "research_completed": true,
     "public_data_date": "2026-11-20",
     "public_checked_at": "2026-11-22T22:38:02.181377+00:00"
   },
   "overlay_score": null,
-  "headline": "暂无新增公开研究",
-  "summary": "最近拍卖日期为 2026-11-20。价格比较见购证窗口。",
-  "bullets": [],
+  "headline": "中国全国碳市场纳入CBAM抵扣规则，挪威和冰岛自2027年起纳入CBAM",
+  "summary": "(EU) 2026/2498明确第三国碳价如何抵扣CBAM，中国全国碳市场在列，钢厂需准备可认证的实际净缴碳成本凭证。挪威和冰岛自2027-01-01起适用CBAM。11月23日模拟窗口下一期估值较低，2027-02-01开售前暂无可办理窗口。",
+  "bullets": [
+    "欧委会实施条例 (EU) 2026/2498 于2026-11-16公布、2026-11-19生效，适用于2026-01-01起的义务。附件II列入中国全国碳排放权交易体系，并列明免费配额和履约责任上限。使用经核查实际排放时，企业实际净缴碳成本须与申报货物的隐含排放对应，按规定扣除适用减免并由合格独立人员认证；采用默认排放值时，抵扣仅可按欧委会适用的默认碳价申报。本轮未核实适用的中国默认碳价。",
+    "第7条以进口年度欧委会年度参考证书价把第三国碳价换算为减交张数。2026和2027报告期，相关活动范围内已有CBAM资质的核查员可依第11条承担碳价认证。拟申报实际碳成本抵扣的钢厂应留存并核对同一报告期的配额分配、付费采购及履约凭证，供授权申报人办理首次申报（截止2027-09-30）。",
+    "欧洲经济区联合委员会第283/2026号决定于2026-11-18生效。自2027-01-01起，挪威和冰岛境内进口适用CBAM；适用产品的每进口商年度50吨门槛在欧盟、挪威、冰岛海关领土合并计算，申报人授权相互承认。涉及这些目的地的进口商应在首票清关前确认申报人资格和当地税号（TIN）。",
+    "2026-11-23周一晨间窗口为开售前模拟，计算证据日期为2026-11-22。EEX原始报告最后拍卖日为2026-11-20，德国场成交价为80.60欧元/吨CO₂、成交154.8万。两完整周成交量加权估值为88.39和84.56欧元/张，下一期低3.83欧元/张，即每千张模拟差额3,830欧元，达到2欧元门槛；模型评分1.5/100，当前价百分位96.15%。欧委会尚无可办理的周价，证书2027-02-01起开售。"
+  ],
   "sources": [
-    "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
-    "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
-    "https://www.eex.com/en/markets/environmentals/environmental-indices",
+    "https://taxation-customs.ec.europa.eu/news/cbam-commission-adopts-rules-recognition-carbon-prices-paid-non-eu-countries-2026-11-16_en",
+    "https://publications.europa.eu/resource/cellar/f29af7fa-e188-11f1-aefc-01aa75ed71a1.0006.01/DOC_1",
+    "https://taxation-customs.ec.europa.eu/news/extension-cbam-iceland-and-norway-2026-11-18_en",
+    "https://eur-lex.europa.eu/eli/reg/2023/956/2025-10-20/eng/pdf",
     "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
-    "https://eur-lex.europa.eu/eli/reg_impl/2025/2548/oj/eng"
+    "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx"
   ]
 }
