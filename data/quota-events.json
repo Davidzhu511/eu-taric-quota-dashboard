@@ -3,8 +3,8 @@
   "retention_days": 45,
   "sources": {
     "EU": {
-      "checked_at": "2026-11-22T14:50:54+01:00",
-      "official_update_date": "2026-11-20",
+      "checked_at": "2026-11-23T19:47:54+01:00",
+      "official_update_date": "2026-11-23",
       "dataset_version": null,
       "validity_period": "01-10-2026 - 31-12-2026",
       "next_period": "01-01-2027 - 31-03-2027",
@@ -15,7 +15,7 @@
       "pending_unknown_count": 0
     },
     "UK": {
-      "checked_at": "2026-11-22T14:52:02+01:00",
+      "checked_at": "2026-11-23T19:49:42+01:00",
       "official_update_date": "2026-11-22",
       "dataset_version": "1.0.1020",
       "validity_period": "2026-10-01 — 2026-12-31",
@@ -51,6 +51,53 @@
     }
   },
   "events": [
+    {
+      "id": "74ed664618e24daf5ee9c09f",
+      "observed_on": "2026-11-23",
+      "jurisdiction": "EU",
+      "kind": "material_balance_drop",
+      "code": "099719",
+      "before": {
+        "category": "4B",
+        "origin": "FTA Quota - Other countries",
+        "period": "01-10-2026 - 31-12-2026",
+        "china_applicable": false,
+        "balance_kg": 7690390,
+        "initial_kg": 22585170,
+        "amount_kg": 22585170,
+        "pending_kg": 3002470,
+        "pressure": 0.390418,
+        "status": null,
+        "blocking": "",
+        "suspension": "",
+        "future_period": "01-01-2027 - 31-03-2027",
+        "future_initial_kg": 22585170,
+        "checked_at": "2026-11-22T14:50:54+01:00",
+        "official_update_date": "2026-11-20",
+        "source_url": "https://ec.europa.eu/taxation_customs/dds2/taric/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099719",
+        "status_source_url": null
+      },
+      "after": {
+        "category": "4B",
+        "origin": "FTA Quota - Other countries",
+        "period": "01-10-2026 - 31-12-2026",
+        "china_applicable": false,
+        "balance_kg": 4687920,
+        "initial_kg": 22585170,
+        "amount_kg": 22585170,
+        "pending_kg": 71679,
+        "pressure": 0.01529,
+        "status": null,
+        "blocking": "",
+        "suspension": "",
+        "future_period": "01-01-2027 - 31-03-2027",
+        "future_initial_kg": 22585170,
+        "checked_at": "2026-11-23T19:47:54+01:00",
+        "official_update_date": "2026-11-23",
+        "source_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099719",
+        "status_source_url": null
+      }
+    },
     {
       "id": "90e5d3ccec3a2ea2c205ab79",
       "observed_on": "2026-11-21",
