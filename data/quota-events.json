@@ -3,7 +3,7 @@
   "retention_days": 45,
   "sources": {
     "EU": {
-      "checked_at": "2026-11-24T19:23:51+01:00",
+      "checked_at": "2026-11-25T18:39:33+01:00",
       "official_update_date": "2026-11-24",
       "dataset_version": null,
       "validity_period": "01-10-2026 - 31-12-2026",
@@ -15,12 +15,12 @@
       "pending_unknown_count": 0
     },
     "UK": {
-      "checked_at": "2026-11-24T19:24:58+01:00",
-      "official_update_date": "2026-11-22",
-      "dataset_version": "1.0.1020",
+      "checked_at": "2026-11-25T18:41:14+01:00",
+      "official_update_date": "2026-11-25",
+      "dataset_version": "1.0.1021",
       "validity_period": "2026-10-01 — 2026-12-31",
       "next_period": "2027-01-01 — 2027-03-31",
-      "source_url": "https://data.api.trade.gov.uk/v1/datasets/uk-trade-quotas/versions/v1.0.1020/reports/quotas-including-current-volumes/data?format=csv&download",
+      "source_url": "https://data.api.trade.gov.uk/v1/datasets/uk-trade-quotas/versions/v1.0.1021/reports/quotas-including-current-volumes/data?format=csv&download",
       "successful_count": 5,
       "failed_count": 0,
       "total_count": 5,
