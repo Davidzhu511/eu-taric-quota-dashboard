@@ -1,10 +1,10 @@
 {
   "meta": {
-    "checked_at": "2026-11-24T03:24:03.820147+00:00",
+    "checked_at": "2026-11-25T01:29:19.051382+00:00",
     "data_date": "2026-11-23",
     "status": "ok",
     "errors": [],
-    "auctions_due_through": "2026-11-23",
+    "auctions_due_through": "2026-11-24",
     "methodology_version": "3.0.0"
   },
   "sources": {
@@ -3371,10 +3371,12 @@
       "auction_name": "Auction 4. Period CAP3 EU"
     }
   ],
-  "cancelled_dates": [],
+  "cancelled_dates": [
+    "2026-11-24"
+  ],
   "auction_calendars": {
     "2026": {
-      "source": "https://www.eex.com/fileadmin/EEX/Downloads/Trading/Calendar/Auction_Calendar/EEX_Auction_Calendar_EUA_MSR_adjustment_2026_30.7.2026.xlsx",
+      "source": "https://www.eex.com/fileadmin/EEX/Downloads/Trading/Calendar/Auction_Calendar/EEX_Auction_Calendar_24.11.2026.xlsx",
       "days": {
         "2026-01-05": 0,
         "2026-01-06": 0,
@@ -3609,12 +3611,12 @@
         "2026-11-23": 2791500,
         "2026-11-24": 2791500,
         "2026-11-25": 1945000,
-        "2026-11-26": 2791500,
+        "2026-11-26": 3488500,
         "2026-11-27": 1548000,
-        "2026-11-30": 2791500,
-        "2026-12-01": 2791500,
+        "2026-11-30": 3488500,
+        "2026-12-01": 3488500,
         "2026-12-02": 0,
-        "2026-12-03": 2791500,
+        "2026-12-03": 3492000,
         "2026-12-04": 1548000,
         "2026-12-07": 2791500,
         "2026-12-08": 2791500,
@@ -4523,7 +4525,7 @@
         "price": 83.06,
         "volume": 2791500,
         "auctions": 1,
-        "planned_volume": 11867500,
+        "planned_volume": 12564500,
         "planned_auctions": 5,
         "complete": false,
         "eligible_estimate": false
@@ -4607,7 +4609,7 @@
     }
   },
   "procurement_window": {
-    "as_of": "2026-11-24",
+    "as_of": "2026-11-25",
     "next_effective_from": null,
     "mode": "simulation",
     "current": {
@@ -4634,7 +4636,7 @@
     "actionable": false
   },
   "morning_window": {
-    "as_of": "2026-11-25",
+    "as_of": "2026-11-26",
     "next_effective_from": null,
     "mode": "simulation",
     "current": {
@@ -4656,7 +4658,7 @@
     "percentile": 0.6923,
     "history_weeks": 26,
     "direction": null,
-    "evidence_as_of": "2026-11-24",
+    "evidence_as_of": "2026-11-25",
     "actionable": false
   },
   "public_score": {
