@@ -1,32 +1,22 @@
 {
   "meta": {
-    "updated_at": "2026-11-25T06:47:52+00:00",
-    "status": "research_note",
-    "producer": "chatgpt_research",
-    "confidence": "欧委会实施指引、议会点名表决与EEX取消及改期经官方来源核实；购证价仍为模拟",
-    "research_completed": true,
-    "public_data_date": "2026-11-23",
-    "public_checked_at": "2026-11-25T01:29:19.051382+00:00"
+    "updated_at": "2026-11-26T01:03:56+00:00",
+    "status": "public_only_fallback",
+    "producer": "github_actions",
+    "confidence": "公开市场快照",
+    "research_completed": false,
+    "public_data_date": "2026-11-25",
+    "public_checked_at": "2026-11-26T01:03:51.734272+00:00"
   },
   "overlay_score": null,
-  "headline": "欧委会明确挪威、冰岛货物转入欧盟的Y423申报；EEX取消场次配额重新分配",
-  "summary": "欧委会11月24日指引明确，自2027年1月1日起，符合条件的第三国原产货物自挪威或冰岛转入欧盟时可用Y423避免重复CBAM，并明确EORI与当地识别号的匹配要求。11月24日EEX拍卖因技术原因取消，欧洲议会同日通过ETS1市场稳定储备修订的临时协议，仍待理事会正式通过。截至11月25日，购证比较处于模拟，下一窗口暂无合格估值。",
-  "bullets": [
-    "欧委会2026-11-24公布的扩围实施指引第7节明确，自2027-01-01起，属于CBAM范围的第三国原产货物如已在挪威或冰岛放行进入自由流通并在首次放行时纳入CBAM，再次在欧盟放行时可免于重复CBAM。欧盟报关申报人须用TARIC代码Y423，申报时应能提供原放行的证明；单纯经停或过境不满足上述条件。",
-    "指引第3至5节明确，自2027-01-01起，在挪威或冰岛设立且向欧盟申报CBAM货物的经营者，应确保当地TIN正确录入欧盟EORI第8项（TCUIN）。首票清关前核对匹配；缺失或不符应联系EORI登记海关。只在挪威或冰岛进口的经营者不因此需要欧盟EORI。",
-    "2026-11-24 EEX更正公告确认，EU ETS1共同拍卖平台场次因技术问题取消，无清算价；原定2,791,500份配额分配给随后四场EU EUA拍卖。修订日历将2026-11-26、11-30、12-01的场次量各调至3,488,500份，12-03调至3,492,000份。",
-    "2026-11-25当天购证窗口为开售前模拟。最近成交日为2026-11-23，清算价83.06欧元/吨CO₂；本期以2026-11-16起的完整周估值84.56欧元/张，价格百分位69.23%。本周只有一场确认成交，尚不满足下一窗口的估值条件，价差、每千张差额和总分缺项。欧委会2026年Q4固定证价仍定于2027-01-04公布。",
-    "2026-11-24欧洲议会以403票赞成、78票反对、146票弃权通过ETS1市场稳定储备的临时协议（2026/0085(COD)）。协议拟将配额失效阈值从4亿提高到7亿；截至2026-11-25未核实理事会正式通过或在欧盟官方公报公布。提高储备阈值本身不会立即增加拍卖量。"
-  ],
+  "headline": "暂无新增公开研究",
+  "summary": "最近拍卖日期为 2026-11-25。价格比较见购证窗口。",
+  "bullets": [],
   "sources": [
-    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/cbam-definitive-regime_en",
-    "https://taxation-customs.ec.europa.eu/document/download/8d8c0277-4fcb-4148-a919-7e0ed5a18b68_en?filename=Notice+CBAM+implementation+following+EEA+agreement.pdf",
-    "https://www.eex.com/en/meta/market-messages/detail?cHash=b346b585655e3fe4a0dae0cc4d1eb76e&tx_uomarketmessages_detail%5Baction%5D=show&tx_uomarketmessages_detail%5Bcontroller%5D=Message&tx_uomarketmessages_detail%5Bmessage%5D=13&tx_uomarketmessages_detail%5BreturnPageId%5D=57",
-    "https://www.eex.com/fileadmin/EEX/Downloads/Trading/Calendar/Auction_Calendar/EEX_Auction_Calendar_24.11.2026.pdf",
     "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
-    "https://data.europarl.europa.eu/api/v2/meetings/MTG-PL-2026-11-24/decisions?format=application%2Fld%2Bjson",
-    "https://oeil.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0085(COD)",
-    "https://www.consilium.europa.eu/en/press/press-releases/2026/10/21/ets-market-stability-reserve-council-and-parliament-reach-provisional-agreement-on-targeted-amendment/",
-    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
+    "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
+    "https://www.eex.com/en/markets/environmentals/environmental-indices",
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
+    "https://eur-lex.europa.eu/eli/reg_impl/2025/2548/oj/eng"
   ]
 }

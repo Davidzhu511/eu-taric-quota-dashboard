@@ -1,10 +1,10 @@
 {
   "meta": {
-    "checked_at": "2026-11-25T01:29:19.051382+00:00",
-    "data_date": "2026-11-23",
+    "checked_at": "2026-11-26T01:03:51.734272+00:00",
+    "data_date": "2026-11-25",
     "status": "ok",
     "errors": [],
-    "auctions_due_through": "2026-11-24",
+    "auctions_due_through": "2026-11-25",
     "methodology_version": "3.0.0"
   },
   "sources": {
@@ -3369,6 +3369,14 @@
       "status": "successful",
       "contract": "T3PA",
       "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-11-25",
+      "price": 82.41,
+      "volume": 1945000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period CAP3 PL"
     }
   ],
   "cancelled_dates": [
@@ -3642,12 +3650,12 @@
   },
   "auction_analytics": {
     "latest": {
-      "date": "2026-11-23",
-      "price": 83.06,
-      "volume": 2791500,
+      "date": "2026-11-25",
+      "price": 82.41,
+      "volume": 1945000,
       "status": "successful",
       "contract": "T3PA",
-      "auction_name": "Auction 4. Period CAP3 EU"
+      "auction_name": "Auction 4. Period CAP3 PL"
     },
     "weekly": [
       {
@@ -4522,9 +4530,9 @@
       {
         "week_start": "2026-11-23",
         "week_end": "2026-11-29",
-        "price": 83.06,
-        "volume": 2791500,
-        "auctions": 1,
+        "price": 82.79,
+        "volume": 4736500,
+        "auctions": 2,
         "planned_volume": 12564500,
         "planned_auctions": 5,
         "complete": false,
@@ -4591,25 +4599,25 @@
       {
         "year": 2026,
         "quarter": 4,
-        "price": 86.46,
-        "volume": 83007500,
-        "auctions": 35,
+        "price": 86.37,
+        "volume": 84952500,
+        "auctions": 36,
         "complete": false
       }
     ],
     "stats": {
-      "latest_price": 83.06,
-      "latest_date": "2026-11-23",
-      "ma_5_auctions": 83.9,
-      "ma_20_auctions": 87.29,
+      "latest_price": 82.41,
+      "latest_date": "2026-11-25",
+      "ma_5_auctions": 82.91,
+      "ma_20_auctions": 87.12,
       "low_52w": 62.19,
       "high_52w": 91.34,
-      "position_52w": 0.716,
-      "last_5_vs_20": -0.0388
+      "position_52w": 0.6937,
+      "last_5_vs_20": -0.0483
     }
   },
   "procurement_window": {
-    "as_of": "2026-11-25",
+    "as_of": "2026-11-26",
     "next_effective_from": null,
     "mode": "simulation",
     "current": {
@@ -4636,7 +4644,7 @@
     "actionable": false
   },
   "morning_window": {
-    "as_of": "2026-11-26",
+    "as_of": "2026-11-27",
     "next_effective_from": null,
     "mode": "simulation",
     "current": {
@@ -4658,7 +4666,7 @@
     "percentile": 0.6923,
     "history_weeks": 26,
     "direction": null,
-    "evidence_as_of": "2026-11-25",
+    "evidence_as_of": "2026-11-26",
     "actionable": false
   },
   "public_score": {
