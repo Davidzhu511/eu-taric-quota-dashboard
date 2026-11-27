@@ -3,8 +3,8 @@
   "retention_days": 45,
   "sources": {
     "EU": {
-      "checked_at": "2026-11-26T18:22:13+01:00",
-      "official_update_date": "2026-11-25",
+      "checked_at": "2026-11-27T18:00:16+01:00",
+      "official_update_date": "2026-11-26",
       "dataset_version": null,
       "validity_period": "01-10-2026 - 31-12-2026",
       "next_period": "01-01-2027 - 31-03-2027",
@@ -15,12 +15,12 @@
       "pending_unknown_count": 0
     },
     "UK": {
-      "checked_at": "2026-11-26T18:23:19+01:00",
-      "official_update_date": "2026-11-26",
-      "dataset_version": "1.0.1022",
+      "checked_at": "2026-11-27T18:01:20+01:00",
+      "official_update_date": "2026-11-27",
+      "dataset_version": "1.0.1023",
       "validity_period": "2026-10-01 — 2026-12-31",
       "next_period": "2027-01-01 — 2027-03-31",
-      "source_url": "https://data.api.trade.gov.uk/v1/datasets/uk-trade-quotas/versions/v1.0.1022/reports/quotas-including-current-volumes/data?format=csv&download",
+      "source_url": "https://data.api.trade.gov.uk/v1/datasets/uk-trade-quotas/versions/v1.0.1023/reports/quotas-including-current-volumes/data?format=csv&download",
       "successful_count": 5,
       "failed_count": 0,
       "total_count": 5,
@@ -51,6 +51,53 @@
     }
   },
   "events": [
+    {
+      "id": "1989eecbb852c183d1f4affd",
+      "observed_on": "2026-11-27",
+      "jurisdiction": "EU",
+      "kind": "material_balance_drop",
+      "code": "099819",
+      "before": {
+        "category": "2",
+        "origin": "Korea",
+        "period": "01-10-2026 - 31-12-2026",
+        "china_applicable": false,
+        "balance_kg": 17627861,
+        "initial_kg": 63652670,
+        "amount_kg": 67856393,
+        "pending_kg": 3603530,
+        "pressure": 0.204422,
+        "status": null,
+        "blocking": "",
+        "suspension": "",
+        "future_period": "01-01-2027 - 31-03-2027",
+        "future_initial_kg": 63652670,
+        "checked_at": "2026-11-26T18:22:13+01:00",
+        "official_update_date": "2026-11-25",
+        "source_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099819",
+        "status_source_url": null
+      },
+      "after": {
+        "category": "2",
+        "origin": "Korea",
+        "period": "01-10-2026 - 31-12-2026",
+        "china_applicable": false,
+        "balance_kg": 14024607,
+        "initial_kg": 63652670,
+        "amount_kg": 67856393,
+        "pending_kg": 931036,
+        "pressure": 0.066386,
+        "status": null,
+        "blocking": "",
+        "suspension": "",
+        "future_period": "01-01-2027 - 31-03-2027",
+        "future_initial_kg": 63652670,
+        "checked_at": "2026-11-27T18:00:16+01:00",
+        "official_update_date": "2026-11-26",
+        "source_url": "https://ec.europa.eu/taxation_customs/dds2/taric/s/quota_tariff_details.jsp?Lang=en&StartDate=2026-10-01&Code=099819",
+        "status_source_url": null
+      }
+    },
     {
       "id": "afc6a9a5814e2a499ff07055",
       "observed_on": "2026-11-26",
