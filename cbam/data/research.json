@@ -1,16 +1,16 @@
 {
   "meta": {
-    "updated_at": "2026-11-26T01:03:56+00:00",
+    "updated_at": "2026-11-27T01:04:21+00:00",
     "status": "public_only_fallback",
     "producer": "github_actions",
     "confidence": "公开市场快照",
     "research_completed": false,
-    "public_data_date": "2026-11-25",
-    "public_checked_at": "2026-11-26T01:03:51.734272+00:00"
+    "public_data_date": "2026-11-26",
+    "public_checked_at": "2026-11-27T01:04:15.370660+00:00"
   },
   "overlay_score": null,
   "headline": "暂无新增公开研究",
-  "summary": "最近拍卖日期为 2026-11-25。价格比较见购证窗口。",
+  "summary": "最近拍卖日期为 2026-11-26。价格比较见购证窗口。",
   "bullets": [],
   "sources": [
     "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
