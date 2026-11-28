@@ -1,26 +1,22 @@
 {
   "meta": {
-    "updated_at": "2026-11-27T06:50:43+00:00",
-    "status": "research_note",
-    "producer": "chatgpt_research",
-    "confidence": "EEX拍卖原表、修订日历和V3估值规则均已核实",
-    "research_completed": true,
-    "public_data_date": "2026-11-26",
-    "public_checked_at": "2026-11-27T01:04:15.370660+00:00"
+    "updated_at": "2026-11-28T00:36:52+00:00",
+    "status": "public_only_fallback",
+    "producer": "github_actions",
+    "confidence": "公开市场快照",
+    "research_completed": false,
+    "public_data_date": "2026-11-27",
+    "public_checked_at": "2026-11-28T00:36:47.500195+00:00"
   },
   "overlay_score": null,
-  "headline": "11月24日取消场次仍计入计划量，11月27日晨间尚未达到周内估值门槛",
-  "summary": "EEX确认11月26日场次以83.15欧元/吨CO₂成交348.85万份。截至11月26日，本周已有三场成交，合计822.50万份，按看板所用日历计划量1,256.45万份计算为65.46%，仍低于三分之二。按主分支V3口径，11月27日下一期模拟估值、价差及总分暂缺。",
-  "bullets": [
-    "11月24日EEX拍卖报告显示原计划279.15万份的场次已取消。修订日历仍列该场的原计划量，且纳入11月26日调整后场次计划量348.85万份。看板将取消标记用于核对到期场次，周内成交量分母仍按日历所列计划量求和。",
-    "截至2026-11-26，11月23日、25日和26日三场成交量合计822.50万份，成交量加权清算价82.94欧元/吨CO₂。该均价是已成交拍卖统计。依V3规则，成交量占本周日历计划量的65.46%，尚差约15.13万份才达三分之二门槛，因此周内均价暂未用作下一窗口估值。",
-    "2026-11-27本期模拟估值为84.56欧元/张，形成周为2026-11-16，价格百分位69.23%。11月27日德国场计划154.80万份，须等EEX确认结果后再核完整周。欧委会的2026年第四季度固定价仍定于2027-01-04公布。"
-  ],
+  "headline": "暂无新增公开研究",
+  "summary": "最近拍卖日期为 2026-11-27。价格比较见购证窗口。",
+  "bullets": [],
   "sources": [
     "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
-    "https://www.eex.com/fileadmin/EEX/Downloads/Trading/Calendar/Auction_Calendar/EEX_Auction_Calendar_24.11.2026.pdf",
-    "https://github.com/Davidzhu511/eu-taric-quota-dashboard/blob/main/scripts/cbam_windows.py",
-    "https://github.com/Davidzhu511/eu-taric-quota-dashboard/blob/main/cbam/MODEL_V3.md",
-    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en"
+    "https://www.eex.com/en/markets/environmentals/eu-ets1-eu-ets2-auctions/eu-ets1-auctions",
+    "https://www.eex.com/en/markets/environmentals/environmental-indices",
+    "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en",
+    "https://eur-lex.europa.eu/eli/reg_impl/2025/2548/oj/eng"
   ]
 }

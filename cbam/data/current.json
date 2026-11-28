@@ -1,10 +1,10 @@
 {
   "meta": {
-    "checked_at": "2026-11-27T01:04:15.370660+00:00",
-    "data_date": "2026-11-26",
+    "checked_at": "2026-11-28T00:36:47.500195+00:00",
+    "data_date": "2026-11-27",
     "status": "ok",
     "errors": [],
-    "auctions_due_through": "2026-11-26",
+    "auctions_due_through": "2026-11-27",
     "methodology_version": "3.0.0"
   },
   "sources": {
@@ -3385,6 +3385,14 @@
       "status": "successful",
       "contract": "T3PA",
       "auction_name": "Auction 4. Period CAP3 EU"
+    },
+    {
+      "date": "2026-11-27",
+      "price": 84.31,
+      "volume": 1548000,
+      "status": "successful",
+      "contract": "T3PA",
+      "auction_name": "Auction 4. Period DE"
     }
   ],
   "cancelled_dates": [
@@ -3658,12 +3666,12 @@
   },
   "auction_analytics": {
     "latest": {
-      "date": "2026-11-26",
-      "price": 83.15,
-      "volume": 3488500,
+      "date": "2026-11-27",
+      "price": 84.31,
+      "volume": 1548000,
       "status": "successful",
       "contract": "T3PA",
-      "auction_name": "Auction 4. Period CAP3 EU"
+      "auction_name": "Auction 4. Period DE"
     },
     "weekly": [
       {
@@ -4538,13 +4546,13 @@
       {
         "week_start": "2026-11-23",
         "week_end": "2026-11-29",
-        "price": 82.94,
-        "volume": 8225000,
-        "auctions": 3,
+        "price": 83.16,
+        "volume": 9773000,
+        "auctions": 4,
         "planned_volume": 12564500,
         "planned_auctions": 5,
-        "complete": false,
-        "eligible_estimate": false
+        "complete": true,
+        "eligible_estimate": true
       }
     ],
     "quarterly": [
@@ -4607,25 +4615,25 @@
       {
         "year": 2026,
         "quarter": 4,
-        "price": 86.24,
-        "volume": 88441000,
-        "auctions": 37,
+        "price": 86.21,
+        "volume": 89989000,
+        "auctions": 38,
         "complete": false
       }
     ],
     "stats": {
-      "latest_price": 83.15,
-      "latest_date": "2026-11-26",
-      "ma_5_auctions": 82.11,
-      "ma_20_auctions": 86.89,
+      "latest_price": 84.31,
+      "latest_date": "2026-11-27",
+      "ma_5_auctions": 82.71,
+      "ma_20_auctions": 86.72,
       "low_52w": 62.19,
       "high_52w": 91.34,
-      "position_52w": 0.719,
-      "last_5_vs_20": -0.0551
+      "position_52w": 0.7588,
+      "last_5_vs_20": -0.0463
     }
   },
   "procurement_window": {
-    "as_of": "2026-11-27",
+    "as_of": "2026-11-28",
     "next_effective_from": null,
     "mode": "simulation",
     "current": {
@@ -4636,17 +4644,24 @@
       "volume": 9922500,
       "planned_volume": 9922500
     },
-    "next": null,
-    "score": null,
+    "next": {
+      "price": 83.16,
+      "formation_week": "2026-11-23",
+      "kind": "complete_estimate",
+      "auctions": 4,
+      "volume": 9773000,
+      "planned_volume": 12564500
+    },
+    "score": 21.3,
     "max_score": 100,
-    "spread": null,
-    "impact_per_1000": null,
+    "spread": -1.4,
+    "impact_per_1000": -1400,
     "threshold": 2.0,
-    "spread_points": null,
+    "spread_points": 9.0,
     "history_points": 12.3,
     "percentile": 0.6923,
     "history_weeks": 26,
-    "direction": null,
+    "direction": "within_threshold",
     "official_source_verified": true,
     "market_source_verified": true,
     "actionable": false
@@ -4663,22 +4678,29 @@
       "volume": 9922500,
       "planned_volume": 9922500
     },
-    "next": null,
-    "score": null,
+    "next": {
+      "price": 83.16,
+      "formation_week": "2026-11-23",
+      "kind": "complete_estimate",
+      "auctions": 4,
+      "volume": 9773000,
+      "planned_volume": 12564500
+    },
+    "score": 21.3,
     "max_score": 100,
-    "spread": null,
-    "impact_per_1000": null,
+    "spread": -1.4,
+    "impact_per_1000": -1400,
     "threshold": 2.0,
-    "spread_points": null,
+    "spread_points": 9.0,
     "history_points": 12.3,
     "percentile": 0.6923,
     "history_weeks": 26,
-    "direction": null,
-    "evidence_as_of": "2026-11-27",
+    "direction": "within_threshold",
+    "evidence_as_of": "2026-11-28",
     "actionable": false
   },
   "public_score": {
-    "score": null,
+    "score": 21.3,
     "max_score": 100,
     "model": "60/40",
     "mode": "simulation"
